@@ -52,6 +52,7 @@
 		letter-spacing: -0.1rem;
 		margin-top: 1rem;
 		text-align: center;
+		letter-spacing: -5px;
 	}
 
 	.wrapper-description {
