@@ -38,8 +38,8 @@
 		</p>
 		<div class="cta-buttons">
 			<div class="hero-cta">
-				<a href={downloadLinks.ios} class="btn-primary"> <img src={IOS} alt="ios" /> </a>
-				<a href={downloadLinks.android} class="btn-primary">
+				<a href={downloadLinks.ios} class="btn-primary" target = "_blank"> <img src={IOS} alt="ios" /> </a>
+				<a href={downloadLinks.android} class="btn-primary" target = "_blank">
 					<img src={Android} alt="ios" />
 				</a>
 			</div>
@@ -66,15 +66,19 @@
 		align-items: center;
 		justify-content: center;
 		z-index: 0;
+
 	}
 
 	.btn-primary {
 		border: none;
+	
+
 	}
 	.btn-primary img {
 		height: 40px;
 		width: 100%;
 		box-shadow: var(--shadow);
+		
 	}
 
 	.container_cta-stats {

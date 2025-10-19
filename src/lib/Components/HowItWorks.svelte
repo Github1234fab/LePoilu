@@ -36,7 +36,7 @@
 				{/if}
 			{/each}
 		</div>
-		<a class="btn-link-app" href="#hero-link-app">Télécharger Le Poilu</a>
+		<a class="btn-link-app" href="#hero-link-app" target = "_blank">Télécharger Le Poilu</a>
 	</div>
 </section>
 

@@ -9,9 +9,8 @@
 	};
 </script>
 
-<section class="hero" >
+<section class="hero">
 	<div class="hero-content" id="hero-link-app">
-		<h1 class="hero-title">Le Poilu</h1>
 		<!-- <h2 class="hero-subtitle">Tous les événements de ta région en un seul endroit</h2> -->
 
 		<h2 class="hero-subtitle">Toutes les sorties prêt de chez toi en un clin d'oeil</h2>
@@ -19,21 +18,20 @@
 			<!-- Découvre les concerts, les festivals, les marchés, les soirées, et toutes les activités
 			locales. -->
 			Concerts, marchés, sport, famille — découvre ce qui se passe cette semaine autour de chez toi.
-			
 		</p>
 
-		<div class="hero-cta" >
-			<img class="lePoilu" src={Poilu} alt="Le personnage Le Poilu"/>
+		<div class="hero-cta">
+			<img class="lePoilu" src={Poilu} alt="Le personnage Le Poilu" />
 			<p>Ne rates plus jamais un événement.</p>
 			<div class="container_app-link">
-			<a href="https://www.apple.com/fr/app-store/" class="btn-app-link">
-				<img class="img-app-link" src={IOS} alt="ios" />
-			</a>
+				<a href="https://www.apple.com/fr/app-store/" class="btn-app-link" target="_blank">
+					<img class="img-app-link" src={IOS} alt="ios" />
+				</a>
 
-			<a href={downloadLinks.android} class="btn-app-link">
-				<img class="img-app-link" src={Android} alt="ios" />
-			</a>
-		</div>
+				<a href={downloadLinks.android} class="btn-app-link" target="_blank">
+					<img class="img-app-link" src={Android} alt="ios" />
+				</a>
+			</div>
 		</div>
 	</div>
 
@@ -47,7 +45,8 @@
 
 <style>
 	.hero {
-		background: linear-gradient(to left, var(--background), var(--lightBg));
+		/* background: linear-gradient(to left, var(--background), var(--lightBg)); */
+		background-color: var(--background);
 		border-radius: 18px;
 		height: 600px;
 		display: flex;
@@ -64,16 +63,6 @@
 		justify-content: center;
 		margin-top: 5px;
 		padding: 20px;
-	}
-
-	.hero-title {
-		color: var(--secondary);
-		font-size: 5rem;
-		font-family: var(--FFTitle);
-		font-weight: 900;
-		letter-spacing: -0.1rem;
-		margin-top: 1rem;
-		text-align: center;
 	}
 
 	.hero-subtitle {
@@ -115,14 +104,13 @@
 		box-shadow: var(--shadow);
 	}
 	.btn-app-link {
-        cursor: pointer;
-    background-color: transparent;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 120px; /* Largeur fixe */
-    height: 60px; /* Hauteur fixe */
-	
+		cursor: pointer;
+		background-color: transparent;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 120px; /* Largeur fixe */
+		height: 60px; /* Hauteur fixe */
 	}
 
 	.hero-visual {

@@ -57,7 +57,6 @@
 		background-color: var(--headerBg);
 		z-index: 1000;
 		box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-	
 	}
 
 	.header-container {
@@ -76,7 +75,7 @@
 		align-items: center;
 	}
 	.poilu-img {
-		height: 70px;
+		height: 100px;
 	}
 
 	.nav-desktop {
@@ -102,16 +101,18 @@
 
 	.btn-header {
 		padding: 0.75rem 1.5rem;
-		background-color: var(--ctaPrimary);
-		color: var(--cta);
+		background-color: var(--cta);
+		color: var(--ctaText);
 		text-decoration: none;
 		border-radius: 8px;
 		font-weight: 600;
 		transition: background-color 0.3s;
+		box-shadow: var(--shadow3);
 	}
-
 	.btn-header:hover {
-		background-color: var(--ctaPrimaryHover);
+		background-color: var(--ctaHover);
+		box-shadow: var(--shadow3);
+		transform: scale(1.05);
 	}
 
 	/* Burger menu */

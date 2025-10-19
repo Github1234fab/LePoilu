@@ -1,6 +1,7 @@
 <script>
 	import IOS from '../assets/ios.png';
 	import Android from '../assets/android.png';
+	// import AppScreen from "../../lib/assets/events-v2.jpg"
 
 	export let downloadLinks = {
 		ios: 'https://www.apple.com/fr/app-store/',
@@ -30,12 +31,13 @@
 
 <section class="testimonials">
 	<div class="testimonials-container">
+		<!-- <img src={AppScreen} alt="" class="app"> -->
 		<h2 class="section-title">Ils adorent l'application</h2>
 		<p class="section-subtitle">Des milliers d'utilisateurs satisfaits</p>
 
 		<div class="hero-cta">
-			<a href={downloadLinks.ios} class="btn-primary"> <img src={IOS} alt="ios" /> </a>
-			<a href={downloadLinks.android} class="btn-primary">
+			<a href={downloadLinks.ios} class="btn-primary" target = "_blank"> <img src={IOS} alt="ios" /> </a>
+			<a href={downloadLinks.android} class="btn-primary" target = "_blank">
 				<img src={Android} alt="ios" />
 			</a>
 		</div>
@@ -74,10 +76,25 @@
 		padding: 40px;
 		background-image: url('../assets/Poilu-ok.png');
 		background-position: center;
+		background-repeat: no-repeat;
+
 	}
 	.testimonials-container {
 		color: primary;
+		position: relative;
 	}
+	/* .app{
+		height: 320px;
+		width: auto;
+		position: absolute;
+		top: 50%;
+		left: 100%;
+		border: 5px solid #c27c2f;
+		border-radius: 18px;
+		box-shadow: var(--shadow2);
+
+
+	} */
 	.testimonials-grid {
 		display: flex;
 		flex-direction: column;

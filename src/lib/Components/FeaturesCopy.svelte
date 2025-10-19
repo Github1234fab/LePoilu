@@ -1,5 +1,5 @@
 <script>
-	import { applyAction } from '$app/forms';
+	import FeatureFlipCard from '$lib/Components/FlipCard.svelte';
 	import PoiluFace from '../assets/Poilu-outils.png';
 	import Details from '../assets/details.jpg';
 	import Events from '../assets/events-v2.jpg';
@@ -13,7 +13,8 @@
 			icon: 'fa-solid fa-calendar-days',
 			title: 'Calendrier intelligent',
 			description: `Visualise tous les événements en scrollant. C'est intuitif et tu peux filtrer par catégorie.`,
-			img: Events
+			img: Events,
+			alt: ''
 		},
 		{
 			icon: 'fa-solid fa-sliders',
@@ -49,28 +50,19 @@
 </script>
 
 <section class="features">
-	
-		<div class="features-header">
-			<h2 class="section-title">Tout ce dont tu as besoin pour sortir avec Le Poilu</h2>
-			<p class="section-subtitle">
-				Une application complète possèdant tous les outils pour ne plus jamais manquer un événement
-				local
-			</p>
-			<img class="poilu-face" src={PoiluFace} alt="Personnage le poilu de face" />
-		</div>
-		<div class="features-grid">
-			{#each features as feature}
-				<div class="feature-card">
-					<div class="feature-icon">
-						<i class={feature.icon}></i>
-					</div>
-					<h3 class="feature-title">{feature.title}</h3>
-					<p class="feature-description">{feature.description}</p>
-					<img class="img" src={feature.img} alt="screenshots de l'application Le Poilu" />
-				</div>
-			{/each}
-		</div>
-
+	<div class="features-header">
+		<h2 class="section-title">Tout ce dont tu as besoin pour sortir avec Le Poilu</h2>
+		<p class="section-subtitle">
+			Une application complète possèdant tous les outils pour ne plus jamais manquer un événement
+			local
+		</p>
+		<img class="poilu-face" src={PoiluFace} alt="Personnage le poilu de face" />
+	</div>
+	<div class="features-grid">
+		{#each features as f}
+			<FeatureFlipCard {...f} />
+		{/each}
+	</div>
 </section>
 
 <style>
@@ -85,7 +77,7 @@
 		z-index: 0;
 		position: relative;
 	}
-	
+
 	.features-header {
 		display: flex;
 		flex-direction: column;
@@ -107,38 +99,9 @@
 		grid-template-columns: repeat(3, 1fr);
 		gap: 2rem;
 		padding: 30px;
+		width: 100%;
 	}
 
-	.feature-card {
-		/* background: linear-gradient(var(--secondary), var(--background) 100%); */
-		background-color: var(--secondary);
-		/* background-color: transparent; */
-		/* border: 1px solid var(--ctaHover); */
-		border-radius: 12px;
-		padding: 20px;
-		height: 100%;
-		width: 350px;
-		gap: 10px;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-	}
-	.feature-icon {
-		color: var(--background);
-		font-size: 2rem;
-	}
-	.feature-title {
-		color: var(--ctaText);
-
-
-		font-weight: 700;
-		text-align: center;
-	}
-	.feature-description {
-		color: var(--ctaText);
-		text-align: center;
-	}
 	.poilu-face {
 		height: 150px;
 		margin-right: 20px;
@@ -154,4 +117,3 @@
 		margin-top: 50px;
 	}
 </style>
-

@@ -1,60 +1,32 @@
 <div class="pre-hero">
+	<h1 class="hero-title">Le Poilu</h1>
 	<div class="paragraph">
-		<p class="PreHero-description">
-			Le Poilu est un être social, par excellence.
-			<br /> Il ne reste jamais dans sa hutte! Il sort, il bouge, il découvre, il partage et
-			s'instruit.
-			<br />Spectacles, expos, soirées, sports… rien ne lui échappe.
-			<br /><span>Si tu veux profiter de tout ce que ta région a à t'offrir… Suis le Poilu !</span>
-		</p>
-		<a class="btn-link-app" href="#hero-link-app">Télécharger Le Poilu</a>
+		<div class="wrapper-description">
+			<p class="PreHero-description">
+				<span>Le Poilu </span> est un être social, par excellence.
+				<br /> Il ne reste jamais dans sa hutte! 
+				<br>Il sort, il bouge, il découvre, il partage et
+				s'instruit.
+				<br />Spectacles, expos, soirées, sports… rien ne lui échappe.
+				<br /><span>Si tu veux profiter de tout ce que ta région a à t'offrir… Suis le Poilu !</span
+				>
+			</p>
+			<a class="btn-link-app" href="#hero-link-app">Télécharger Le Poilu</a>
+		</div>
 	</div>
 </div>
 
 <style>
 	.pre-hero {
-		background: linear-gradient(to left, var(--background), var(--lightBg));
-		background-image: url('../assets/Poilu-Village.png');
-		background-position: center;
-		background-size: cover;
-		background-repeat: no-repeat;
 		border-radius: 18px;
-		height: 800px;
+		height: 1200px;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
 		z-index: -1;
-		position: relative;
-	}
-	.pre-hero::after {
-		content: '';
-		position: absolute;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
-		background: linear-gradient(
-			rgba(255, 255, 255, 0.128) 0%,
-			rgba(22, 22, 22, 0.242) 100%,
-			rgba(255, 255, 255, 0)
-		);
-		border-radius: 18px;
-		z-index: 0;
-	}
-	.PreHero-description {
-		font-weight: 500;
-		font-family: var(--FFTitle);
-		font-size: 1rem;
-		color: var(--ctaText);
-		text-align: center;
-		border-radius: 18px;
-		padding: 20px 20px;
-		line-height: 2.5rem;
-	}
-	.PreHero-description span {
-		font-weight: 900;
-		font-size: 1rem;
+		gap: 5px;
+		/* border-radius: 0px 0px 18px 18px; */
 	}
 	.paragraph {
 		z-index: 2;
@@ -62,16 +34,63 @@
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
-		gap: 0px;
-		background-color: rgba(0, 0, 0, 0.26);
+		gap: 20px;
+		background-image: url('../assets/Poilu-Village.png');
+		background-position: center;
+		background-size: cover;
+		background-repeat: no-repeat;
+		height: 100%;
+		width: 100%;
+		border-radius: 18px;
+		position: relative;
+	}
+	.hero-title {
+		color: var(--secondary);
+		font-size: 10rem;
+		font-family: var(--FFTitle);
+		font-weight: 900;
+		letter-spacing: -0.1rem;
+		margin-top: 1rem;
+		text-align: center;
+	}
+
+	.wrapper-description {
+		position: absolute;
+		bottom: 0;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		width: 100%;
+		gap: 10px;
 		backdrop-filter: blur(10px);
 		-webkit-backdrop-filter: blur(10px);
-		height: 300px;
-		margin-top: 30%;
+		/* background-color: #e8843c78; */
+		background-color: rgba(33, 33, 33, 0.505);
+		border-radius: 0px 0px 18px 18px;
+	
 	}
+	.PreHero-description {
+		font-weight: 500;
+		font-family: var(--FFTitle);
+		font-size: 1rem;
+		color: var(--ctaText);
+		text-align: center;
+		border-radius: 0px 0px 18px 18px;
+		padding: 30px;
+		line-height: 2.5rem;
+		width: 100%;
+		
+	}
+
+	.PreHero-description span {
+		font-weight: 700;
+		font-size: 1rem;
+	}
+
 	.btn-link-app {
 		display: inline-block;
-		margin: 10px auto;
+		margin-bottom: 50px;
 		padding: 15px 30px;
 		background-color: var(--cta);
 		color: var(--ctaText);
