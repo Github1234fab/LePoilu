@@ -91,6 +91,13 @@
 		font-size: 3rem;
 		font-weight: 900;
 		margin-bottom: 10px;
+		background-color: white;
+		height: 100px;
+		width: 100px;
+		border-radius: 50%;
+		display: flex;
+		align-items: center;
+	justify-content: center;
 	}
 	.step-title {
 		color: var(--ctaText);
