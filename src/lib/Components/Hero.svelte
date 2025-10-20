@@ -48,7 +48,7 @@
 		/* background: linear-gradient(to left, var(--background), var(--lightBg)); */
 		background-color: var(--background);
 		border-radius: 18px;
-		height: 600px;
+		height: auto;
 		display: flex;
 		flex-direction: column;
 		align-items: center;

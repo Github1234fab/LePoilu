@@ -5,7 +5,7 @@
 <div class="pre-hero">
 	<div class="wrapper-title">
 		<h1 class="hero-title">Le Poilu</h1>
-		<h2>L’application pour publier et trouver des événements près de chez vous.</h2>
+		<h2>L’application pour publier et trouver des événements près de chez toi.</h2>
 	</div>
 
 	<div class="paragraph">
