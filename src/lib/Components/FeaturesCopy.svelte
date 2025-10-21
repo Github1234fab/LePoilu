@@ -51,10 +51,9 @@
 
 <section class="features">
 	<div class="features-header">
-		<h2 class="section-title">Tout ce dont tu as besoin pour sortir avec Le Poilu</h2>
+		<h2 class="section-title">Sortir, c’est trop simple avec Le Poilu.</h2>
 		<p class="section-subtitle">
-			Une application complète possèdant tous les outils pour ne plus jamais manquer un événement
-			local
+			Une appli tout-en-un pour vivre tous les événements de ta région.
 		</p>
 		<img class="poilu-face" src={PoiluFace} alt="Personnage le poilu de face" />
 	</div>
@@ -83,7 +82,7 @@
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
-		margin-top: 10%;
+		margin-top: 70px;
 	}
 	.section-title {
 		font-weight: 900;
@@ -106,7 +105,7 @@
 		height: 150px;
 		margin-right: 20px;
 	}
-	.img {
+	/* .img {
 		margin-top: 10px;
 		border-radius: 18px;
 		border: 5px solid rgba(93, 3, 3, 0);
@@ -115,5 +114,5 @@
 		box-shadow: var(--shadow2);
 		position: relative;
 		margin-top: 50px;
-	}
+	} */
 </style>

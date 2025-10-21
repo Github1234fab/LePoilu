@@ -10,20 +10,20 @@
 	const testimonials = [
 		{
 			name: 'Marie L.',
-			location: 'Lyon',
-			text: "Je ne rate plus aucun concert dans ma ville ! L'application est super intuitive.",
+			location: 'Craponne',
+			text: "Je ne rate plus aucun concert dans ma région! L'application est super intuitive.",
 			rating: 5
 		},
 		{
 			name: 'Thomas D.',
-			location: 'Marseille',
-			text: 'Enfin une app qui regroupe tous les événements locaux. Les notifications sont top.',
+			location: 'Brignais',
+			text: 'Enfin une app qui regroupe tous les événements locaux.',
 			rating: 5
 		},
 		{
 			name: 'Sophie M.',
-			location: 'Toulouse',
-			text: "J'ai découvert plein d'événements sympas près de chez moi que je ne connaissais pas.",
+			location: 'Pollionnay',
+			text: "Génial pour les assos. On peut créer notre évènement depuis l'appli ! Troooop pratique.",
 			rating: 5
 		}
 	];

@@ -12,14 +12,14 @@
 		<img class="img" src={Poilu} alt="personnage le poilu dans un village" />
 		<div class="wrapper-description">
 			<p class="PreHero-description">
-				<span>Le Poilu </span> est un être social, par excellence.
-				<br /> Il ne reste jamais dans sa hutte!
-				<br />Il sort, il bouge, il découvre, il partage et s'instruit.
-				<br />Spectacles, expos, soirées, sports… rien ne lui échappe.
-				<br /><span>Si tu veux profiter de tout ce que ta région a à t'offrir… Suis le Poilu !</span
-				>
+				<span>Le Poilu </span>, c'est l'être social, par excellence.
+			
+				<br>	<strong>Jamais dans sa hutte !</strong>  
+				<br>Spectacles, expos, soirées, sport… il est toujours dehors.
+	
+				
 			</p>
-			<a class="btn-link-app" href="#hero-link-app">Télécharger Le Poilu</a>
+			<a class="btn-link-app" href="#hero-link-app">Télécharge Le Poilu</a>
 		</div>
 	</div>
 </div>
@@ -42,7 +42,7 @@
 	}
 	.hero-title {
 		color: var(--secondary);
-		font-size: 10rem;
+		font-size: 7rem;
 		font-family: var(--FFTitle);
 		font-weight: 900;
 		letter-spacing: -0.1rem;
@@ -56,7 +56,7 @@
 		font-size: 1.5rem;
 		color: var(--text);
 		text-align: center;
-		margin-top: -50px;
+		margin-top: 0px;
 		margin-bottom: 50px;
 	}
 	.paragraph {
@@ -83,7 +83,7 @@
 		justify-content: center;
 		width: 100%;
 		gap: 10px;
-		background-color: var(--ctaHover);
+		background-color: var(--ctaSecondary);
 		border-radius: 0px 18px 18px 0px;
 	}
 	.PreHero-description {
@@ -93,7 +93,7 @@
 		color: var(--ctaText);
 		text-align: center;
 		border-radius: 0px 0px 18px 18px;
-		padding: 50px 0px;
+		padding: 50px 150px;
 		line-height: 2.5rem;
 		width: 100%;
 	}

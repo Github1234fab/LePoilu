@@ -8,8 +8,8 @@
 		},
 		{
 			number: '2',
-			title: 'Scroll et choisis',
-			description: 'Consulte  en scrollant et utilise les filtres'
+			title: 'Tu fais défiler et tu choisis',
+			description: 'Consulte  en scrollant et en utilisant les filtres'
 		},
 		{
 			number: '3',

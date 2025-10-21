@@ -13,16 +13,16 @@
 	<div class="hero-content" id="hero-link-app">
 		<!-- <h2 class="hero-subtitle">Tous les événements de ta région en un seul endroit</h2> -->
 
-		<h2 class="hero-subtitle">Toutes les sorties prêt de chez toi en un clin d'oeil</h2>
+		<h2 class="hero-subtitle">Ne rate plus rien près de chez toi !</h2>
 		<p class="hero-description">
 			<!-- Découvre les concerts, les festivals, les marchés, les soirées, et toutes les activités
 			locales. -->
-			Concerts, marchés, sport, famille — découvre ce qui se passe cette semaine autour de chez toi.
+			Concerts, spectacles, fêtes, randos - découvre tout ce qui se passe autour de toi.
 		</p>
 
 		<div class="hero-cta">
 			<img class="lePoilu" src={Poilu} alt="Le personnage Le Poilu" />
-			<p>Ne rates plus jamais un événement.</p>
+			<p>Ne rates plus jamais un événement avec le Poilu.</p>
 			<div class="container_app-link">
 				<a href="https://www.apple.com/fr/app-store/" class="btn-app-link" target="_blank">
 					<img class="img-app-link" src={IOS} alt="ios" />
@@ -61,7 +61,7 @@
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
-		margin-top: 5px;
+		margin-top: 50px;
 		padding: 20px;
 	}
 

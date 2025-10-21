@@ -67,14 +67,16 @@
 	}
 
 	/* Hover : desktop. Garde aussi l’état via .flipped pour mobile/clic */
-	.flip-card:hover .flip-inner,
-	.flip-inner:focus {
-		transform: rotateY(180deg);
-	}
+/* Rotation uniquement via la classe .flipped (pas de hover) */
+.flip-inner.flipped {
+    transform: rotateY(180deg);
+}
 
-	.flip-inner.flipped {
-		transform: rotateY(180deg);
-	}
+/* Focus pour l'accessibilité (optionnel) */
+.flip-inner:focus {
+    outline: 2px solid var(--ctaText);
+    outline-offset: 4px;
+}
 
 	.face {
 		position: absolute;
