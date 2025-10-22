@@ -125,4 +125,15 @@
 	.social-link {
 		color: var(--cta);
 	}
+
+
+	@media (max-width: 768px) {
+		.footer-grid {
+			flex-direction: column;
+			align-items: baseline;
+			justify-content: center;
+			gap: 30px;
+		}
+	
+	}
 </style>

@@ -14,20 +14,18 @@
 	<h2>Éditeur</h2>
 	<p>
 		L’application et le site <strong>Le Poilu</strong> sont édités par :
-		<strong>[Nom de l’éditeur ou de l’entreprise]</strong><br />
-		Adresse : [Adresse complète]<br />
-		Email : [Adresse de contact publique]<br />
-		SIRET : [Numéro SIRET ou SIREN]<br />
-		Directeur de la publication : [Nom et prénom du responsable légal ou du fondateur]
+		<strong>GRALYPHO</strong><br />
+		<!-- Adresse : [Adresse complète]<br /> -->
+		Email : contact@gralypho.com<br />
+		SIRET : 518 296 330            00021<br />
+		Directeur de la publication : Fabien MARCEAU
 	</p>
 
 	<h2>Hébergement</h2>
 	<p>
 		L’application et le site sont hébergés par :<br />
-		<strong>[Nom de l’hébergeur]</strong><br />
-		Adresse : [Adresse complète]<br />
+		<strong>NETLIFY</strong><br />
 		Site web : [Lien du site hébergeur]<br />
-		Téléphone : [Numéro de contact, si souhaité]
 	</p>
 
 	<h2>Propriété intellectuelle</h2>
@@ -54,7 +52,7 @@
 		nécessaire à la fourniture du service et au respect des obligations légales. L’utilisateur
 		dispose d’un droit d’accès, de rectification, d’opposition, de suppression et de portabilité de
 		ses données, qu’il peut exercer à tout moment via le formulaire de contact ou en écrivant à :
-		<strong>[Adresse e-mail dédiée à la protection des données]</strong>.
+		<strong>contact@gralypho.com</strong>.
 	</p>
 
 	<p>
@@ -83,7 +81,7 @@
 	<p>
 		Pour toute question concernant les présentes mentions légales ou la politique de
 		confidentialité, vous pouvez contacter :
-		<strong>[Adresse e-mail de contact]</strong>.
+		<strong>contact@gralypho.com</strong>.
 	</p>
 </section>
 

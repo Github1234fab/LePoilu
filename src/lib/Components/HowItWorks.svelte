@@ -36,7 +36,7 @@
 				{/if}
 			{/each}
 		</div>
-		<a class="btn-link-app" href="#hero-link-app" target = "_blank">Télécharger Le Poilu</a>
+		<a class="btn-link-app" href="#hero-link-app" target="_blank">Télécharger Le Poilu</a>
 	</div>
 </section>
 
@@ -68,6 +68,7 @@
 		gap: 20px;
 		align-items: center;
 		justify-content: center;
+		flex-wrap: wrap;
 	}
 	.step {
 		border-radius: 18px;
@@ -97,7 +98,7 @@
 		border-radius: 50%;
 		display: flex;
 		align-items: center;
-	justify-content: center;
+		justify-content: center;
 	}
 	.step-title {
 		color: var(--ctaText);
@@ -126,5 +127,23 @@
 		text-align: center;
 		z-index: 2;
 		box-shadow: var(--shadow);
+	}
+
+	@media (max-width: 900px) {
+		.step {
+			width: 80%;
+			height: auto;
+		}
+		.steps-container {
+			flex-direction: column;
+		}
+		.step-arrow {
+			padding: 5px;
+			rotate: 90deg;
+		}
+		.section-subtitle {
+			font-family: var(--FFTitle);
+			margin-top: 10px;
+		}
 	}
 </style>

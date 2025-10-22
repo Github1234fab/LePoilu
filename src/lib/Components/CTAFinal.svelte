@@ -13,7 +13,7 @@
 	<div class="cta-container">
 		<h2 class="cta-title">Prêt à découvrir ta région ?</h2>
 		<p class="cta-description">
-			Rejoins des milliers d'utilisateurs et ne rate plus jamais un événement
+			Rejoins des milliers d'utilisateurs et ne rate plus jamais aucun événement
 		</p>
 		<img class="poilu-face" src={PoiluFace} alt="Perosnnage le poilu de face" />
 		<div class="container_cta-stats">
@@ -135,5 +135,13 @@
 	}
 	.stat-label {
 		font-size: 1rem;
+	}
+
+
+	@media (max-width: 900px) {
+		.cta-stats {
+			flex-direction: column;
+			gap: 10px;
+		}
 	}
 </style>

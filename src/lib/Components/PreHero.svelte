@@ -119,6 +119,35 @@
 		font-family: var(--FFText);
 		text-align: center;
 		z-index: 6;
-		box-shadow: var(--shadow3);
+		/* box-shadow: var(--shadow3); */
+	}
+
+	@media (max-width: 900px) {
+		.hero-title {
+			font-size: 4rem;
+			letter-spacing: -2px;
+		}
+		.wrapper-title h2 {
+			font-size: 1.2rem;
+			margin-bottom: 30px;
+		}
+		.paragraph {
+			grid-template-columns: 1fr;
+			gap: 0px;
+		}
+		.img {
+			border-radius: 18px 18px 0px 0px;
+			height: 300px;
+		}
+		.PreHero-description {
+			padding: 30px 20px;
+			font-size: 1rem;
+			line-height: 1.5rem;
+		}
+		.wrapper-description{
+		
+		border-radius: 0px 0px 18px 18px;
+		z-index: 3;
+	}
 	}
 </style>

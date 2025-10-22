@@ -143,4 +143,15 @@
 	.testimonial-author {
 		color: primary;
 	}
+
+
+	@media (max-width: 900px) {
+		.testimonial-card {
+			width: 100%;
+		}
+		.testimonials {
+			padding: 20px;
+		}
+
+	}
 </style>

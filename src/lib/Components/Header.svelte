@@ -41,12 +41,12 @@
 	<!-- Menu mobile -->
 	{#if isMenuOpen}
 		<nav class="nav-mobile" class:open={isMenuOpen}>
-			<a href="#fonctionnalites" class="nav-link-mobile" on:click={closeMenu}>Fonctionnalités</a>
-			<a href="#comment-ca-marche" class="nav-link-mobile" on:click={closeMenu}>Comment ça marche</a
+			<a href="/Fonctionnalités" class="nav-link-mobile" on:click={closeMenu}>Fonctionnalités</a>
+			<a href="/Tarifs" class="nav-link-mobile" on:click={closeMenu}>Tarifs</a
 			>
-			<a href="#temoignages" class="nav-link-mobile" on:click={closeMenu}>Témoignages</a>
-			<a href="#telechargement" class="nav-link-mobile" on:click={closeMenu}>Télécharger</a>
-			<a href="#telechargement" class="btn-header-mobile" on:click={closeMenu}>Télécharger l'app</a>
+			<a href="/Apropos" class="nav-link-mobile" on:click={closeMenu}>À propos</a>
+			<a href="/Contact" class="nav-link-mobile" on:click={closeMenu}>Contact</a>
+			<a href="/Telecharger" class="nav-link-mobile" on:click={closeMenu}>Télécharger l'app</a>
 		</nav>
 	{/if}
 </header>
@@ -172,7 +172,7 @@
 		color: var(--primaryColor);
 	}
 
-	.btn-header-mobile {
+	/* .btn-header-mobile {
 		padding: 0.75rem 1.5rem;
 		background-color: var(--ctaPrimary);
 		color: var(--ctaText);
@@ -181,7 +181,7 @@
 		font-weight: 600;
 		text-align: center;
 		margin-top: 1rem;
-	}
+	} */
 
 	/* Responsive */
 	@media (max-width: 768px) {

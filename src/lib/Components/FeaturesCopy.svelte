@@ -115,4 +115,18 @@
 		position: relative;
 		margin-top: 50px;
 	} */
+
+
+
+	 @media (max-width: 900px) {
+		.features-grid {
+			grid-template-columns: 1fr;
+			padding: 20px;
+		}
+		.section-subtitle {
+		font-family: var(--FFTitle);
+		text-align: center;
+		margin-top: 10px;
+	}
+	 }
 </style>

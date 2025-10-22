@@ -24,11 +24,11 @@
 	<h1>Télécharger l'application - le Poilu</h1>
 	<p class="lead">Choisissez votre plateforme :</p>
 	<div class="container_app-link">
-		<a href="https://www.apple.com/fr/app-store/" class="btn-app-link" target = "_blank">
+		<a href="https://www.apple.com/fr/app-store/" class="btn-app-link" target="_blank">
 			<img class="img-app-link" src={IOS} alt="ios" />
 		</a>
 
-		<a href={downloadLinks.android} class="btn-app-link" target = "_blank">
+		<a href={downloadLinks.android} class="btn-app-link" target="_blank">
 			<img class="img-app-link" src={Android} alt="ios" />
 		</a>
 	</div>
@@ -74,5 +74,19 @@
 		justify-content: center;
 		width: auto; /* Largeur fixe */
 		height: 100px; /* Hauteur fixe */
+	}
+
+	@media (max-width: 900px) {
+		.wrap {
+			background-size: contain;
+			background-image: url('../../lib/assets/Poilu_mobile.png');
+			background-position: bottom;
+			height:850px;
+		}
+		.container_app-link {
+		flex-direction: column;
+		gap: 0px;
+	}
+	
 	}
 </style>

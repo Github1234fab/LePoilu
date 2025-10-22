@@ -73,4 +73,11 @@
 		outline: 2px solid #0a84ff;
 		outline-offset: 2px;
 	}
+
+	@media (max-width: 900px) {
+		.apropos {
+			height: 1500px;
+			
+		}
+	}
 </style>

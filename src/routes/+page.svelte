@@ -20,7 +20,7 @@
 <HIW/>
 <Testimonials/>
 <CTAFinal/>
-<!-- <Footer/> -->
+<Footer/>
 
 
 </main>

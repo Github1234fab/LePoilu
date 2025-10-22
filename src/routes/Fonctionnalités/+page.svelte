@@ -7,18 +7,14 @@
 </svelte:head>
 
 <section class="wrap">
-    <h1>Fonctionnalités</h1>
+	<h1>Fonctionnalités</h1>
 	<p class="lead">
 		Le Poilu vous aide à trouver des idées sorties locales et à publier vos propres événements en
 		quelques minutes.
 	</p>
-	
-	
-	<div class="grid">
-    
 
+	<div class="grid">
 		<article class="card">
-			
 			<h2>Recherche et filtres</h2>
 			<ul>
 				<li>Ville, dates, catégories, gratuit, famille</li>
@@ -38,10 +34,8 @@
 			<p>Visualisez rapidement l’emplacement et accédez au trajet.</p>
 		</article>
 
-			<a href="/Telecharger" class="btn-header">Essayez l'app</a>
-
+		<a href="/Telecharger" class="btn-header">Essayez l'app</a>
 	</div>
-
 </section>
 
 <style>
@@ -55,12 +49,11 @@
 		background-size: cover;
 		background-position: center;
 		background-repeat: no-repeat;
-        display: flex;
-        flex-direction: column;
-        align-items: baseline;
-        justify-content: center;
+		display: flex;
+		flex-direction: column;
+		align-items: baseline;
+		justify-content: center;
 	}
-	
 
 	h1 {
 		font-size: 2.25rem;
@@ -74,20 +67,19 @@
 		padding: 10px;
 		border-radius: 18px;
 		backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-        background-color:#ffffff2c  ;    
+		-webkit-backdrop-filter: blur(10px);
+		background-color: #ffffff2c;
 	}
 	.grid {
 		display: grid;
 		gap: 16px;
 		grid-template-columns: repeat(1, minmax(0, 1fr));
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-        background-color:#c27b2f56  ;    
-         padding: 45px 20px;
-        margin-top: 15%;
-        border-radius: 18px;
-
+		backdrop-filter: blur(10px);
+		-webkit-backdrop-filter: blur(10px);
+		background-color: #c27b2f56;
+		padding: 45px 20px;
+		margin-top: 15%;
+		border-radius: 18px;
 	}
 	.btn-header {
 		padding: 0.75rem 2rem;
@@ -99,8 +91,6 @@
 		transition: 0.3s;
 		box-shadow: var(--shadow3);
 		max-width: 200px;
-		
-		
 	}
 	.btn-header:hover {
 		background-color: var(--ctaHover);
@@ -108,9 +98,14 @@
 		transform: scale(1.05);
 	}
 
-	@media (min-width: 768px) {
+	@media (max-width: 900px) {
+		.wrap {
+			height: 100%;
+		}
+
 		.grid {
-			grid-template-columns: repeat(2, 1fr);
+			grid-template-columns: repeat(1, 1fr);
+			background-color: #ffffff70;
 		}
 	}
 	.card {
@@ -125,5 +120,12 @@
 	}
 	ul {
 		margin: 8px 0 0 18px;
+	}
+	.lead {
+		background-color: #ffffffd1;
+		padding: 20px;
+	}
+	.btn-header {
+		margin-top: 30px;
 	}
 </style>
