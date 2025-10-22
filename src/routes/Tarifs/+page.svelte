@@ -1,11 +1,11 @@
 <script>
 	const pricing = [
-		{ name: 'À l’unité', price: '2,99 €', details: ['1 annonce', 'Modération standard (< 24h)'] },
+		{ name: 'À l’unité', price: '4,99 €', details: ['1 annonce', 'Modération standard (< 24h)'] },
 		{ name: 'Pack 10', price: '19,90 €', details: ['10 annonces', 'Modération prioritaire'] },
 		{
 			name: 'Pro (mensuel)',
-			price: '9,99 €',
-			details: ['Jusqu’à 15 annonces/mois', 'Badge organisateur vérifié']
+			price: '24,99 €',
+			details: ['Illimité', 'Badge organisateur vérifié']
 		}
 	];
 </script>
@@ -21,7 +21,7 @@
 <section class="wrap">
 	<h1>Publier un événement</h1>
 	<p class="lead">
-		Créez votre annonce, réglez en ligne et elle sera mise en ligne après modération. Offres de
+		Créez votre annonce, payez et elle sera mise en ligne après modération. Offres de
 		lancement disponibles.
 	</p>
 
@@ -35,7 +35,7 @@
 						<li>{d}</li>
 					{/each}
 				</ul>
-				<a class="btn btn-dark" href="/telecharger">Commencer</a>
+				<a class="btn btn-dark" href="/Telecharger">Commencer</a>
 			</article>
 		{/each}
 	</div>
@@ -67,6 +67,11 @@
 		color: #555;
 		margin: 0 0 24px;
 		max-width: 720px;
+		border-radius: 18px;
+		backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        background-color:#fdfcfc2c  ;  
+		max-width: 270px; 
 	}
 	.grid {
 		display: grid;

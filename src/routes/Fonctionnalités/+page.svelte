@@ -13,10 +13,12 @@
 		quelques minutes.
 	</p>
 	
+	
 	<div class="grid">
     
 
 		<article class="card">
+			
 			<h2>Recherche et filtres</h2>
 			<ul>
 				<li>Ville, dates, catégories, gratuit, famille</li>
@@ -35,7 +37,11 @@
 			<h2>Cartes & itinéraires</h2>
 			<p>Visualisez rapidement l’emplacement et accédez au trajet.</p>
 		</article>
+
+			<a href="/Telecharger" class="btn-header">Essayez l'app</a>
+
 	</div>
+
 </section>
 
 <style>
@@ -54,16 +60,23 @@
         align-items: baseline;
         justify-content: center;
 	}
+	
+
 	h1 {
 		font-size: 2.25rem;
 		line-height: 1.2;
 		margin: 0 0 8px;
 	}
-	/* .lead {
-		max-width: 720px;
+	.lead {
+		max-width: 320px;
 		color: #555;
-		margin: 0 0 24px;
-	} */
+		background-color: white;
+		padding: 10px;
+		border-radius: 18px;
+		backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        background-color:#ffffff2c  ;    
+	}
 	.grid {
 		display: grid;
 		gap: 16px;
@@ -72,10 +85,29 @@
         -webkit-backdrop-filter: blur(10px);
         background-color:#c27b2f56  ;    
          padding: 45px 20px;
-        margin-top: 25%;
+        margin-top: 15%;
         border-radius: 18px;
 
 	}
+	.btn-header {
+		padding: 0.75rem 2rem;
+		background-color: var(--cta);
+		color: var(--ctaText);
+		text-decoration: none;
+		border-radius: 8px;
+		font-weight: 600;
+		transition: 0.3s;
+		box-shadow: var(--shadow3);
+		max-width: 200px;
+		
+		
+	}
+	.btn-header:hover {
+		background-color: var(--ctaHover);
+		box-shadow: var(--shadow3);
+		transform: scale(1.05);
+	}
+
 	@media (min-width: 768px) {
 		.grid {
 			grid-template-columns: repeat(2, 1fr);

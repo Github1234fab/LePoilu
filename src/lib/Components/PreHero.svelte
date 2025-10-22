@@ -5,7 +5,7 @@
 <div class="pre-hero">
 	<div class="wrapper-title">
 		<h1 class="hero-title">Le Poilu</h1>
-		<h2>L’application pour publier et trouver des événements près de chez toi.</h2>
+		<h2>L’application pour publier et trouver tous les événements près de chez toi.</h2>
 	</div>
 
 	<div class="paragraph">
@@ -13,16 +13,19 @@
 		<div class="wrapper-description">
 			<p class="PreHero-description">
 				<span>Le Poilu </span>, c'est l'être social, par excellence.
-			
-				<br>	<strong>Jamais dans sa hutte !</strong>  
-				<br>Spectacles, expos, soirées, sport… il est toujours dehors.
-	
-				
+
+				<br /> <strong>Jamais dans sa hutte !</strong>
+				<br />Spectacles, expos, soirées, sport… il est toujours dehors.
 			</p>
-			<a class="btn-link-app" href="#hero-link-app">Télécharge Le Poilu</a>
+			<a class="btn-link-app" href="/Telecharger" 
+			>Télécharge Le Poilu</a
+			>
 		</div>
+	
 	</div>
+
 </div>
+
 
 <style>
 	.pre-hero {
@@ -31,7 +34,7 @@
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
-		z-index: -1;
+		
 	}
 	.wrapper-title {
 		display: flex;
@@ -63,7 +66,6 @@
 		display: grid;
 		grid-template-columns: 1fr 1fr;
 		align-items: center;
-		z-index: 2;
 		height: 100%;
 		width: 100%;
 		border-radius: 18px;
@@ -74,7 +76,6 @@
 		object-fit: cover;
 		border-radius: 18px 0px 0px 18px;
 	}
-	
 
 	.wrapper-description {
 		display: flex;
@@ -85,6 +86,7 @@
 		gap: 10px;
 		background-color: var(--ctaSecondary);
 		border-radius: 0px 18px 18px 0px;
+		z-index: 3;
 	}
 	.PreHero-description {
 		font-weight: 500;
@@ -104,7 +106,6 @@
 	}
 
 	.btn-link-app {
-		display: inline-block;
 		margin-bottom: 50px;
 		padding: 15px 30px;
 		background-color: var(--cta);
@@ -117,7 +118,7 @@
 			color 0.3s;
 		font-family: var(--FFText);
 		text-align: center;
-		z-index: 2;
-		box-shadow: var(--shadow);
+		z-index: 6;
+		box-shadow: var(--shadow3);
 	}
 </style>

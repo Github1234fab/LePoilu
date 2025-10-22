@@ -122,7 +122,7 @@
 
 	.back {
 		transform: rotateY(180deg);
-		background: var(--background);
+		background: var(--ctaSecondary);
 		display: grid;
 		place-items: center;
 		padding: 0;
@@ -132,7 +132,7 @@
 	}
 	.img {
 		border-radius: 16px;
-		width: 100%;
+		width: 120%;
 		height: 100%;
 		object-fit: cover;
 		border: 3px solid black;

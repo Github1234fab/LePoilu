@@ -106,7 +106,7 @@
 		text-decoration: none;
 		border-radius: 8px;
 		font-weight: 600;
-		transition: background-color 0.3s;
+		transition: 0.3s;
 		box-shadow: var(--shadow3);
 	}
 	.btn-header:hover {

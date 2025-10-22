@@ -21,7 +21,7 @@
 </svelte:head>
 
 <section class="wrap">
-	<h1>Télécharger</h1>
+	<h1>Télécharger l'application - le Poilu</h1>
 	<p class="lead">Choisissez votre plateforme :</p>
 	<div class="container_app-link">
 		<a href="https://www.apple.com/fr/app-store/" class="btn-app-link" target = "_blank">
@@ -61,7 +61,7 @@
 		margin-top: 10px;
 	}
 	.img-app-link {
-		height: 40px;
+		height: 50px;
 		width: auto;
 		border-radius: 12px;
 		box-shadow: var(--shadow);
@@ -72,7 +72,7 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		width: 120px; /* Largeur fixe */
-		height: 60px; /* Hauteur fixe */
+		width: auto; /* Largeur fixe */
+		height: 100px; /* Hauteur fixe */
 	}
 </style>

@@ -10,13 +10,13 @@
 	<div class="container">
 		<h1>À propos</h1>
 		<p>
-			Le Poilu est né d’une envie simple : rendre les sorties locales visibles et accessibles à
-			tous, et aider les organisateurs à faire connaître leurs événements facilement.
+			Le Poilu est né d’une envie simple : rendre les sorties locales visibles en un seul média, accessibles à
+			tous et aider les organisateurs à faire connaître leurs événements facilement.
 		</p>
 
 		<h2>Notre mission</h2>
 		<p>
-			Connecter habitants, familles et passionnés à ce qui se passe près d’eux, tout en soutenant
+			Connecter habitants, familles et passionnés à ce qui se passe près de chez eux, tout en soutenant
 			l’écosystème local.
 		</p>
 
@@ -46,7 +46,7 @@
 		max-width: 720px;
 		backdrop-filter: blur(10px);
 		-webkit-backdrop-filter: blur(10px);
-		background-color: #c27b2f56;
+		background-color: #c27b2f7e;
 		padding: 45px 20px;
 		border-radius: 18px;
 	}
