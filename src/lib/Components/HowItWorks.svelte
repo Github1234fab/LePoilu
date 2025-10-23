@@ -68,7 +68,7 @@
 		gap: 20px;
 		align-items: center;
 		justify-content: center;
-		flex-wrap: wrap;
+		/* flex-wrap: wrap; */
 	}
 	.step {
 		border-radius: 18px;

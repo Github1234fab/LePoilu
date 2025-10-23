@@ -44,7 +44,7 @@
 		margin: 0 auto;
 		padding: 48px 16px;
 		color: #1c1c1c;
-		height: 800px;
+		height: 100%;
 		background-image: url('../../lib/assets/Poilu-jumelles.png');
 		background-size: cover;
 		background-position: center;

@@ -1,5 +1,5 @@
 <script>
-	import Poilu from '../assets/Poilu-Village.png';
+	import Poilu from '../../lib/assets/Poilu-village.png';
 </script>
 
 <div class="pre-hero">
