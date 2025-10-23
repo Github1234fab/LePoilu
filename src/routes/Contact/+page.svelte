@@ -1,5 +1,5 @@
 <script>
-    import Poilu from "../../lib/assets/poilu.png";
+    import Poilu from "/Poilu.png";
 	let name = '';
 	let email = '';
 	let message = '';

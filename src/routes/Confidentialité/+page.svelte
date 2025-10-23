@@ -1,5 +1,5 @@
 <script>
-	import Poilu from '../../lib/assets/LePoilu-face.png';
+	import Poilu from '/LePoilu-face.png';
 </script>
 
 <svelte:head>

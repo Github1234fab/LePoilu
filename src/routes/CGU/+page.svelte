@@ -1,5 +1,5 @@
 <script>
-	import Poilu from "../../lib/assets/Poilu-outils.png";
+	import Poilu from "/LePoilu-face.png";
 </script>
 
 
