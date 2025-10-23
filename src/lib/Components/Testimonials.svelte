@@ -76,9 +76,11 @@
 		justify-content: baseline;
 		z-index: 0;
 		padding: 40px;
-		background-image: url('../assets/Poilu-ok.png');
+		background-image: url('../assets/Poilu.png');
 		background-position: center;
 		background-repeat: no-repeat;
+		background-size: contain;
+		
 	}
 	.testimonials-container {
 		color: primary;
@@ -96,7 +98,7 @@
 		display: flex;
 		flex-direction: column;
 		align-items: baseline;
-		background-color: var(--ctaSecondary);
+		/* background-color: var(--ctaSecondary); */
 		border-radius: 12px;
 		padding: 20px;
 		margin: 10px;
@@ -104,7 +106,9 @@
 		gap: 20px;
 		backdrop-filter: blur(10px);
 		-webkit-backdrop-filter: blur(10px);
-		background-color: rgba(255, 255, 255, 0.413);
+		background-color: #c27b2f9a;
+		color: white;
+		border: 1px solid white
 	}
 	.hero-cta {
 		display: flex;
@@ -146,9 +150,10 @@
 		justify-content: center;
 		z-index: 0;
 		padding: 20px;
-		background-image: url('../assets/Poilu-ok.png');
+		background-image: url('../assets/Poilu.png');
 		background-position: center;
 		background-repeat: no-repeat;
+		background-size: cover;
 	}
 	.hero-cta {
 		flex-wrap: wrap;
