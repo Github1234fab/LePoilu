@@ -36,8 +36,10 @@
 		<p class="section-subtitle">Des milliers d'utilisateurs satisfaits</p>
 
 		<div class="hero-cta">
-			<a href={downloadLinks.ios} class="btn-primary" target = "_blank"> <img src={IOS} alt="ios" /> </a>
-			<a href={downloadLinks.android} class="btn-primary" target = "_blank">
+			<a href={downloadLinks.ios} class="btn-primary" target="_blank">
+				<img src={IOS} alt="ios" />
+			</a>
+			<a href={downloadLinks.android} class="btn-primary" target="_blank">
 				<img src={Android} alt="ios" />
 			</a>
 		</div>
@@ -77,24 +79,11 @@
 		background-image: url('../assets/Poilu-ok.png');
 		background-position: center;
 		background-repeat: no-repeat;
-
 	}
 	.testimonials-container {
 		color: primary;
 		position: relative;
 	}
-	/* .app{
-		height: 320px;
-		width: auto;
-		position: absolute;
-		top: 50%;
-		left: 100%;
-		border: 5px solid #c27c2f;
-		border-radius: 18px;
-		box-shadow: var(--shadow2);
-
-
-	} */
 	.testimonials-grid {
 		display: flex;
 		flex-direction: column;
@@ -144,14 +133,25 @@
 		color: primary;
 	}
 
-
 	@media (max-width: 900px) {
 		.testimonial-card {
 			width: 100%;
 		}
 		.testimonials {
-			padding: 20px;
-		}
-
+		border: 2px solid var(--ctaSecondary);
+		border-radius: 18px;
+		height: auto;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		z-index: 0;
+		padding: 20px;
+		background-image: url('../assets/Poilu-ok.png');
+		background-position: center;
+		background-repeat: no-repeat;
+	}
+	.hero-cta {
+		flex-wrap: wrap;
+	}
 	}
 </style>

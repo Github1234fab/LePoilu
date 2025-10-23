@@ -124,4 +124,26 @@
 	.phone-screen {
 		background-color: #f5f5f5;
 	}
+
+	@media (max-width: 900px) {
+		.hero {
+			flex-direction: column;
+			padding: 20px;
+		}
+
+		.hero-content {
+			margin-top: 20px;
+		}
+
+		.hero-cta {
+			margin-top: 30px;
+			margin-bottom: 30px;
+		}
+		.container_app-link {
+		display: flex;
+		flex-direction: column;
+		gap: 20px;
+		margin-top: 10px;
+	}
+	}
 </style>

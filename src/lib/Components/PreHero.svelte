@@ -87,17 +87,19 @@
 		background-color: var(--ctaSecondary);
 		border-radius: 0px 18px 18px 0px;
 		z-index: 3;
+		padding: 50px;
 	}
 	.PreHero-description {
 		font-weight: 500;
 		font-family: var(--FFTitle);
 		font-size: 1rem;
 		color: var(--ctaText);
-		text-align: center;
+		text-align: left;
 		border-radius: 0px 0px 18px 18px;
-		padding: 50px 150px;
+		padding: 50px 50px;
 		line-height: 2.5rem;
 		width: 100%;
+
 	}
 
 	.PreHero-description span {
@@ -137,15 +139,16 @@
 		}
 		.img {
 			border-radius: 18px 18px 0px 0px;
-			height: 300px;
+			height: auto;
 		}
 		.PreHero-description {
 			padding: 30px 20px;
 			font-size: 1rem;
 			line-height: 1.5rem;
+			text-align: center;
 		}
 		.wrapper-description{
-		
+		padding: 0px;
 		border-radius: 0px 0px 18px 18px;
 		z-index: 3;
 	}

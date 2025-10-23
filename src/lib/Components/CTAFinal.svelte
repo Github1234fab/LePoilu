@@ -38,8 +38,10 @@
 		</p>
 		<div class="cta-buttons">
 			<div class="hero-cta">
-				<a href={downloadLinks.ios} class="btn-primary" target = "_blank"> <img src={IOS} alt="ios" /> </a>
-				<a href={downloadLinks.android} class="btn-primary" target = "_blank">
+				<a href={downloadLinks.ios} class="btn-primary" target="_blank">
+					<img src={IOS} alt="ios" />
+				</a>
+				<a href={downloadLinks.android} class="btn-primary" target="_blank">
 					<img src={Android} alt="ios" />
 				</a>
 			</div>
@@ -66,19 +68,15 @@
 		align-items: center;
 		justify-content: center;
 		z-index: 0;
-
 	}
 
 	.btn-primary {
 		border: none;
-	
-
 	}
 	.btn-primary img {
 		height: 40px;
 		width: 100%;
 		box-shadow: var(--shadow);
-		
 	}
 
 	.container_cta-stats {
@@ -120,7 +118,7 @@
 		background-color: var(--ctaHover);
 		color: var(--ctaText);
 	}
-	.cta-description{
+	.cta-description {
 		font-weight: 500;
 		font-family: var(--FFTitle);
 		font-size: 1rem;
@@ -137,11 +135,24 @@
 		font-size: 1rem;
 	}
 
-
 	@media (max-width: 900px) {
 		.cta-stats {
 			flex-direction: column;
-			gap: 10px;
 		}
+		.hero-cta {
+			display: flex;
+			flex-direction: column;
+			border: 1px solid var(--lightBg);
+			border-radius: 18px;
+			padding: 20px 40px;
+			margin-bottom: 50px;
+		}
+		.cta-title{
+			padding: 20px;
+		}
+		.cta-description{
+			padding: 0 20px;
+		}
+	
 	}
 </style>

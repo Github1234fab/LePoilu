@@ -6,7 +6,7 @@
 	    import HIW from "$lib/Components/HowItWorks.svelte";
 	    import Testimonials from "$lib/Components/Testimonials.svelte";
 	    import CTAFinal from "$lib/Components/CTAFinal.svelte";
-	    import Footer from "$lib/Components/Footer.svelte";
+	    // import Footer from "$lib/Components/Footer.svelte";
 		import './styles.css';
 
 </script>
@@ -20,7 +20,7 @@
 <HIW/>
 <Testimonials/>
 <CTAFinal/>
-<Footer/>
+<!-- <Footer/> -->
 
 
 </main>
@@ -30,7 +30,7 @@
         display: flex;
         flex-direction: column;
         gap: 40px;
-        padding: 20px;
+        padding: 10px;
         max-width: 1200px;
         margin: 0 auto;
     }
