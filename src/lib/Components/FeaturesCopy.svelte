@@ -1,5 +1,5 @@
 <script>
-	import FeatureFlipCard from '$lib/Components/FlipCard.svelte';
+	import FeatureFlipCard from '$lib/Components/FLipCard.svelte';
 	import PoiluFace from '../assets/Poilu-outils.png';
 	import Details from '../assets/details.jpg';
 	import Events from '../assets/events-v2.jpg';
