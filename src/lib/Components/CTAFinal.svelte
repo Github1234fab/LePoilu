@@ -51,7 +51,7 @@
 
 <style>
 	.cta-final {
-		background-color: var(--ctaSecondary);
+		background: linear-gradient( var(--background),var(--ctaSecondary)); ;
 		border-radius: 18px;
 		height: 100%;
 		display: flex;
@@ -123,7 +123,7 @@
 		font-weight: 500;
 		font-family: var(--FFTitle);
 		font-size: 1rem;
-		color: var(--ctaText);
+	
 		text-align: center;
 		margin: 20px 0;
 		line-height: 1.5rem;

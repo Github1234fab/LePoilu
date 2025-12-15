@@ -6,19 +6,20 @@
 	<div class="wrapper-title">
 		<h1 class="hero-title">Le Poilu</h1>
 		<!-- <h2>L’application pour publier et trouver tous les événements près de chez toi.</h2> -->
-		<h2>Tous les événements de l’Ouest Lyonnais, en un seul endroit.”</h2>
+		<h2>Tous les événements de l’Ouest Lyonnais concentrés sur une appli.</h2>
+
 	</div>
 
 	<div class="paragraph">
 		<img class="img" src={Poilu} alt="personnage le poilu dans un village" />
 		<div class="wrapper-description">
-			<h2>Suis le Poilu</h2>
+			<h2>Le territoire du Poilu</h2>
 			<p class="PreHero-description">
-				Le Poilu est dans sa hutte seulement pour dormir, car le reste du temps, le Poilu virevolte
-				de soirée en atelier, de spectacle en exposition, de compétitions sportives en concerts...
+				Le poilu se nourrit d'évènements culturels, sportifs et festifs dans sa belle région de l'ouest Lyonnais.
+		Toujours au courant de tout, le Poilu sort de sa hutte pour passer de bonnes soirées, découvrir des ateliers, des spectacles, des expositions, des concerts, participer à des compétitions sportives,  des randonnées et pratiquer tout un tas d'activité...
 				<br /><br />Passionné par la vie locale, il adore découvrir et partager les événements qui
 				animent son territoire.
-				<br /><br />Si toi aussi tu souhaites vivre pleinement ta région, rejoins Le Poilu et ne
+				<br /><br />Si toi aussi tu souhaites vivre pleinement ta région, suis Le Poilu et ne
 				manque plus jamais un événement près de chez toi !
 			</p>
 			<a class="btn-link-app" href="/Telecharger">Télécharge Le Poilu</a>
@@ -103,7 +104,7 @@
 	.PreHero-description {
 		font-weight: 500;
 		font-family: var(--FFTitle);
-		font-size: 1.2rem;
+		font-size: 1.1rem;
 		/* color: var(--ctaText); */
 		text-align: center;
 		border-radius: 0px 0px 18px 18px;

@@ -32,6 +32,7 @@
 <section class="testimonials">
 	<div class="testimonials-container">
 		<!-- <img src={AppScreen} alt="" class="app"> -->
+		 <div class="wrapper">
 		<h2 class="section-title">Ils adorent l'application</h2>
 		<p class="section-subtitle">Des milliers d'utilisateurs satisfaits</p>
 
@@ -43,6 +44,7 @@
 				<img src={Android} alt="ios" />
 			</a>
 		</div>
+	</div>
 
 		<div class="testimonials-grid">
 			{#each testimonials as testimonial}
@@ -76,15 +78,16 @@
 		justify-content: baseline;
 		z-index: 0;
 		padding: 40px;
-		background-image: url('../assets/Poilu.png');
-		background-position: center;
+		background-image: url('../assets/Poilu-village2.png');
+		background-position: left;
 		background-repeat: no-repeat;
-		background-size: contain;
+		background-size: cover;
 		
 	}
 	.testimonials-container {
 		color: primary;
 		position: relative;
+	
 	}
 	.testimonials-grid {
 		display: flex;
@@ -135,6 +138,19 @@
 	}
 	.testimonial-author {
 		color: primary;
+	}
+	.section-title {
+		font-size: 2.5rem;
+		font-weight: 800;
+		margin-bottom: 10px;
+		color: white;
+		text-align: center;
+	}
+	.wrapper{
+		background-color: #5d7a98;
+		border-radius: 18px;
+		padding: 20px;
+		width: fit-content;
 	}
 
 	@media (max-width: 900px) {

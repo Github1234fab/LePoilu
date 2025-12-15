@@ -11,38 +11,38 @@
 	const features = [
 		{
 			icon: 'fa-solid fa-calendar-days',
-			title: 'Calendrier intelligent',
+			title: 'Tu scroll',
 			description: `Visualise tous les événements en scrollant. C'est intuitif et tu peux filtrer par catégorie.`,
 			img: Events,
 			alt: ''
 		},
 		{
 			icon: 'fa-solid fa-sliders',
-			title: 'Filtres avancés',
+			title: 'Tu Filtres',
 			description: 'Filtre par ville, date, période..',
 			img: Filters
 		},
 		{
 			icon: 'fa-solid fa-walkie-talkie',
-			title: `Création d'events`,
+			title: `Tu crées`,
 			description: `Créer tes évènements depuis l'application, en un clin d'oeil. Envoye, paye, c'est en ligne !`,
 			img: Creation
 		},
 		{
 			icon: 'fa-solid fa-heart',
-			title: 'Favoris et partage',
-			description: 'Sauvegarde tes événements préférés et partage-les avec tes amis.',
+			title: 'Tu likes et tu partages',
+			description: 'tu like et partage',
 			img: Favoris
 		},
 		{
 			icon: 'fa-solid fa-credit-card',
-			title: 'Historique des paiements',
-			description: 'Accéde en un clic à tes paiements, télécharge tes factures, etc.',
+			title: 'Tu consultes',
+			description: 'Consulte',
 			img: Paiements
 		},
 		{
 			icon: 'fa-solid fa-ticket',
-			title: 'Billetterie intégrée',
+			title: 'Tu réserves',
 			description: "Réserve tes places directement depuis l'application.",
 			img: Details
 		}
@@ -51,7 +51,7 @@
 
 <section class="features">
 	<div class="features-header">
-		<h2 class="section-title">Trouver un truc  à faire, c’est trop simple avec Le Poilu !</h2>
+		<h2 class="section-title">Trouver un truc à faire, c’est trop simple avec Le Poilu !</h2>
 		<p class="section-subtitle">
 			Une appli tout-en-un pour vivre tous les événements de ta région.
 		</p>
@@ -66,7 +66,7 @@
 
 <style>
 	.features {
-		background-color: var(--background);
+		background: linear-gradient(120deg,#00b7ff, white );
 		border-radius: 18px;
 		height: 100%;
 		display: flex;
@@ -89,6 +89,7 @@
 		font-weight: 900;
 		font-family: var(--FFTitle);
 		text-align: center;
+		/* color: white; */
 	}
 	.section-subtitle {
 		font-family: var(--FFTitle);

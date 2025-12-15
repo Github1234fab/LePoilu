@@ -53,6 +53,7 @@
 		perspective: 1200px;
 		width: 100%;
 		height: 360px; /* ajustable : garde une hauteur constante */
+	
 	}
 
 	.flip-inner {
@@ -64,6 +65,7 @@
 		cursor: pointer;
 		outline: none;
 		transition: transform 1000ms cubic-bezier(0.2, 0.7, 0.2, 1);
+		box-shadow: 10px 4px 8px rgba(0, 0, 0, 0.2);
 	}
 
 	/* Hover : desktop. Garde aussi l’état via .flipped pour mobile/clic */
@@ -110,10 +112,10 @@
 
 	.icon {
 		position: absolute;
-		font-size: 1.5rem;
+		font-size: 2.5rem;
 		color: var(--ctaText);
-		top: 85%;
-		left: 85%;
+		top: 75%;
+		left: 45%;
 		border-radius: 20%;
 		/* background-color: rgb(50, 50, 50); */
 		padding: 5px;
@@ -129,6 +131,7 @@
 		overflow: hidden;
 		padding: 10px 70px;
 		border: none;
+	
 	}
 	.img {
 		border-radius: 16px;
@@ -138,6 +141,7 @@
 		border: 3px solid black;
 		object-position: bottom;
 		box-shadow: var(--shadow3);
+
 	}
 
 	/* Préfère moins d’animations : réduit la motion */

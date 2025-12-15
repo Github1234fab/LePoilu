@@ -42,7 +42,7 @@
 
 <style>
 	.how-it-works {
-		background-color: var(--background);
+		background: linear-gradient(to left, var(--background), rgb(255, 255, 255)) ;
 		border-radius: 18px;
 		height: 100%;
 		display: flex;
