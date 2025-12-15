@@ -17,7 +17,7 @@
 		<p class="hero-description">
 			<!-- Découvre les concerts, les festivals, les marchés, les soirées, et toutes les activités
 			locales. -->
-			Concerts, spectacles, fêtes, randos - découvre tout ce qui se passe autour de toi.
+			Concerts, spectacles, fêtes, randos, etc - découvre tout ce qui se passe autour de chez toi.
 		</p>
 
 		<div class="hero-cta">
@@ -45,8 +45,8 @@
 
 <style>
 	.hero {
-		/* background: linear-gradient(to left, var(--background), var(--lightBg)); */
-		background-color: var(--background);
+	
+		background: linear-gradient(120deg,var(--ctaSecondary), var(--background));
 		border-radius: 18px;
 		height: auto;
 		display: flex;
@@ -54,6 +54,8 @@
 		align-items: center;
 		justify-content: center;
 		position: relative;
+		margin-top: 30px;
+		box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.293);
 	}
 
 	.hero-content {
@@ -66,9 +68,12 @@
 	}
 
 	.hero-subtitle {
-		font-weight: 900;
+		font-weight: 800;
 		font-family: var(--FFTitle);
 		text-align: center;
+		font-size: 3rem;
+		color: white;
+	
 	}
 
 	.hero-description {
@@ -80,25 +85,37 @@
 		display: flex;
 		flex-direction: column;
 		gap: 0px;
-		padding: 20px;
+		padding: 50px;
 		border-radius: 12px;
 		align-items: center;
 		justify-content: center;
-		margin-top: 50px;
+		margin-top: 0px;
 		margin-bottom: 50px;
-		border: 1px solid var(--cta);
+	
+	}
+	.hero-cta p {
+		font-family: var(--FFTitle);
+		font-size: 1.2rem;
+		text-align: center;
+		margin-top: 10px;
+		margin-bottom: 20px;
 	}
 	.lePoilu {
-		height: 150px;
+		height: 450px;
 		width: auto;
+		margin-bottom: 30px;
 	}
 	.container_app-link {
 		display: flex;
-		gap: 20px;
-		margin-top: 10px;
+		align-items: center;
+		justify-content: space-around;
+		width: 100%;
+		gap: 0px;
+		margin-top: 30px;
+		
 	}
 	.img-app-link {
-		height: 40px;
+		height: 60px;
 		width: auto;
 		border-radius: 12px;
 		box-shadow: var(--shadow);
@@ -130,6 +147,15 @@
 			flex-direction: column;
 			padding: 20px;
 		}
+		.hero-subtitle {
+		font-weight: 800;
+		font-family: var(--FFTitle);
+		text-align: center;
+		font-size: 2rem;
+		color: white;
+		padding: 20px;
+	
+	}
 
 		.hero-content {
 			margin-top: 20px;
@@ -143,7 +169,26 @@
 		display: flex;
 		flex-direction: column;
 		gap: 20px;
-		margin-top: 10px;
+		margin-top: 50px;
 	}
+	
+	.lePoilu {
+		height:300px;
+		width: auto;
+		margin-bottom: 30px;
 	}
+	.img-app-link {
+		height: 50px;
+		width: auto;
+		border-radius: 12px;
+		box-shadow: var(--shadow);
+	}
+
+	@media screen and (max-width: 500px) {
+		.lePoilu {
+		height: 160px;
+		width: auto;
+		margin-bottom: 30px;
+	}
+	}}
 </style>

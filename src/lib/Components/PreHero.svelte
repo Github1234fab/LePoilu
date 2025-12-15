@@ -1,31 +1,30 @@
 <script>
-	import Poilu from '../../lib/assets/Poilu-village.png';
+	import Poilu from '../../lib/assets/Map.jpg';
 </script>
 
 <div class="pre-hero">
 	<div class="wrapper-title">
 		<h1 class="hero-title">Le Poilu</h1>
-		<h2>L’application pour publier et trouver tous les événements près de chez toi.</h2>
+		<!-- <h2>L’application pour publier et trouver tous les événements près de chez toi.</h2> -->
+		<h2>Tous les événements de l’Ouest Lyonnais, en un seul endroit.”</h2>
 	</div>
 
 	<div class="paragraph">
 		<img class="img" src={Poilu} alt="personnage le poilu dans un village" />
 		<div class="wrapper-description">
+			<h2>Suis le Poilu</h2>
 			<p class="PreHero-description">
-				<span>Le Poilu </span>, c'est l'être social, par excellence.
-
-				<br /> <strong>Jamais dans sa hutte !</strong>
-				<br />Spectacles, expos, soirées, sport… il est toujours dehors.
+				Le Poilu est dans sa hutte seulement pour dormir, car le reste du temps, le Poilu virevolte
+				de soirée en atelier, de spectacle en exposition, de compétitions sportives en concerts...
+				<br /><br />Passionné par la vie locale, il adore découvrir et partager les événements qui
+				animent son territoire.
+				<br /><br />Si toi aussi tu souhaites vivre pleinement ta région, rejoins Le Poilu et ne
+				manque plus jamais un événement près de chez toi !
 			</p>
-			<a class="btn-link-app" href="/Telecharger" 
-			>Télécharge Le Poilu</a
-			>
+			<a class="btn-link-app" href="/Telecharger">Télécharge Le Poilu</a>
 		</div>
-	
 	</div>
-
 </div>
-
 
 <style>
 	.pre-hero {
@@ -34,7 +33,6 @@
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
-		
 	}
 	.wrapper-title {
 		display: flex;
@@ -64,16 +62,19 @@
 	}
 	.paragraph {
 		display: grid;
-		grid-template-columns: 1fr 1fr;
+		grid-template-columns: 50% 50%;
 		align-items: center;
 		height: 100%;
 		width: 100%;
 		border-radius: 18px;
+		/* border: 1px solid grey; */
+		box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.293);
 	}
 	.img {
-		width: 100%;
+		width: 90%;
 		height: 100%;
-		object-fit: cover;
+		object-fit: contain;
+		object-position: center;
 		border-radius: 18px 0px 0px 18px;
 	}
 
@@ -83,32 +84,37 @@
 		align-items: center;
 		justify-content: center;
 		width: 100%;
-		gap: 10px;
-		background-color: var(--ctaSecondary);
+		gap: 0px;
+		background: linear-gradient(to left, var(--ctaSecondary), rgb(255, 255, 255));
 		border-radius: 0px 18px 18px 0px;
 		z-index: 3;
 		padding: 50px;
+	
 	}
+	.wrapper-description h2 {
+		font-weight: 800;
+		font-family: var(--FFTitle);
+		font-size: 2rem;
+		/* color: var(--ctaText); */
+		text-align: center;
+		margin-bottom: 20px;
+	}
+
 	.PreHero-description {
 		font-weight: 500;
 		font-family: var(--FFTitle);
-		font-size: 1rem;
-		color: var(--ctaText);
-		text-align: left;
+		font-size: 1.2rem;
+		/* color: var(--ctaText); */
+		text-align: center;
 		border-radius: 0px 0px 18px 18px;
-		padding: 50px 50px;
+		padding: 20px 20px;
 		line-height: 2.5rem;
 		width: 100%;
-
-	}
-
-	.PreHero-description span {
-		font-weight: 700;
-		font-size: 1rem;
 	}
 
 	.btn-link-app {
 		margin-bottom: 50px;
+		margin-top: 20px;
 		padding: 15px 30px;
 		background-color: var(--cta);
 		color: var(--ctaText);
@@ -121,7 +127,7 @@
 		font-family: var(--FFText);
 		text-align: center;
 		z-index: 6;
-		/* box-shadow: var(--shadow3); */
+		box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.37);
 	}
 
 	@media (max-width: 900px) {
@@ -147,10 +153,10 @@
 			line-height: 1.5rem;
 			text-align: center;
 		}
-		.wrapper-description{
-		padding: 0px;
-		border-radius: 0px 0px 18px 18px;
-		z-index: 3;
-	}
+		.wrapper-description {
+			padding: 0px;
+			border-radius: 0px 0px 18px 18px;
+			z-index: 3;
+		}
 	}
 </style>

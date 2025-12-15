@@ -59,6 +59,7 @@
 		justify-content: center;
 		z-index: 0;
 		padding: 40px;
+		box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.293);
 	}
 	.cta-container {
 		border-radius: 18px;
@@ -104,7 +105,7 @@
 		gap: 20px;
 	}
 	.poilu-face {
-		height: 150px;
+		height: 350px;
 		margin-right: 20px;
 	}
 	.stat {
@@ -153,6 +154,10 @@
 		.cta-description{
 			padding: 0 20px;
 		}
+		.poilu-face {
+		height: 200px;
+		margin-right: 20px;
+	}
 	
 	}
 </style>

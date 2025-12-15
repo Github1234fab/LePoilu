@@ -51,7 +51,7 @@
 
 <section class="features">
 	<div class="features-header">
-		<h2 class="section-title">Sortir, c’est trop simple avec Le Poilu.</h2>
+		<h2 class="section-title">Trouver un truc  à faire, c’est trop simple avec Le Poilu !</h2>
 		<p class="section-subtitle">
 			Une appli tout-en-un pour vivre tous les événements de ta région.
 		</p>
@@ -75,6 +75,7 @@
 		justify-content: center;
 		z-index: 0;
 		position: relative;
+		box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.293);
 	}
 
 	.features-header {
@@ -102,7 +103,7 @@
 	}
 
 	.poilu-face {
-		height: 150px;
+		height: 350px;
 		margin-right: 20px;
 	}
 	/* .img {
@@ -127,6 +128,10 @@
 		font-family: var(--FFTitle);
 		text-align: center;
 		margin-top: 10px;
+	}
+	.poilu-face {
+		height: 200px;
+		margin-right: 20px;
 	}
 	 }
 </style>

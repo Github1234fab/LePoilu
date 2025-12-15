@@ -13,9 +13,10 @@
 
 <main>
 
-	<!-- <Header/> -->
+	<!-- <Header/>  -->
+ <Hero/> 
 <PreHero/>
-<Hero/>
+
 <Features/>
 <HIW/>
 <Testimonials/>
