@@ -66,7 +66,7 @@
 
 <style>
 	.features {
-		background: linear-gradient(120deg,#00b7ff, white );
+		background: linear-gradient(135deg, var(--background), #FF6101);
 		border-radius: 18px;
 		height: 100%;
 		display: flex;
@@ -84,15 +84,23 @@
 		align-items: center;
 		justify-content: center;
 		margin-top: 70px;
+		padding: 40px;
+		margin-bottom: 40px;
 	}
 	.section-title {
 		font-weight: 900;
 		font-family: var(--FFTitle);
 		text-align: center;
-		/* color: white; */
+		font-size: 2.5rem;
+		color: #2b2b2b;
+		margin-bottom: 15px;
 	}
 	.section-subtitle {
 		font-family: var(--FFTitle);
+		color: #333;
+		font-size: 1.2rem;
+		text-align: center;
+		font-weight: 500;
 	}
 
 	.features-grid {
@@ -105,34 +113,32 @@
 
 	.poilu-face {
 		height: 350px;
-		margin-right: 20px;
+		margin-top: 20px;
+		filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.3));
 	}
-	/* .img {
-		margin-top: 10px;
-		border-radius: 18px;
-		border: 5px solid rgba(93, 3, 3, 0);
-		height: 100%;
-		width: 90%;
-		box-shadow: var(--shadow2);
-		position: relative;
-		margin-top: 50px;
-	} */
 
 
 
-	 @media (max-width: 900px) {
+	@media (max-width: 900px) {
 		.features-grid {
 			grid-template-columns: 1fr;
 			padding: 20px;
 		}
+		.features-header {
+			margin-top: 30px;
+			padding: 30px 20px;
+		}
+		.section-title {
+			font-size: 1.8rem;
+		}
 		.section-subtitle {
-		font-family: var(--FFTitle);
-		text-align: center;
-		margin-top: 10px;
+			font-family: var(--FFTitle);
+			text-align: center;
+			margin-top: 10px;
+			font-size: 1rem;
+		}
+		.poilu-face {
+			height: 200px;
+		}
 	}
-	.poilu-face {
-		height: 200px;
-		margin-right: 20px;
-	}
-	 }
 </style>

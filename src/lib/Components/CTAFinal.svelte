@@ -11,7 +11,7 @@
 
 <section class="cta-final">
 	<div class="cta-container">
-		<h2 class="cta-title">Prêt à découvrir ta région ?</h2>
+		<h2 class="cta-title">Prêt à découvrir tous les évènements de ta région de l'Ouest-Lyonnais ?</h2>
 		<p class="cta-description">
 			Rejoins des milliers d'utilisateurs et ne rate plus jamais aucun événement
 		</p>
@@ -51,7 +51,7 @@
 
 <style>
 	.cta-final {
-		background: linear-gradient( var(--background),var(--ctaSecondary)); ;
+		background: linear-gradient(135deg, #FF6101 0%, #e8843c 50%, #FF6101 100%);
 		border-radius: 18px;
 		height: 100%;
 		display: flex;
@@ -73,20 +73,29 @@
 
 	.btn-primary {
 		border: none;
+		transition: transform 0.3s ease;
+	}
+	.btn-primary:hover {
+		transform: scale(1.05);
 	}
 	.btn-primary img {
-		height: 40px;
+		height: 50px;
 		width: 100%;
-		box-shadow: var(--shadow);
+		box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+		border-radius: 8px;
 	}
 
 	.container_cta-stats {
 		display: flex;
 		flex-direction: column;
-		border: 1px solid var(--lightBg);
+		backdrop-filter: blur(10px);
+		-webkit-backdrop-filter: blur(10px);
+		background-color: rgba(255, 255, 255, 0.2);
+		border: 1px solid rgba(255, 255, 255, 0.3);
 		border-radius: 18px;
-		padding: 20px 40px;
+		padding: 30px 40px;
 		margin-bottom: 50px;
+		box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.15);
 	}
 	.hero-cta {
 		display: flex;
@@ -114,26 +123,39 @@
 		align-items: center;
 		justify-content: center;
 		margin: 10px;
-		padding: 10px 30px;
+		padding: 15px 35px;
 		border-radius: 18px;
-		background-color: var(--ctaHover);
-		color: var(--ctaText);
+		backdrop-filter: blur(10px);
+		-webkit-backdrop-filter: blur(10px);
+		background-color: rgba(255, 255, 255, 0.25);
+		color: white;
+		border: 1px solid rgba(255, 255, 255, 0.3);
+		box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.1);
 	}
+	.cta-title {
+		color: white;
+		font-family: var(--FFTitle);
+		font-weight: 900;
+		font-size: 2.5rem;
+		text-align: center;
+		margin-bottom: 10px;
+	}
+
 	.cta-description {
 		font-weight: 500;
 		font-family: var(--FFTitle);
-		font-size: 1rem;
-	
+		font-size: 1.1rem;
+		color: white;
 		text-align: center;
 		margin: 20px 0;
-		line-height: 1.5rem;
+		line-height: 1.8rem;
 	}
 	.stat-number {
-		font-size: 1rem;
+		font-size: 1.3rem;
 		font-weight: 900;
 	}
 	.stat-label {
-		font-size: 1rem;
+		font-size: 0.95rem;
 	}
 
 	@media (max-width: 900px) {

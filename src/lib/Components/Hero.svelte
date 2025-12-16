@@ -12,7 +12,7 @@
 <section class="hero">
 	<div class="hero-content" id="hero-link-app">
 		<!-- <h2 class="hero-subtitle">Tous les événements de ta région en un seul endroit</h2> -->
-
+		<h1 class="hero-title">Le Poilu</h1>
 		<h2 class="hero-subtitle">Ne rate plus rien près de chez toi !</h2>
 		<p class="hero-description">
 			<!-- Découvre les concerts, les festivals, les marchés, les soirées, et toutes les activités
@@ -35,18 +35,11 @@
 		</div>
 	</div>
 
-	<div class="hero-visual">
-		<div class="phone-mockup">
-			<!-- Placeholder pour ton mockup d'app -->
-			<div class="phone-screen"></div>
-		</div>
-	</div>
 </section>
 
 <style>
 	.hero {
-	
-		background: linear-gradient(120deg,var(--ctaSecondary), var(--background));
+		background: linear-gradient(135deg, var(--ctaSecondary), #FF6101);
 		border-radius: 18px;
 		height: auto;
 		display: flex;
@@ -67,18 +60,32 @@
 		padding: 20px;
 	}
 
+	.hero-title {
+		color: white;
+		font-size: 7rem;
+		font-family: var(--FFTitle);
+		font-weight: 900;
+		letter-spacing: -0.1rem;
+		margin-top: 1rem;
+		text-align: center;
+		letter-spacing: -5px;
+	}
+
 	.hero-subtitle {
 		font-weight: 800;
 		font-family: var(--FFTitle);
 		text-align: center;
 		font-size: 3rem;
 		color: white;
-	
+
 	}
 
 	.hero-description {
 		font-family: var(--FFTitle);
 		text-align: center;
+		color: white;
+		font-size: 1.1rem;
+		margin-top: 15px;
 	}
 
 	.hero-cta {
@@ -96,14 +103,17 @@
 	.hero-cta p {
 		font-family: var(--FFTitle);
 		font-size: 1.2rem;
+		font-weight: 600;
 		text-align: center;
 		margin-top: 10px;
 		margin-bottom: 20px;
+		color: white;
 	}
 	.lePoilu {
 		height: 450px;
 		width: auto;
 		margin-bottom: 30px;
+		filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.3));
 	}
 	.container_app-link {
 		display: flex;
@@ -118,7 +128,7 @@
 		height: 60px;
 		width: auto;
 		border-radius: 12px;
-		box-shadow: var(--shadow);
+		box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
 	}
 	.btn-app-link {
 		cursor: pointer;
@@ -126,26 +136,28 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		width: 120px; /* Largeur fixe */
-		height: 60px; /* Hauteur fixe */
+		width: 120px;
+		height: 60px;
+		transition: transform 0.3s ease;
 	}
 
-	.hero-visual {
-		background-color: #f5f5f5;
+	.btn-app-link:hover {
+		transform: scale(1.05);
 	}
 
-	.phone-mockup {
-		background-color: #f5f5f5;
+	.btn-app-link:hover .img-app-link {
+		box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
 	}
 
-	.phone-screen {
-		background-color: #f5f5f5;
-	}
 
 	@media (max-width: 900px) {
 		.hero {
 			flex-direction: column;
 			padding: 20px;
+		}
+		.hero-title {
+			font-size: 4rem;
+			letter-spacing: -2px;
 		}
 		.hero-subtitle {
 		font-weight: 800;
@@ -154,7 +166,7 @@
 		font-size: 2rem;
 		color: white;
 		padding: 20px;
-	
+
 	}
 
 		.hero-content {
