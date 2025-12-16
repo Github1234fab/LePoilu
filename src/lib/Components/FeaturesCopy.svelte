@@ -10,40 +10,40 @@
 
 	const features = [
 		{
-			icon: 'fa-solid fa-calendar-days',
-			title: 'Tu scroll',
-			description: `Visualise tous les événements en scrollant. C'est intuitif et tu peux filtrer par catégorie.`,
+			icon: 'fa-solid fa-hand-pointer',
+			title: 'Tu scrolles',
+			description: `Visualise tous les événements en une seul fois, en Scrollant. C'est intuitif.<br><br>Les évènements sont classés par ordre chronologique, des plus proches dans le temps en haut, aux plus éloignés dans le temps, en bas.`,
 			img: Events,
 			alt: ''
 		},
 		{
 			icon: 'fa-solid fa-sliders',
 			title: 'Tu Filtres',
-			description: 'Filtre par ville, date, période..',
+			description: 'Pour affiner ta recherche, tu peux filtrer les évènements par ville, par date et par catégorie.<br><br>Tu veux trouver quelque chose à faire près de chez toi, tu filtres avec les noms de ville.<br><br>Tu veux sortir ce week-end, tu filtres avec "ce week-end".<br><br>Tu veux trouver une fête, tu filtres avec "fête", dans le menu déroulant - Catégorie.',
 			img: Filters
 		},
 		{
-			icon: 'fa-solid fa-walkie-talkie',
+			icon: 'fa-solid fa-bullhorn',
 			title: `Tu crées`,
-			description: `Créer tes évènements depuis l'application, en un clin d'oeil. Envoye, paye, c'est en ligne !`,
+			description: `Créer tes évènements depuis l'application, en un clin d'oeil.<br><br>Tu renseignes le titre, la date, les horaires, le lieu, la catégorie et une description. Les images et les liens vers la billeterie et vers ton site sont en supplement, mais tu peux très bien t'en passer.<br><br>Ensuite, tu publies ! Ton évènement va passer par l'administration qui s'assure que tout est bien conforme et ton annonce est immédiatement visible par tous les utilisateurs de l'application.`,
 			img: Creation
 		},
 		{
 			icon: 'fa-solid fa-heart',
 			title: 'Tu likes et tu partages',
-			description: 'tu like et partage',
+			description: 'Chaque annonce qui retient ton attention, tu la likes, en cliquant sur le petit coeur. Tu retrouves aussitôt toutes tes annonces likées dans ta section "Favoris".<br><br>Tu peux les partager avec tes amis, sur les réseaux, par mail, par sms, etc.<br><br>Quand une annonce ne retient plus ton attention, tu clique sur le coeur et elle disapraît aussitôt de tes favoris.' ,
 			img: Favoris
 		},
 		{
 			icon: 'fa-solid fa-credit-card',
 			title: 'Tu consultes',
-			description: 'Consulte',
+			description: 'Tu peux consulter à tout moment tes favoris, ton espace "mes annonces", dans lequel tu retrouveras toutes les annonces que tu as créer avec son statut.<br><br>Par exemple "en attente de valdiation", ou "payée" ou "gratuite".<br><br>Si ton évènement est payant, tu peux effectuer le paiement directement depuis l\'application, en toute sécurité.',
 			img: Paiements
 		},
 		{
 			icon: 'fa-solid fa-ticket',
 			title: 'Tu réserves',
-			description: "Réserve tes places directement depuis l'application.",
+			description: "Tu verras des annonces avec un bouton 'Réserver'. En cliquant dessus, tu seras redirigé vers la billetterie en ligne de l'évènement, où tu pourras choisir tes places et finaliser ta réservation en toute simplicité.<br><br>Fini les files d'attente, tout se passe directement depuis l'application !",
 			img: Details
 		}
 	];
@@ -51,7 +51,7 @@
 
 <section class="features">
 	<div class="features-header">
-		<h2 class="section-title">Trouver un truc à faire, c’est trop simple avec Le Poilu !</h2>
+		<h2 class="section-title">Tu cherches un truc à faire sur le Poilu ?</h2>
 		<p class="section-subtitle">
 			Une appli tout-en-un pour vivre tous les événements de ta région.
 		</p>

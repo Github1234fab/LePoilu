@@ -4,17 +4,17 @@
 		{
 			number: '1',
 			title: "Télécharge l'app",
-			description: 'Disponible sur iOS et Android'
+			 description: 'Disponible sur iOS et Android en un clic.<br><br>L\'appli va s\'installer toute seule sur ton smartphone !'
 		},
 		{
 			number: '2',
-			title: 'Tu fais défiler et tu choisis',
-			description: 'Consulte  en scrollant et en utilisant les filtres'
+			title: 'Tu fais défiler, tu filtres',
+			description: 'Consulte les évènements en scrollant et en utilisant les filtres.<br><br>Les évènements sont classés du plus proche au plus lointain, chronologiquement parlant.'
 		},
 		{
 			number: '3',
 			title: 'Découvre et profite',
-			description: 'Explore les événements et planifie tes sorties'
+			description: 'Explore les événements, planifie tes sorties.<br><br>Like, partage et surtout amuse-toi bien !'
 		}
 	];
 </script>
@@ -29,7 +29,7 @@
 				<div class="step">
 					<div class="step-number">{step.number}</div>
 					<h3 class="step-title">{step.title}</h3>
-					<p class="step-description">{step.description}</p>
+					<p class="step-description">{@html step.description}</p>
 				</div>
 				{#if index < steps.length - 1}
 					<div class="step-arrow">→</div>
@@ -73,12 +73,12 @@
 	}
 	.step {
 		border-radius: 18px;
-		height: 300px;
+		height: 500px;
 		display: flex;
 		padding: 30px;
 		flex-direction: column;
 		align-items: center;
-		justify-content: center;
+		justify-content: flex-start;
 		z-index: 0;
 		backdrop-filter: blur(10px);
 		-webkit-backdrop-filter: blur(10px);
@@ -89,6 +89,7 @@
 		text-align: center;
 		width: 40%;
 		transition: transform 0.3s ease, box-shadow 0.3s ease;
+		gap: 20px;
 	}
 
 	.step:hover {
@@ -102,7 +103,8 @@
 	.step-number {
 		font-size: 3rem;
 		font-weight: 900;
-		margin-bottom: 20px;
+		margin-top: 20px;
+		margin-bottom: 0px;
 		background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.7));
 		color: #FF6101;
 		height: 100px;
@@ -113,6 +115,7 @@
 		justify-content: center;
 		box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
 		border: 2px solid rgba(255, 255, 255, 0.4);
+		flex-shrink: 0;
 	}
 	.section-title {
 		color: white;
@@ -136,7 +139,8 @@
 		font-family: var(--FFTitle);
 		font-weight: 700;
 		font-size: 1.3rem;
-		margin-bottom: 15px;
+		margin-top: 0px;
+		margin-bottom: 0px;
 	}
 	.step-description {
 		color: white;
@@ -144,6 +148,7 @@
 		max-width: 85%;
 		line-height: 1.5rem;
 		opacity: 0.95;
+		margin-top: 0px;
 	}
 	.step-arrow {
 		padding: 5px;
@@ -157,7 +162,7 @@
 		padding: 18px 40px;
 		backdrop-filter: blur(10px);
 		-webkit-backdrop-filter: blur(10px);
-		background: rgba(255, 255, 255, 0.3);
+		background-color: var(--cta);
 		color: white;
 		text-decoration: none;
 		font-weight: 700;

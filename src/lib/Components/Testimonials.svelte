@@ -31,64 +31,64 @@
 
 <section class="testimonials">
 	<div class="testimonials-container">
-		<!-- <img src={AppScreen} alt="" class="app"> -->
-		 <div class="wrapper">
-		<h2 class="section-title">Ils adorent l'application</h2>
-		<p class="section-subtitle">Des milliers d'utilisateurs satisfaits</p>
+		<div class="wrapper">
+			<h2 class="section-title">Ils adorent l'application</h2>
+			<p class="section-subtitle">Des milliers d'utilisateurs satisfaits</p>
 
-		<div class="hero-cta">
-			<a href={downloadLinks.ios} class="btn-primary" target="_blank">
-				<img src={IOS} alt="ios" />
-			</a>
-			<a href={downloadLinks.android} class="btn-primary" target="_blank">
-				<img src={Android} alt="ios" />
-			</a>
+			<div class="hero-cta">
+				<a href={downloadLinks.ios} class="btn-primary" target="_blank">
+					<img src={IOS} alt="ios" />
+				</a>
+				<a href={downloadLinks.android} class="btn-primary" target="_blank">
+					<img src={Android} alt="ios" />
+				</a>
+			</div>
 		</div>
 	</div>
 
-		<div class="testimonials-grid">
-			{#each testimonials as testimonial}
-				<div class="testimonial-card">
-					<div class="testimonial-rating">
-						{#each Array(testimonial.rating) as _, i}
-							<span class="star">⭐</span>
-						{/each}
-					</div>
-					<p class="testimonial-text">"{testimonial.text}"</p>
-					<div class="testimonial-author">
-						<div class="author-avatar"></div>
-						<div class="author-info">
-							<p class="author-name">{testimonial.name}</p>
-							<p class="author-location">{testimonial.location}</p>
-						</div>
+	<div class="testimonials-grid">
+		{#each testimonials as testimonial}
+			<div class="testimonial-card">
+				<div class="testimonial-rating">
+					{#each Array(testimonial.rating) as _, i}
+						<span class="star">⭐</span>
+					{/each}
+				</div>
+				<p class="testimonial-text">"{testimonial.text}"</p>
+				<div class="testimonial-author">
+					<div class="author-avatar"></div>
+					<div class="author-info">
+						<p class="author-name">{testimonial.name}</p>
+						<p class="author-location">{testimonial.location}</p>
 					</div>
 				</div>
-			{/each}
-		</div>
+			</div>
+		{/each}
 	</div>
 </section>
 
 <style>
 	.testimonials {
-		/* background-color: var(--ctaHover); */
 		border-radius: 18px;
-		height: 100%;
-		display: flex;
-		align-items: center;
-		justify-content: flex-end;
+		height: 1200px;
+		width: 100%;
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		align-items: start;
 		z-index: 0;
-		padding: 40px;
+		padding: 20px;
 		background-image: url('../assets/Poilu-village2.png');
-		background-position: left;
+		background-position: center;
 		background-repeat: no-repeat;
-		background-size: contain;
-
+		background-size: cover;
+		box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.293);
 	}
 	.testimonials-container {
 		color: primary;
-		position: relative;
+		display: flex;
+		flex-direction: column;
 		align-items: flex-end;
-		margin-left: 60%;
+		justify-content: center;
 	}
 	.testimonials-grid {
 		display: flex;
@@ -97,7 +97,6 @@
 		justify-content: flex-end;
 		align-items: flex-end;
 		gap: 20px;
-		margin-top: 30px;
 	}
 	.testimonial-card {
 		display: flex;
@@ -152,7 +151,7 @@
 	.section-subtitle {
 		color: white;
 	}
-	.wrapper{
+	.wrapper {
 		background: linear-gradient(135deg, rgba(255, 97, 1, 0.9), rgba(232, 132, 60, 0.85));
 		backdrop-filter: blur(10px);
 		-webkit-backdrop-filter: blur(10px);
@@ -161,6 +160,12 @@
 		width: fit-content;
 		border: 1px solid rgba(255, 255, 255, 0.3);
 		box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		align-self: flex-start;
+		margin-bottom: 30px;
 	}
 
 	@media (max-width: 900px) {
@@ -168,21 +173,21 @@
 			width: 100%;
 		}
 		.testimonials {
-		border: 2px solid var(--ctaSecondary);
-		border-radius: 18px;
-		height: auto;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		z-index: 0;
-		padding: 20px;
-		background-image: url('../assets/Poilu.png');
-		background-position: center;
-		background-repeat: no-repeat;
-		background-size: cover;
-	}
-	.hero-cta {
-		flex-wrap: wrap;
-	}
+			border: 2px solid var(--ctaSecondary);
+			border-radius: 18px;
+			height: auto;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			z-index: 0;
+			padding: 20px;
+			background-image: url('../assets/Poilu.png');
+			background-position: center;
+			background-repeat: no-repeat;
+			background-size: cover;
+		}
+		.hero-cta {
+			flex-wrap: wrap;
+		}
 	}
 </style>

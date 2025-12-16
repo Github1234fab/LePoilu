@@ -35,9 +35,11 @@
 				<i class={icon}></i>
 			</div>
 			<h3 class="title">{title}</h3>
-			<p class="desc">{description}</p>
+			<p class="desc">{@html description}</p>
 
-			<span class="material-icons icon">360</span>
+			<span class="flip-icon">
+				<i class="fa-solid fa-rotate"></i>
+			</span>
 		</div>
 
 		<!-- Face arrière -->
@@ -52,7 +54,7 @@
 	.flip-card {
 		perspective: 1200px;
 		width: 100%;
-		height: 360px; /* ajustable : garde une hauteur constante */
+		height: 600px; /* ajustable : garde une hauteur constante */
 	
 	}
 
@@ -110,21 +112,33 @@
 		color: var(--ctaText);
 	}
 
-	.icon {
+	.flip-icon {
 		position: absolute;
-		font-size: 2.5rem;
+		top: 15px;
+		right: 15px;
+		font-size: 1.3rem;
 		color: var(--ctaText);
-		top: 75%;
-		left: 45%;
-		border-radius: 20%;
-		/* background-color: rgb(50, 50, 50); */
-		padding: 5px;
-		/* box-shadow: var(--shadow); */
+		background-color: rgba(0, 0, 0, 0.2);
+		backdrop-filter: blur(5px);
+		-webkit-backdrop-filter: blur(5px);
+		border-radius: 50%;
+		width: 45px;
+		height: 45px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		transition: all 0.3s ease;
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+	}
+
+	.flip-inner:hover .flip-icon {
+		background-color: rgba(255, 97, 1, 0.3);
+		transform: scale(1.1);
 	}
 
 	.back {
 		transform: rotateY(180deg);
-		background: var(--ctaSecondary);
+		background: transparent;
 		display: grid;
 		place-items: center;
 		padding: 0;
