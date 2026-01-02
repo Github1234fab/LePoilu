@@ -11,7 +11,7 @@
 
 <section class="cta-final">
 	<div class="cta-container">
-		<h2 class="cta-title">Prêt à découvrir tous les évènements de ta région de l'Ouest-Lyonnais ?</h2>
+		<h2 class="cta-title">Prêt à découvrir tous les évènements <br> de l'Ouest-Lyonnais ?</h2>
 		<p class="cta-description">
 			Rejoins des milliers d'utilisateurs et ne rate plus jamais aucun événement
 		</p>

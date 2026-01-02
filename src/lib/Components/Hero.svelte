@@ -12,7 +12,8 @@
 <section class="hero">
 	<div class="hero-content" id="hero-link-app">
 		<!-- <h2 class="hero-subtitle">Tous les événements de ta région en un seul endroit</h2> -->
-		<h1 class="hero-title">Le Poilu</h1>
+		<h1 class="hero-title">Le Poilu - L'agenda de l'Ouest Lyonnais</h1>
+	
 		<h2 class="hero-subtitle">Ne rate plus rien près de chez toi !</h2>
 		<p class="hero-description">
 			<!-- Découvre les concerts, les festivals, les marchés, les soirées, et toutes les activités
@@ -62,20 +63,20 @@
 
 	.hero-title {
 		color: white;
-		font-size: 7rem;
+		font-size: 3rem;
 		font-family: var(--FFTitle);
 		font-weight: 900;
 		letter-spacing: -0.1rem;
 		margin-top: 1rem;
 		text-align: center;
-		letter-spacing: -5px;
+		/* letter-spacing: -5px; */
 	}
 
 	.hero-subtitle {
 		font-weight: 800;
 		font-family: var(--FFTitle);
 		text-align: center;
-		font-size: 3rem;
+		font-size: 2rem;
 		color: white;
 
 	}

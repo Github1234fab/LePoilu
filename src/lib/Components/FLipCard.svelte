@@ -86,7 +86,7 @@
 		position: absolute;
 		inset: 0;
 		backface-visibility: hidden;
-		border: 1px solid #e6e6e6;
+		/* border: 1px solid #e6e6e6; */
 		border-radius: 16px;
 		/* overflow: hidden; */
 		background-color: var(--secondary);
