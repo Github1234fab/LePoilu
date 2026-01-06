@@ -67,7 +67,7 @@
 		cursor: pointer;
 		outline: none;
 		transition: transform 1000ms cubic-bezier(0.2, 0.7, 0.2, 1);
-		box-shadow: 10px 4px 8px rgba(0, 0, 0, 0.2);
+		/* box-shadow: 10px 4px 8px rgba(0, 0, 0, 0.2); */
 	}
 
 	/* Hover : desktop. Garde aussi l’état via .flipped pour mobile/clic */
@@ -78,7 +78,7 @@
 
 /* Focus pour l'accessibilité (optionnel) */
 .flip-inner:focus {
-    outline: 2px solid var(--ctaText);
+    /* outline: 2px solid var(--ctaText); */
     outline-offset: 4px;
 }
 
@@ -152,7 +152,7 @@
 		width: 120%;
 		height: 100%;
 		object-fit: cover;
-		border: 3px solid black;
+		/* border: 3px solid black; */
 		object-position: bottom;
 		box-shadow: var(--shadow3);
 

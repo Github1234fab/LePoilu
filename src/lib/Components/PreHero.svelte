@@ -1,5 +1,5 @@
 <script>
-	import Poilu from '../../lib/assets/Map.jpg';
+	import Poilu from '../../lib/assets/Carte_territoire_le_poilu.jpg';
 </script>
 
 <div class="pre-hero">
