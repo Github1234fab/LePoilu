@@ -66,7 +66,6 @@
 		font-size: 3rem;
 		font-family: var(--FFTitle);
 		font-weight: 900;
-		letter-spacing: -0.4rem;
 		margin-top: 1rem;
 		text-align: center;
 		/* letter-spacing: -5px; */
