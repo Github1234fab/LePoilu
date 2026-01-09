@@ -115,6 +115,28 @@
 			</div>
 		</div>
 	</section>
+
+	<!-- Account Deletion Section -->
+	<section class="deletion-section">
+		<div class="deletion-content">
+			<div class="deletion-icon">
+				<i class="fa-solid fa-user-slash"></i>
+			</div>
+			<h2 class="deletion-title">Suppression de compte</h2>
+			<p class="deletion-intro">Pour supprimer votre compte Le Poilu et toutes les données associées :</p>
+
+			<ol class="deletion-steps">
+				<li>Envoyez un email à : <strong>contact@lepoilu.fr</strong></li>
+				<li>Objet : <strong>"Suppression de compte"</strong></li>
+				<li>Indiquez l'adresse email de votre compte</li>
+			</ol>
+
+			<div class="deletion-info">
+				<p class="deletion-timeline">Votre compte et vos données seront supprimés sous 30 jours.</p>
+				<p class="deletion-data">Données supprimées : email, nom, événements créés, favoris.</p>
+			</div>
+		</div>
+	</section>
 </main>
 
 <style>
@@ -373,6 +395,106 @@
 		margin: 0;
 	}
 
+	/* Account Deletion Section */
+	.deletion-section {
+		background: linear-gradient(135deg, #fff, #fff5f0);
+		border-radius: 18px;
+		padding: 50px 40px;
+		box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.1);
+		border: 2px solid rgba(255, 97, 1, 0.15);
+	}
+
+	.deletion-content {
+		max-width: 800px;
+		margin: 0 auto;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		text-align: center;
+	}
+
+	.deletion-icon {
+		font-size: 3rem;
+		color: #FF6101;
+		background: linear-gradient(135deg, rgba(255, 97, 1, 0.1), rgba(232, 132, 60, 0.1));
+		width: 90px;
+		height: 90px;
+		border-radius: 50%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		box-shadow: 0 4px 16px rgba(255, 97, 1, 0.2);
+		margin-bottom: 25px;
+	}
+
+	.deletion-title {
+		font-weight: 900;
+		font-family: var(--FFTitle);
+		font-size: 2.2rem;
+		color: #2b2b2b;
+		margin-bottom: 20px;
+	}
+
+	.deletion-intro {
+		font-family: var(--FFTitle);
+		font-size: 1.1rem;
+		color: #555;
+		font-weight: 500;
+		margin-bottom: 30px;
+		line-height: 1.6rem;
+	}
+
+	.deletion-steps {
+		text-align: left;
+		background: rgba(255, 255, 255, 0.8);
+		border: 1px solid rgba(255, 97, 1, 0.2);
+		border-radius: 12px;
+		padding: 25px 40px;
+		margin-bottom: 30px;
+		width: 100%;
+		box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+	}
+
+	.deletion-steps li {
+		font-family: var(--FFTitle);
+		font-size: 1.05rem;
+		color: #333;
+		line-height: 2rem;
+		margin-bottom: 12px;
+	}
+
+	.deletion-steps li:last-child {
+		margin-bottom: 0;
+	}
+
+	.deletion-steps strong {
+		color: #FF6101;
+		font-weight: 700;
+	}
+
+	.deletion-info {
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+		width: 100%;
+	}
+
+	.deletion-timeline {
+		font-family: var(--FFTitle);
+		font-size: 1rem;
+		color: #FF6101;
+		font-weight: 600;
+		margin: 0;
+	}
+
+	.deletion-data {
+		font-family: var(--FFTitle);
+		font-size: 0.95rem;
+		color: #666;
+		font-weight: 500;
+		margin: 0;
+	}
+
 	/* Responsive Design */
 	@media (max-width: 900px) {
 		main {
@@ -423,6 +545,33 @@
 		.btn-submit {
 			padding: 14px 35px;
 			font-size: 1rem;
+		}
+
+		.deletion-section {
+			padding: 40px 20px;
+		}
+
+		.deletion-icon {
+			width: 70px;
+			height: 70px;
+			font-size: 2.5rem;
+		}
+
+		.deletion-title {
+			font-size: 1.8rem;
+		}
+
+		.deletion-intro {
+			font-size: 1rem;
+		}
+
+		.deletion-steps {
+			padding: 20px 25px;
+		}
+
+		.deletion-steps li {
+			font-size: 0.95rem;
+			line-height: 1.8rem;
 		}
 	}
 
