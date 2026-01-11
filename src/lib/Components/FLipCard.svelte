@@ -54,8 +54,7 @@
 	.flip-card {
 		perspective: 1200px;
 		width: 100%;
-		height: 600px; /* ajustable : garde une hauteur constante */
-	
+		height: clamp(500px, 60vw, 600px);
 	}
 
 	.flip-inner {
@@ -63,60 +62,71 @@
 		width: 100%;
 		height: 100%;
 		transform-style: preserve-3d;
-		border-radius: 16px;
+		border-radius: var(--radius-md);
 		cursor: pointer;
 		outline: none;
-		transition: transform 1000ms cubic-bezier(0.2, 0.7, 0.2, 1);
-		/* box-shadow: 10px 4px 8px rgba(0, 0, 0, 0.2); */
+		transition: transform var(--transition-slow) cubic-bezier(0.2, 0.7, 0.2, 1);
 	}
 
-	/* Hover : desktop. Garde aussi l’état via .flipped pour mobile/clic */
-/* Rotation uniquement via la classe .flipped (pas de hover) */
-.flip-inner.flipped {
-    transform: rotateY(180deg);
-}
+	/* Rotation uniquement via la classe .flipped (pas de hover) */
+	.flip-inner.flipped {
+		transform: rotateY(180deg);
+	}
 
-/* Focus pour l'accessibilité (optionnel) */
-.flip-inner:focus {
-    /* outline: 2px solid var(--ctaText); */
-    outline-offset: 4px;
-}
+	/* Focus pour l'accessibilité */
+	.flip-inner:focus {
+		outline-offset: 4px;
+	}
 
 	.face {
 		position: absolute;
 		inset: 0;
 		backface-visibility: hidden;
-		/* border: 1px solid #e6e6e6; */
-		border-radius: 16px;
-		/* overflow: hidden; */
+		border-radius: var(--radius-md);
 		background-color: var(--secondary);
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
-		padding: 18px;
-		gap: 30px;
+		padding: var(--spacing-sm);
+		gap: var(--spacing-md);
+		box-shadow: var(--shadow3);
+		transition: box-shadow var(--transition-normal);
+	}
+	.face:hover {
+		box-shadow: var(--shadow2);
 	}
 	.feature-icon {
-		font-size: 2rem;
+		font-size: clamp(1.8rem, 3vw, 2rem);
 		color: var(--ctaText);
+		transition: transform var(--transition-normal);
+	}
+	.flip-inner:hover .feature-icon {
+		transform: scale(1.1) rotate(5deg);
 	}
 
 	.title {
 		margin: 0;
-		font-size: 1.1rem;
+		font-size: clamp(1rem, 2vw, 1.1rem);
 		color: var(--ctaText);
+		font-family: var(--FFTitle);
+		font-weight: 700;
+		text-align: center;
 	}
 	.desc {
 		flex-grow: 1;
 		color: var(--ctaText);
+		font-family: var(--FFBody);
+		font-size: clamp(0.9rem, 1.5vw, 1rem);
+		line-height: 1.6;
+		text-align: center;
 	}
 
 	.flip-icon {
 		position: absolute;
-		top: 15px;
-		right: 15px;
-		font-size: 1.3rem;
+		top: var(--spacing-sm);
+		right: var(--spacing-sm);
+		font-size: clamp(1.1rem, 2vw, 1.3rem);
 		color: var(--ctaText);
 		background-color: rgba(0, 0, 0, 0.2);
 		backdrop-filter: blur(5px);
@@ -127,13 +137,13 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		transition: all 0.3s ease;
+		transition: all var(--transition-normal);
 		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 	}
 
 	.flip-inner:hover .flip-icon {
 		background-color: rgba(255, 97, 1, 0.3);
-		transform: scale(1.1);
+		transform: scale(1.1) rotate(180deg);
 	}
 
 	.back {
@@ -143,22 +153,62 @@
 		place-items: center;
 		padding: 0;
 		overflow: hidden;
-		padding: 10px 70px;
+		padding: var(--spacing-xs) var(--spacing-xl);
 		border: none;
-	
 	}
 	.img {
-		border-radius: 16px;
+		border-radius: var(--radius-md);
 		width: 120%;
 		height: 100%;
 		object-fit: cover;
-		/* border: 3px solid black; */
 		object-position: bottom;
 		box-shadow: var(--shadow3);
-
+		transition: transform var(--transition-slow);
+	}
+	.back:hover .img {
+		transform: scale(1.02);
 	}
 
-	/* Préfère moins d’animations : réduit la motion */
+	/* Media queries pour responsive */
+	@media (max-width: 1024px) {
+		.flip-card {
+			height: clamp(450px, 55vw, 550px);
+		}
+		.back {
+			padding: var(--spacing-xs) var(--spacing-lg);
+		}
+	}
+
+	@media (max-width: 768px) {
+		.flip-card {
+			height: clamp(400px, 50vw, 500px);
+		}
+		.face {
+			padding: var(--spacing-sm);
+			gap: var(--spacing-sm);
+		}
+		.back {
+			padding: var(--spacing-xs) var(--spacing-md);
+		}
+		.img {
+			width: 100%;
+		}
+	}
+
+	@media (max-width: 480px) {
+		.flip-card {
+			height: clamp(350px, 45vw, 450px);
+		}
+		.face {
+			padding: var(--spacing-xs);
+		}
+		.flip-icon {
+			width: 40px;
+			height: 40px;
+		}
+	}
+
+	/* Préfère moins d'animations : réduit la motion */
 	@media (prefers-reduced-motion: reduce) {
 		.flip-inner {
 			transition: none;

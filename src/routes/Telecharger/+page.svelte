@@ -36,57 +36,92 @@
 
 <style>
 	.wrap {
-		max-width: 900px;
+		max-width: var(--desktop);
 		margin: 0 auto;
-		padding: 48px 16px;
-		color: #1c1c1c;
+		padding: var(--spacing-lg) var(--spacing-md);
+		color: var(--textDark);
 		background-image: url('../../lib/assets/Poilu-ok.png');
 		background-size: cover;
 		background-position: center;
 		background-repeat: no-repeat;
-		height: 1000px;
+		height: clamp(600px, 100vh, 1000px);
 	}
+
 	h1 {
-		font-size: 2rem;
-		margin: 0 0 8px;
+		font-size: clamp(1.5rem, 4vw, 2rem);
+		font-family: var(--FFTitle);
+		margin: 0 0 var(--spacing-xs);
 	}
+
 	.lead {
 		color: #555;
-		margin: 0 0 16px;
+		font-family: var(--FFBody);
+		margin: 0 0 var(--spacing-md);
+		font-size: clamp(0.95rem, 2vw, 1rem);
 	}
 
 	.container_app-link {
 		display: flex;
-		gap: 20px;
-		margin-top: 10px;
+		gap: var(--spacing-md);
+		margin-top: var(--spacing-xs);
 	}
+
 	.img-app-link {
-		height: 50px;
+		height: clamp(45px, 8vw, 50px);
 		width: auto;
-		border-radius: 12px;
+		border-radius: var(--radius-md);
 		box-shadow: var(--shadow);
+		transition: transform var(--transition-normal), box-shadow var(--transition-normal);
 	}
+
 	.btn-app-link {
 		cursor: pointer;
 		background-color: transparent;
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		width: auto; /* Largeur fixe */
-		height: 100px; /* Hauteur fixe */
+		width: auto;
+		height: clamp(90px, 15vw, 100px);
+		transition: transform var(--transition-normal);
 	}
 
-	@media (max-width: 900px) {
+	.btn-app-link:hover .img-app-link {
+		transform: translateY(-3px);
+		box-shadow: var(--shadow2);
+	}
+
+	/* === MEDIA QUERIES RESPONSIVE === */
+
+	/* Mobile */
+	@media (max-width: 768px) {
 		.wrap {
 			background-size: contain;
 			background-image: url('../../lib/assets/Poilu_mobile.png');
 			background-position: bottom;
-			height:850px;
+			height: clamp(600px, 90vh, 850px);
+			padding: var(--spacing-md) var(--spacing-sm);
 		}
+
 		.container_app-link {
-		flex-direction: column;
-		gap: 0px;
+			flex-direction: column;
+			gap: var(--spacing-xs);
+			align-items: flex-start;
+		}
+
+		.btn-app-link {
+			height: 80px;
+		}
 	}
-	
+
+	/* Mobile Small */
+	@media (max-width: 480px) {
+		.wrap {
+			padding: var(--spacing-sm) var(--spacing-xs);
+			height: clamp(500px, 90vh, 700px);
+		}
+
+		.container_app-link {
+			gap: 0;
+		}
 	}
 </style>

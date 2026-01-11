@@ -53,29 +53,34 @@
 
 <style>
 	.header {
-		border-radius: 18px;
+		border-radius: var(--radius-lg);
 		background-color: var(--headerBg);
+		backdrop-filter: blur(10px);
 		z-index: 1000;
 		box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+		position: sticky;
+		top: 10px;
 	}
 
 	.header-container {
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-		padding: 1rem 2rem;
-		max-width: 1200px;
+		padding: var(--spacing-sm) var(--spacing-md);
+		max-width: var(--desktop);
 		margin: 0 auto;
-
-		border-radius: 18px;
+		border-radius: var(--radius-lg);
 	}
 
 	.header-logo {
 		display: flex;
 		align-items: center;
+		flex-shrink: 0;
 	}
+
 	.poilu-img {
 		height: 100px;
+		transition: height var(--transition-normal);
 	}
 
 	.nav-desktop {
@@ -88,7 +93,23 @@
 		text-decoration: none;
 		color: var(--textColor);
 		font-weight: 500;
-		transition: color 0.3s;
+		transition: color var(--transition-normal);
+		position: relative;
+	}
+
+	.nav-link::after {
+		content: '';
+		position: absolute;
+		bottom: -5px;
+		left: 0;
+		width: 0;
+		height: 2px;
+		background-color: var(--primaryColor);
+		transition: width var(--transition-normal);
+	}
+
+	.nav-link:hover::after {
+		width: 100%;
 	}
 
 	.nav-link:hover {
@@ -96,8 +117,7 @@
 	}
 
 	.header-cta {
-		color: var(--cta);
-		box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.37);
+		flex-shrink: 0;
 	}
 
 	.btn-header {
@@ -105,14 +125,16 @@
 		background-color: var(--cta);
 		color: var(--ctaText);
 		text-decoration: none;
-		border-radius: 8px;
+		border-radius: var(--radius-sm);
 		font-weight: 600;
-		transition: 0.3s;
+		transition: all var(--transition-normal);
 		box-shadow: var(--shadow3);
+		white-space: nowrap;
 	}
+
 	.btn-header:hover {
 		background-color: var(--ctaHover);
-		box-shadow: var(--shadow3);
+		box-shadow: var(--shadow);
 		transform: scale(1.05);
 	}
 
@@ -130,8 +152,8 @@
 	.burger-line {
 		width: 25px;
 		height: 3px;
-		background-color: var(--ctaHover);
-		transition: all 0.3s;
+		background-color: var(--cta);
+		transition: all var(--transition-normal);
 		border-radius: 2px;
 	}
 
@@ -151,10 +173,24 @@
 	.nav-mobile {
 		display: none;
 		flex-direction: column;
-		gap: 1rem;
-		padding: 1rem 2rem 2rem;
+		gap: var(--spacing-sm);
+		padding: var(--spacing-sm) var(--spacing-md) var(--spacing-md);
 		background-color: var(--headerBg);
+		backdrop-filter: blur(10px);
 		border-top: 1px solid var(--borderColor);
+		border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+		animation: slideDown var(--transition-normal);
+	}
+
+	@keyframes slideDown {
+		from {
+			opacity: 0;
+			transform: translateY(-10px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
 	}
 
 	.nav-mobile.open {
@@ -165,12 +201,15 @@
 		text-decoration: none;
 		color: var(--textColor);
 		font-weight: 500;
-		padding: 0.75rem 0;
-		transition: color 0.3s;
+		padding: var(--spacing-sm) 0;
+		transition: all var(--transition-normal);
+		border-radius: var(--radius-sm);
 	}
 
 	.nav-link-mobile:hover {
 		color: var(--primaryColor);
+		padding-left: var(--spacing-xs);
+		background-color: rgba(255, 183, 158, 0.1);
 	}
 
 	/* .btn-header-mobile {
@@ -184,8 +223,20 @@
 		margin-top: 1rem;
 	} */
 
-	/* Responsive */
+	/* ===================================
+	   MEDIA QUERIES RESPONSIVE
+	   =================================== */
+
+	/* Mobile: 768px et moins */
 	@media (max-width: 768px) {
+		.header-container {
+			padding: var(--spacing-sm);
+		}
+
+		.poilu-img {
+			height: 70px;
+		}
+
 		.nav-desktop,
 		.header-cta {
 			display: none;
@@ -193,6 +244,37 @@
 
 		.burger-menu {
 			display: flex;
+		}
+	}
+
+	/* Mobile Small: 480px et moins */
+	@media (max-width: 480px) {
+		.header {
+			border-radius: var(--radius-md);
+		}
+
+		.header-container {
+			padding: var(--spacing-xs) var(--spacing-sm);
+		}
+
+		.poilu-img {
+			height: 60px;
+		}
+
+		.nav-mobile {
+			padding: var(--spacing-sm);
+		}
+	}
+
+	/* Tablet: 1024px et moins */
+	@media (max-width: 1024px) and (min-width: 769px) {
+		.nav-desktop {
+			gap: 1.5rem;
+		}
+
+		.btn-header {
+			padding: 0.6rem 1.2rem;
+			font-size: 0.9rem;
 		}
 	}
 </style>

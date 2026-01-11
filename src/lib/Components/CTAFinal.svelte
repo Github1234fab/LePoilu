@@ -51,18 +51,18 @@
 
 <style>
 	.cta-final {
-		background: linear-gradient(135deg, #FF6101 0%, #e8843c 50%, #FF6101 100%);
-		border-radius: 18px;
+		background: linear-gradient(135deg, #FF6101 0%, var(--ctaSecondary) 50%, #FF6101 100%);
+		border-radius: var(--radius-lg);
 		height: 100%;
 		display: flex;
 		align-items: center;
 		justify-content: center;
 		z-index: 0;
-		padding: 40px;
-		box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.293);
+		padding: var(--spacing-lg);
+		box-shadow: var(--shadow);
 	}
 	.cta-container {
-		border-radius: 18px;
+		border-radius: var(--radius-lg);
 		height: 100%;
 		display: flex;
 		flex-direction: column;
@@ -73,7 +73,7 @@
 
 	.btn-primary {
 		border: none;
-		transition: transform 0.3s ease;
+		transition: transform var(--transition-normal);
 	}
 	.btn-primary:hover {
 		transform: scale(1.05);
@@ -81,8 +81,12 @@
 	.btn-primary img {
 		height: 50px;
 		width: 100%;
-		box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
-		border-radius: 8px;
+		box-shadow: var(--shadow3);
+		border-radius: var(--radius-sm);
+		transition: box-shadow var(--transition-normal);
+	}
+	.btn-primary:hover img {
+		box-shadow: var(--shadow2);
 	}
 
 	.container_cta-stats {
@@ -92,73 +96,82 @@
 		-webkit-backdrop-filter: blur(10px);
 		background-color: rgba(255, 255, 255, 0.2);
 		border: 1px solid rgba(255, 255, 255, 0.3);
-		border-radius: 18px;
-		padding: 30px 40px;
-		margin-bottom: 50px;
+		border-radius: var(--radius-lg);
+		padding: var(--spacing-md) var(--spacing-lg);
+		margin-bottom: var(--spacing-xl);
 		box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.15);
 	}
 	.hero-cta {
 		display: flex;
-		gap: 30px;
+		gap: var(--spacing-md);
 		padding: 0px;
-		border-radius: 12px;
+		border-radius: var(--radius-md);
 		align-items: center;
 		justify-content: center;
-		margin-top: 20px;
+		margin-top: var(--spacing-md);
 		z-index: 10;
 	}
 	.cta-stats {
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		gap: 20px;
+		gap: var(--spacing-md);
 	}
 	.poilu-face {
-		height: 350px;
-		margin-right: 20px;
+		height: clamp(200px, 30vw, 350px);
+		margin-right: var(--spacing-md);
+		transition: transform var(--transition-slow);
+	}
+	.poilu-face:hover {
+		transform: scale(1.05);
 	}
 	.stat {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
-		margin: 10px;
-		padding: 15px 35px;
-		border-radius: 18px;
+		margin: var(--spacing-xs);
+		padding: var(--spacing-sm) var(--spacing-lg);
+		border-radius: var(--radius-lg);
 		backdrop-filter: blur(10px);
 		-webkit-backdrop-filter: blur(10px);
 		background-color: rgba(255, 255, 255, 0.25);
 		color: white;
 		border: 1px solid rgba(255, 255, 255, 0.3);
 		box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.1);
+		transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+	}
+	.stat:hover {
+		transform: translateY(-5px);
+		box-shadow: 0 8px 24px 0 rgba(0, 0, 0, 0.2);
 	}
 	.cta-title {
 		color: white;
 		font-family: var(--FFTitle);
 		font-weight: 900;
-		font-size: 2.5rem;
+		font-size: clamp(1.8rem, 4vw, 2.5rem);
 		text-align: center;
-		margin-bottom: 10px;
+		margin-bottom: var(--spacing-sm);
 	}
 
 	.cta-description {
 		font-weight: 500;
 		font-family: var(--FFTitle);
-		font-size: 1.1rem;
+		font-size: clamp(1rem, 2vw, 1.1rem);
 		color: white;
 		text-align: center;
-		margin: 20px 0;
+		margin: var(--spacing-md) 0;
 		line-height: 1.8rem;
 	}
 	.stat-number {
-		font-size: 1.3rem;
+		font-size: clamp(1.1rem, 2.5vw, 1.3rem);
 		font-weight: 900;
 	}
 	.stat-label {
-		font-size: 0.95rem;
+		font-size: clamp(0.85rem, 1.5vw, 0.95rem);
 	}
 
-	@media (max-width: 900px) {
+	@media (max-width: 768px) {
 		.cta-stats {
 			flex-direction: column;
 		}
@@ -166,20 +179,30 @@
 			display: flex;
 			flex-direction: column;
 			border: 1px solid var(--lightBg);
-			border-radius: 18px;
-			padding: 20px 40px;
-			margin-bottom: 50px;
+			border-radius: var(--radius-lg);
+			padding: var(--spacing-md) var(--spacing-lg);
+			margin-bottom: var(--spacing-xl);
 		}
-		.cta-title{
-			padding: 20px;
+		.cta-title {
+			padding: var(--spacing-md);
 		}
-		.cta-description{
-			padding: 0 20px;
+		.cta-description {
+			padding: 0 var(--spacing-md);
 		}
-		.poilu-face {
-		height: 200px;
-		margin-right: 20px;
+		.cta-final {
+			padding: var(--spacing-md);
+		}
 	}
-	
+
+	@media (max-width: 480px) {
+		.cta-final {
+			padding: var(--spacing-sm);
+		}
+		.hero-cta {
+			padding: var(--spacing-sm) var(--spacing-md);
+		}
+		.container_cta-stats {
+			padding: var(--spacing-sm) var(--spacing-md);
+		}
 	}
 </style>

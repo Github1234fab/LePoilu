@@ -67,7 +67,7 @@
 <style>
 	.features {
 		background: linear-gradient(135deg, var(--background), #FF6101);
-		border-radius: 18px;
+		border-radius: var(--radius-lg);
 		height: 100%;
 		display: flex;
 		flex-direction: column;
@@ -75,7 +75,7 @@
 		justify-content: center;
 		z-index: 0;
 		position: relative;
-		box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.293);
+		box-shadow: var(--shadow);
 	}
 
 	.features-header {
@@ -83,22 +83,26 @@
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
-		margin-top: 70px;
-		padding: 40px;
-		margin-bottom: 40px;
+		margin-top: var(--spacing-xl);
+		padding: var(--spacing-lg);
+		margin-bottom: var(--spacing-lg);
 	}
 	.section-title {
 		font-weight: 900;
 		font-family: var(--FFTitle);
 		text-align: center;
-		font-size: 2.5rem;
-		color: #2b2b2b;
-		margin-bottom: 15px;
+		font-size: clamp(1.8rem, 4vw, 2.5rem);
+		color: var(--text);
+		margin-bottom: var(--spacing-sm);
+		transition: transform var(--transition-normal);
+	}
+	.section-title:hover {
+		transform: scale(1.02);
 	}
 	.section-subtitle {
 		font-family: var(--FFTitle);
-		color: #333;
-		font-size: 1.2rem;
+		color: var(--text);
+		font-size: clamp(1rem, 2.5vw, 1.2rem);
 		text-align: center;
 		font-weight: 500;
 	}
@@ -106,39 +110,58 @@
 	.features-grid {
 		display: grid;
 		grid-template-columns: repeat(3, 1fr);
-		gap: 2rem;
-		padding: 30px;
+		gap: var(--spacing-md);
+		padding: var(--spacing-md);
 		width: 100%;
 	}
 
 	.poilu-face {
-		height: 350px;
-		margin-top: 20px;
+		height: clamp(200px, 30vw, 350px);
+		margin-top: var(--spacing-md);
 		filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.3));
+		transition: transform var(--transition-slow);
+	}
+	.poilu-face:hover {
+		transform: scale(1.05) rotate(2deg);
 	}
 
-
-
-	@media (max-width: 900px) {
+	@media (max-width: 1024px) {
 		.features-grid {
-			grid-template-columns: 1fr;
-			padding: 20px;
+			grid-template-columns: repeat(2, 1fr);
+			gap: var(--spacing-md);
 		}
 		.features-header {
-			margin-top: 30px;
-			padding: 30px 20px;
+			margin-top: var(--spacing-lg);
+		}
+	}
+
+	@media (max-width: 768px) {
+		.features-grid {
+			grid-template-columns: 1fr;
+			padding: var(--spacing-md);
+		}
+		.features-header {
+			margin-top: var(--spacing-md);
+			padding: var(--spacing-md) var(--spacing-sm);
 		}
 		.section-title {
-			font-size: 1.8rem;
+			font-size: clamp(1.5rem, 4vw, 1.8rem);
 		}
 		.section-subtitle {
 			font-family: var(--FFTitle);
 			text-align: center;
-			margin-top: 10px;
-			font-size: 1rem;
+			margin-top: var(--spacing-sm);
+			font-size: clamp(0.9rem, 2vw, 1rem);
 		}
-		.poilu-face {
-			height: 200px;
+	}
+
+	@media (max-width: 480px) {
+		.features-header {
+			padding: var(--spacing-sm);
+		}
+		.features-grid {
+			padding: var(--spacing-sm);
+			gap: var(--spacing-sm);
 		}
 	}
 </style>

@@ -143,25 +143,25 @@
 	main {
 		display: flex;
 		flex-direction: column;
-		gap: 40px;
-		padding: 10px;
-		max-width: 1200px;
+		gap: var(--spacing-lg);
+		padding: var(--spacing-xs);
+		max-width: var(--desktop);
 		margin: 0 auto;
 	}
 
 	/* Hero Section */
 	.hero {
 		background: linear-gradient(135deg, var(--ctaSecondary), #FF6101);
-		border-radius: 18px;
+		border-radius: var(--radius-lg);
 		height: auto;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
 		position: relative;
-		margin-top: 30px;
-		padding: 60px 40px;
-		box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.293);
+		margin-top: var(--spacing-md);
+		padding: var(--spacing-xl) var(--spacing-lg);
+		box-shadow: var(--shadow);
 	}
 
 	.hero-content {
@@ -174,10 +174,10 @@
 
 	.hero-title {
 		color: white;
-		font-size: 3.5rem;
+		font-size: clamp(2rem, 5vw, 3.5rem);
 		font-family: var(--FFTitle);
 		font-weight: 900;
-		margin-bottom: 20px;
+		margin-bottom: var(--spacing-md);
 		text-align: center;
 	}
 
@@ -185,15 +185,15 @@
 		font-weight: 600;
 		font-family: var(--FFTitle);
 		text-align: center;
-		font-size: 1.3rem;
+		font-size: clamp(1rem, 2.5vw, 1.3rem);
 		color: white;
 		max-width: 800px;
-		line-height: 1.8rem;
-		margin-bottom: 40px;
+		line-height: clamp(1.4rem, 3vw, 1.8rem);
+		margin-bottom: var(--spacing-lg);
 	}
 
 	.poilu-mobile {
-		height: 350px;
+		height: clamp(220px, 35vw, 350px);
 		width: auto;
 		filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.3));
 	}
@@ -201,14 +201,14 @@
 	/* Contact Section */
 	.contact-section {
 		background: linear-gradient(135deg, var(--background), #FF6101);
-		border-radius: 18px;
+		border-radius: var(--radius-lg);
 		height: 100%;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
-		padding: 60px 40px;
-		box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.293);
+		padding: var(--spacing-xl) var(--spacing-lg);
+		box-shadow: var(--shadow);
 	}
 
 	.contact-header {
@@ -216,32 +216,32 @@
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
-		margin-bottom: 50px;
+		margin-bottom: var(--spacing-xl);
 		text-align: center;
 	}
 
 	.section-title {
 		font-weight: 900;
 		font-family: var(--FFTitle);
-		font-size: 2.5rem;
-		color: #2b2b2b;
-		margin-bottom: 15px;
+		font-size: clamp(1.8rem, 4vw, 2.5rem);
+		color: var(--textDark);
+		margin-bottom: var(--spacing-sm);
 	}
 
 	.section-description {
 		font-family: var(--FFTitle);
-		color: #333;
-		font-size: 1.1rem;
+		color: var(--text);
+		font-size: clamp(0.95rem, 2vw, 1.1rem);
 		font-weight: 500;
 		max-width: 800px;
-		line-height: 1.7rem;
+		line-height: clamp(1.4rem, 2.5vw, 1.7rem);
 	}
 
 	/* Form Container */
 	.form-container {
 		display: grid;
 		grid-template-columns: 1.5fr 1fr;
-		gap: 3rem;
+		gap: var(--spacing-lg);
 		width: 100%;
 		max-width: 1100px;
 	}
@@ -250,45 +250,46 @@
 	.contact-form {
 		display: flex;
 		flex-direction: column;
-		gap: 25px;
+		gap: var(--spacing-md);
 		backdrop-filter: blur(10px);
 		-webkit-backdrop-filter: blur(10px);
 		background-color: rgba(255, 255, 255, 0.9);
 		border: 1px solid rgba(255, 97, 1, 0.2);
-		border-radius: 16px;
-		padding: 40px;
-		box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.15);
+		border-radius: var(--radius-md);
+		padding: var(--spacing-lg);
+		box-shadow: var(--shadow3);
 	}
 
 	.form-group {
 		display: flex;
 		flex-direction: column;
-		gap: 10px;
+		gap: var(--spacing-xs);
 	}
 
 	.form-group label {
 		display: flex;
 		flex-direction: column;
-		gap: 8px;
+		gap: var(--spacing-xs);
 	}
 
 	.label-text {
 		font-family: var(--FFTitle);
 		font-weight: 600;
-		font-size: 1rem;
-		color: #2b2b2b;
+		font-size: clamp(0.9rem, 1.8vw, 1rem);
+		color: var(--textDark);
 	}
 
 	input,
 	textarea {
 		border: 2px solid rgba(255, 97, 1, 0.2);
-		border-radius: 12px;
-		padding: 14px 16px;
+		border-radius: var(--radius-md);
+		padding: var(--spacing-sm) var(--spacing-sm);
 		font-family: var(--FFTitle);
-		font-size: 1rem;
-		color: #333;
+		font-size: clamp(0.9rem, 1.8vw, 1rem);
+		color: var(--text);
 		background-color: rgba(255, 255, 255, 0.8);
-		transition: all 0.3s ease;
+		transition: all var(--transition-normal);
+		width: 100%;
 	}
 
 	input:focus,
@@ -313,25 +314,25 @@
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;
-		gap: 10px;
-		padding: 16px 40px;
+		gap: var(--spacing-xs);
+		padding: var(--spacing-sm) var(--spacing-lg);
 		background: linear-gradient(135deg, #FF6101, var(--ctaSecondary));
 		color: white;
 		border: none;
 		font-weight: 700;
-		font-size: 1.1rem;
-		border-radius: 12px;
-		transition: all 0.3s ease;
+		font-size: clamp(1rem, 2vw, 1.1rem);
+		border-radius: var(--radius-md);
+		transition: all var(--transition-normal);
 		font-family: var(--FFTitle);
 		text-align: center;
-		box-shadow: 0 6px 20px rgba(255, 97, 1, 0.3);
+		box-shadow: var(--shadow3);
 		cursor: pointer;
-		margin-top: 10px;
+		margin-top: var(--spacing-xs);
 	}
 
 	.btn-submit:hover {
 		transform: translateY(-2px);
-		box-shadow: 0 8px 28px rgba(255, 97, 1, 0.4);
+		box-shadow: var(--shadow2);
 	}
 
 	.btn-submit:active {
@@ -342,7 +343,7 @@
 	.contact-info {
 		display: flex;
 		flex-direction: column;
-		gap: 20px;
+		gap: var(--spacing-md);
 	}
 
 	.info-card {
@@ -350,57 +351,57 @@
 		flex-direction: column;
 		align-items: center;
 		text-align: center;
-		gap: 15px;
+		gap: var(--spacing-sm);
 		backdrop-filter: blur(10px);
 		-webkit-backdrop-filter: blur(10px);
 		background-color: rgba(255, 255, 255, 0.9);
 		border: 1px solid rgba(255, 97, 1, 0.2);
-		border-radius: 16px;
-		padding: 30px 20px;
-		box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.15);
-		transition: transform 0.3s ease, box-shadow 0.3s ease;
+		border-radius: var(--radius-md);
+		padding: var(--spacing-md) var(--spacing-md);
+		box-shadow: var(--shadow3);
+		transition: transform var(--transition-normal), box-shadow var(--transition-normal);
 	}
 
 	.info-card:hover {
 		transform: translateY(-3px);
-		box-shadow: 0 12px 40px 0 rgba(255, 97, 1, 0.25);
+		box-shadow: var(--shadow2);
 	}
 
 	.info-icon {
-		font-size: 2rem;
+		font-size: clamp(1.5rem, 3vw, 2rem);
 		color: #FF6101;
 		background: linear-gradient(135deg, rgba(255, 97, 1, 0.1), rgba(232, 132, 60, 0.1));
-		width: 70px;
-		height: 70px;
+		width: clamp(60px, 10vw, 70px);
+		height: clamp(60px, 10vw, 70px);
 		border-radius: 50%;
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		box-shadow: 0 4px 16px rgba(255, 97, 1, 0.2);
+		box-shadow: var(--shadow3);
 	}
 
 	.info-title {
 		font-family: var(--FFTitle);
 		font-weight: 700;
-		font-size: 1.2rem;
-		color: #2b2b2b;
+		font-size: clamp(1rem, 2vw, 1.2rem);
+		color: var(--textDark);
 		margin: 0;
 	}
 
 	.info-text {
 		font-family: var(--FFTitle);
 		color: #555;
-		font-size: 0.95rem;
-		line-height: 1.5rem;
+		font-size: clamp(0.85rem, 1.6vw, 0.95rem);
+		line-height: clamp(1.3rem, 2.5vw, 1.5rem);
 		margin: 0;
 	}
 
 	/* Account Deletion Section */
 	.deletion-section {
 		background: linear-gradient(135deg, #fff, #fff5f0);
-		border-radius: 18px;
-		padding: 50px 40px;
-		box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.1);
+		border-radius: var(--radius-lg);
+		padding: var(--spacing-xl) var(--spacing-lg);
+		box-shadow: var(--shadow3);
 		border: 2px solid rgba(255, 97, 1, 0.15);
 	}
 
@@ -414,53 +415,53 @@
 	}
 
 	.deletion-icon {
-		font-size: 3rem;
+		font-size: clamp(2.5rem, 4vw, 3rem);
 		color: #FF6101;
 		background: linear-gradient(135deg, rgba(255, 97, 1, 0.1), rgba(232, 132, 60, 0.1));
-		width: 90px;
-		height: 90px;
+		width: clamp(70px, 12vw, 90px);
+		height: clamp(70px, 12vw, 90px);
 		border-radius: 50%;
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		box-shadow: 0 4px 16px rgba(255, 97, 1, 0.2);
-		margin-bottom: 25px;
+		box-shadow: var(--shadow3);
+		margin-bottom: var(--spacing-md);
 	}
 
 	.deletion-title {
 		font-weight: 900;
 		font-family: var(--FFTitle);
-		font-size: 2.2rem;
-		color: #2b2b2b;
-		margin-bottom: 20px;
+		font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+		color: var(--textDark);
+		margin-bottom: var(--spacing-md);
 	}
 
 	.deletion-intro {
 		font-family: var(--FFTitle);
-		font-size: 1.1rem;
+		font-size: clamp(0.95rem, 2vw, 1.1rem);
 		color: #555;
 		font-weight: 500;
-		margin-bottom: 30px;
-		line-height: 1.6rem;
+		margin-bottom: var(--spacing-md);
+		line-height: clamp(1.4rem, 2.5vw, 1.6rem);
 	}
 
 	.deletion-steps {
 		text-align: left;
 		background: rgba(255, 255, 255, 0.8);
 		border: 1px solid rgba(255, 97, 1, 0.2);
-		border-radius: 12px;
-		padding: 25px 40px;
-		margin-bottom: 30px;
+		border-radius: var(--radius-md);
+		padding: var(--spacing-md) var(--spacing-lg);
+		margin-bottom: var(--spacing-md);
 		width: 100%;
-		box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+		box-shadow: var(--shadow3);
 	}
 
 	.deletion-steps li {
 		font-family: var(--FFTitle);
-		font-size: 1.05rem;
-		color: #333;
-		line-height: 2rem;
-		margin-bottom: 12px;
+		font-size: clamp(0.9rem, 1.8vw, 1.05rem);
+		color: var(--text);
+		line-height: clamp(1.6rem, 3vw, 2rem);
+		margin-bottom: var(--spacing-xs);
 	}
 
 	.deletion-steps li:last-child {
@@ -475,13 +476,13 @@
 	.deletion-info {
 		display: flex;
 		flex-direction: column;
-		gap: 10px;
+		gap: var(--spacing-xs);
 		width: 100%;
 	}
 
 	.deletion-timeline {
 		font-family: var(--FFTitle);
-		font-size: 1rem;
+		font-size: clamp(0.9rem, 1.8vw, 1rem);
 		color: #FF6101;
 		font-weight: 600;
 		margin: 0;
@@ -489,96 +490,80 @@
 
 	.deletion-data {
 		font-family: var(--FFTitle);
-		font-size: 0.95rem;
+		font-size: clamp(0.85rem, 1.6vw, 0.95rem);
 		color: #666;
 		font-weight: 500;
 		margin: 0;
 	}
 
-	/* Responsive Design */
-	@media (max-width: 900px) {
-		main {
-			padding: 10px;
-			gap: 30px;
-		}
+	/* === MEDIA QUERIES RESPONSIVE === */
 
-		.hero {
-			padding: 40px 20px;
-			margin-top: 20px;
-		}
-
-		.hero-title {
-			font-size: 2.5rem;
-		}
-
-		.hero-subtitle {
-			font-size: 1.1rem;
-			line-height: 1.6rem;
-		}
-
-		.poilu-mobile {
-			height: 250px;
-		}
-
-		.contact-section {
-			padding: 40px 20px;
-		}
-
-		.section-title {
-			font-size: 2rem;
-		}
-
-		.section-description {
-			font-size: 1rem;
-			line-height: 1.5rem;
-		}
-
+	/* Tablet */
+	@media (max-width: 1024px) {
 		.form-container {
 			grid-template-columns: 1fr;
-			gap: 2rem;
-		}
-
-		.contact-form {
-			padding: 30px 20px;
-		}
-
-		.btn-submit {
-			padding: 14px 35px;
-			font-size: 1rem;
-		}
-
-		.deletion-section {
-			padding: 40px 20px;
-		}
-
-		.deletion-icon {
-			width: 70px;
-			height: 70px;
-			font-size: 2.5rem;
-		}
-
-		.deletion-title {
-			font-size: 1.8rem;
-		}
-
-		.deletion-intro {
-			font-size: 1rem;
-		}
-
-		.deletion-steps {
-			padding: 20px 25px;
-		}
-
-		.deletion-steps li {
-			font-size: 0.95rem;
-			line-height: 1.8rem;
+			gap: var(--spacing-md);
 		}
 	}
 
-	@media (min-width: 901px) and (max-width: 1200px) {
+	/* Mobile */
+	@media (max-width: 768px) {
+		main {
+			padding: var(--spacing-xs);
+			gap: var(--spacing-md);
+		}
+
+		.hero {
+			padding: var(--spacing-lg) var(--spacing-md);
+			margin-top: var(--spacing-md);
+		}
+
+		.contact-section {
+			padding: var(--spacing-lg) var(--spacing-md);
+		}
+
 		.form-container {
 			grid-template-columns: 1fr;
-			gap: 2rem;
+			gap: var(--spacing-md);
+		}
+
+		.contact-form {
+			padding: var(--spacing-md) var(--spacing-md);
+		}
+
+		.btn-submit {
+			max-width: 100%;
+		}
+
+		.deletion-section {
+			padding: var(--spacing-lg) var(--spacing-md);
+		}
+
+		.deletion-steps {
+			padding: var(--spacing-md) var(--spacing-md);
+		}
+	}
+
+	/* Mobile Small */
+	@media (max-width: 480px) {
+		.hero {
+			padding: var(--spacing-md) var(--spacing-sm);
+		}
+
+		.contact-section {
+			padding: var(--spacing-md) var(--spacing-sm);
+		}
+
+		.deletion-section {
+			padding: var(--spacing-md) var(--spacing-sm);
+		}
+
+		.contact-form {
+			padding: var(--spacing-md) var(--spacing-sm);
+		}
+
+		.deletion-steps {
+			padding: var(--spacing-sm) var(--spacing-sm);
 		}
 	}
 </style>

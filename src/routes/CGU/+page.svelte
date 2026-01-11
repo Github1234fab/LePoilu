@@ -77,9 +77,53 @@ avant toute action judiciaire.
 
 
 <style>
-.wrap{max-width:900px;margin:0 auto;padding:48px 16px;color:#1c1c1c}
-.narrow{max-width:720px}
-h1{font-size:2rem;margin:0 0 12px}
-h2{font-size:1.25rem;margin:24px 0 8px}
-p{color:#444;line-height:1.65}
+	.wrap {
+		max-width: var(--desktop);
+		margin: 0 auto;
+		padding: var(--spacing-lg) var(--spacing-md);
+		color: var(--textDark);
+	}
+
+	.narrow {
+		max-width: 720px;
+	}
+
+	h1 {
+		font-size: clamp(1.5rem, 4vw, 2rem);
+		font-family: var(--FFTitle);
+		margin: 0 0 var(--spacing-sm);
+	}
+
+	h2 {
+		font-size: clamp(1.1rem, 2.5vw, 1.25rem);
+		font-family: var(--FFTitle);
+		margin: var(--spacing-md) 0 var(--spacing-xs);
+	}
+
+	p {
+		color: var(--text);
+		line-height: 1.65;
+		font-family: var(--FFBody);
+	}
+
+	img {
+		max-width: 100%;
+		height: auto;
+	}
+
+	/* === MEDIA QUERIES RESPONSIVE === */
+
+	/* Mobile */
+	@media (max-width: 768px) {
+		.wrap {
+			padding: var(--spacing-md) var(--spacing-sm);
+		}
+	}
+
+	/* Mobile Small */
+	@media (max-width: 480px) {
+		.wrap {
+			padding: var(--spacing-sm) var(--spacing-xs);
+		}
+	}
 </style>
