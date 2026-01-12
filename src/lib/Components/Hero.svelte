@@ -12,9 +12,9 @@
 <section class="hero">
 	<div class="hero-content" id="hero-link-app">
 		<!-- <h2 class="hero-subtitle">Tous les événements de ta région en un seul endroit</h2> -->
-		<h1 class="hero-title">Le Poilu - L'agenda de l'Ouest Lyonnais</h1>
-	
-		<h2 class="hero-subtitle">Ne rate plus rien près de chez toi !</h2>
+		<h1 class="hero-title">Le Poilu <br /><span>L'agenda de l'Ouest Lyonnais</span></h1>
+
+		<!-- <h2 class="hero-subtitle">Ne rate plus rien près de chez toi !</h2> -->
 		<p class="hero-description">
 			<!-- Découvre les concerts, les festivals, les marchés, les soirées, et toutes les activités
 			locales. -->
@@ -35,12 +35,11 @@
 			</div>
 		</div>
 	</div>
-
 </section>
 
 <style>
 	.hero {
-		background: linear-gradient(135deg, var(--ctaSecondary), #FF6101);
+		background: linear-gradient(135deg, var(--ctaSecondary), #ff6101);
 		border-radius: var(--radius-lg);
 		height: auto;
 		display: flex;
@@ -65,28 +64,30 @@
 	}
 
 	.hero-title {
-		color: white;
-		font-size: clamp(2rem, 5vw, 3rem);
+		color: rgb(255, 255, 255);
+		font-size: 5rem;
 		font-family: var(--FFTitle);
 		font-weight: 900;
 		margin-top: var(--spacing-sm);
 		text-align: center;
-		line-height: 1.2;
+	}
+	.hero-title span {
+		font-size: 3rem;
 	}
 
-	.hero-subtitle {
+	/* .hero-subtitle {
 		font-weight: 800;
 		font-family: var(--FFTitle);
 		text-align: center;
 		font-size: clamp(1.5rem, 4vw, 2rem);
 		color: white;
 		margin-top: var(--spacing-sm);
-	}
+	} */
 
 	.hero-description {
 		font-family: var(--FFTitle);
 		text-align: center;
-		color: white;
+		color: var(--text);
 		font-size: clamp(1rem, 2.5vw, 1.1rem);
 		margin-top: var(--spacing-sm);
 		max-width: 800px;
@@ -164,7 +165,6 @@
 		box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
 	}
 
-
 	/* ===================================
 	   MEDIA QUERIES RESPONSIVE
 	   =================================== */
@@ -178,6 +178,13 @@
 		.hero-cta {
 			padding: var(--spacing-lg);
 		}
+		.hero-title {
+			line-height: 60px;
+		}
+		.hero-title span {
+			line-height: 30px;
+			font-size: 2rem;
+		}
 	}
 
 	/* Mobile: 768px et moins */
@@ -190,10 +197,6 @@
 		.hero-content {
 			margin-top: var(--spacing-md);
 			padding: var(--spacing-sm);
-		}
-
-		.hero-subtitle {
-			padding: 0 var(--spacing-sm);
 		}
 
 		.hero-cta {
@@ -216,12 +219,20 @@
 			width: 100%;
 			max-width: 200px;
 		}
+		.hero-title {
+			line-height: 50px;
+			margin-bottom: 40px;
+		}
+		.hero-title span {
+			font-size: 2.3rem;
+		}
 	}
 
 	/* Mobile Small: 480px et moins */
 	@media (max-width: 480px) {
 		.hero {
 			border-radius: var(--radius-sm);
+			height: 1000px;
 		}
 
 		.hero-content {
@@ -234,6 +245,15 @@
 
 		.container_app-link {
 			gap: var(--spacing-sm);
+		}
+		.hero-title {
+			font-size: 4rem;
+			line-height: 36px;
+			margin-bottom: 40px;
+		}
+		.hero-title span {
+			font-size: 1.6rem;
+			line-height: 0px;
 		}
 	}
 </style>

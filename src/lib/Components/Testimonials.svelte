@@ -56,7 +56,7 @@
 				</div>
 				<p class="testimonial-text">"{testimonial.text}"</p>
 				<div class="testimonial-author">
-					<div class="author-avatar"></div>
+					<!-- <div class="author-avatar"></div> -->
 					<div class="author-info">
 						<p class="author-name">{testimonial.name}</p>
 						<p class="author-location">{testimonial.location}</p>
@@ -109,7 +109,7 @@
 		gap: var(--spacing-md);
 		backdrop-filter: blur(10px);
 		-webkit-backdrop-filter: blur(10px);
-		background-color: rgba(255, 97, 1, 0.75);
+		background-color:#073B4C;
 		color: white;
 		border: 1px solid rgba(255, 255, 255, 0.3);
 		box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
@@ -165,13 +165,13 @@
 	.star {
 		font-size: clamp(1rem, 2vw, 1.2rem);
 	}
-	.author-avatar {
+	/* .author-avatar {
 		width: 40px;
 		height: 40px;
 		border-radius: 50%;
 		background: rgba(255, 255, 255, 0.3);
 		border: 2px solid rgba(255, 255, 255, 0.5);
-	}
+	} */
 	.author-info {
 		display: flex;
 		flex-direction: column;

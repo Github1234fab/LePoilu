@@ -42,7 +42,7 @@
 
 <style>
 	.how-it-works {
-		background: linear-gradient(135deg, var(--ctaSecondary), #FF6101);
+		background-color:  #FF6101;
 		border-radius: var(--radius-lg);
 		height: 100%;
 		display: flex;
@@ -72,7 +72,7 @@
 	}
 	.step {
 		border-radius: var(--radius-lg);
-		height: 500px;
+		height: 100%;
 		display: flex;
 		padding: var(--spacing-md);
 		flex-direction: column;

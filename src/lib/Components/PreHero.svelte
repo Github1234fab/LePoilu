@@ -122,7 +122,7 @@
 		margin-bottom: var(--spacing-xl);
 		margin-top: var(--spacing-md);
 		padding: 16px 40px;
-		background: linear-gradient(135deg, #FF6101, var(--ctaSecondary));
+		background-color:  var(--cta);
 		color: white;
 		text-decoration: none;
 		font-weight: 700;

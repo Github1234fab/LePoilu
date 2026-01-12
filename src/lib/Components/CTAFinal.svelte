@@ -19,11 +19,11 @@
 		<div class="container_cta-stats">
 			<div class="cta-stats">
 				<div class="stat">
-					<p class="stat-number">10k+</p>
+					<p class="stat-number">1k+</p>
 					<p class="stat-label">Téléchargements</p>
 				</div>
 				<div class="stat">
-					<p class="stat-number">500+</p>
+					<p class="stat-number">200+</p>
 					<p class="stat-label">Événements/mois</p>
 				</div>
 				<div class="stat">
@@ -136,7 +136,7 @@
 		backdrop-filter: blur(10px);
 		-webkit-backdrop-filter: blur(10px);
 		background-color: rgba(255, 255, 255, 0.25);
-		color: white;
+		color: var(--text);
 		border: 1px solid rgba(255, 255, 255, 0.3);
 		box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.1);
 		transition: transform var(--transition-normal), box-shadow var(--transition-normal);

@@ -66,7 +66,7 @@
 
 <style>
 	.features {
-		background: linear-gradient(135deg, var(--background), #FF6101);
+		background-color: #f7f7f7;
 		border-radius: var(--radius-lg);
 		height: 100%;
 		display: flex;
@@ -113,6 +113,7 @@
 		gap: var(--spacing-md);
 		padding: var(--spacing-md);
 		width: 100%;
+		height: 100%;
 	}
 
 	.poilu-face {

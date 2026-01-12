@@ -6,10 +6,9 @@
 
 body {
 	font-family: 'Poppins', sans-serif;
-	color: #333;
+	color: #073B4C;
 	line-height: 1.6;
 	padding: 10px 0px;
-
 	background-color: var(--background); 
 }
 
@@ -19,15 +18,15 @@ body {
 	--primaryColor: #ffb79e;
 	--secondary: #a66660;
 	--accent: #af340c;
-	--background: #fff8f0;
+	--background: #ffffff;
 	--lightBg: rgb(245, 246, 246);
 	--border: #e6d3bd;
 	--borderColor: #e6d3bd;
 
 	/* Couleurs de texte */
-	--text: #2b2b2b;
-	--textColor: #2b2b2b;
-	--textDark: #1f1f1f;
+	--text: #073B4C;
+	--textColor: #073B4C;
+	--textDark: #073B4C;
 
 	/* Couleurs CTA */
 	--cta: #d9467a;
