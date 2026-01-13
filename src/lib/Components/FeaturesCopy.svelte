@@ -163,7 +163,8 @@
 		}
 		.features-grid {
 			padding: var(--spacing-sm);
-			gap: var(--spacing-sm);
+			/* gap: var(--spacing-sm); */
+			gap: 50px;
 		}
 	}
 </style>
