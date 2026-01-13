@@ -129,6 +129,8 @@
 		flex-direction: column;
 		gap: var(--spacing-xs);
 		min-width: 150px;
+		align-items: center;
+		justify-content: center;
 	}
 
 	.footer-link {
@@ -136,7 +138,9 @@
 		color: var(--textColor);
 		transition: all var(--transition-normal);
 		padding: var(--spacing-xs) 0;
-		display: inline-block;
+		display: flex;
+		align-items: center;
+		justify-content: center;
 	}
 
 	.footer-link:hover {
@@ -184,7 +188,6 @@
 		transform: translateY(-3px);
 	}
 
-
 	/* ===================================
 	   MEDIA QUERIES RESPONSIVE
 	   =================================== */
@@ -210,7 +213,7 @@
 		.footer-grid {
 			flex-direction: column;
 			align-items: flex-start;
-			justify-content: flex-start;
+			justify-content: center;
 			gap: var(--spacing-lg);
 			padding: var(--spacing-sm);
 		}

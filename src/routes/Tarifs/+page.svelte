@@ -135,6 +135,7 @@
 		justify-content: center;
 		position: relative;
 		margin-top: var(--spacing-md);
+		margin-bottom: 50px;
 		padding: var(--spacing-xl) var(--spacing-lg);
 		box-shadow: var(--shadow);
 	}
@@ -184,6 +185,7 @@
 		justify-content: center;
 		padding: var(--spacing-xl) var(--spacing-lg);
 		box-shadow: var(--shadow);
+		margin-bottom: 50px;
 	}
 
 	.section-header,
@@ -442,6 +444,7 @@
 		text-align: center;
 		box-shadow: var(--shadow);
 		border: 2px solid rgba(255, 255, 255, 0.4);
+		margin-bottom: 50px;
 	}
 
 	.btn-cta:hover {
@@ -509,13 +512,48 @@
 
 	/* Mobile Small */
 	@media (max-width: 480px) {
+		main {
+			gap: var(--spacing-xl);
+		}
+
 		.hero {
-			padding: var(--spacing-md) var(--spacing-sm);
+			padding: var(--spacing-lg) var(--spacing-md);
+			margin-bottom: var(--spacing-xl);
 		}
 
 		.pricing-section,
 		.howto-section {
-			padding: var(--spacing-md) var(--spacing-sm);
+			padding: var(--spacing-xl) var(--spacing-md);
+			margin-bottom: var(--spacing-xl);
+		}
+
+		.pricing-grid {
+			gap: var(--spacing-xl);
+		}
+
+		.pricing-card {
+			padding: var(--spacing-xl) var(--spacing-md);
+			gap: var(--spacing-lg);
+		}
+
+		.steps-grid {
+			gap: var(--spacing-lg);
+		}
+
+		.step-item {
+			padding: var(--spacing-lg) var(--spacing-md);
+			gap: var(--spacing-md);
+		}
+
+		.section-header,
+		.howto-header {
+			margin-bottom: var(--spacing-xl);
+		}
+
+		.poilu-jumelles {
+			height: 150px;
+			width: auto;
+			filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.3));
 		}
 	}
 </style>

@@ -85,6 +85,7 @@
 		z-index: 0;
 		position: relative;
 		padding: var(--spacing-xl) var(--spacing-md);
+	
 	}
 
 	.features-header {

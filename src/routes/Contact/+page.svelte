@@ -546,24 +546,78 @@
 
 	/* Mobile Small */
 	@media (max-width: 480px) {
+		main {
+			gap: var(--spacing-xl);
+		}
+
 		.hero {
-			padding: var(--spacing-md) var(--spacing-sm);
+			padding: var(--spacing-lg) var(--spacing-md);
+			margin-bottom: var(--spacing-xl);
 		}
 
 		.contact-section {
-			padding: var(--spacing-md) var(--spacing-sm);
+			padding: var(--spacing-xl) var(--spacing-md);
+			margin-bottom: var(--spacing-xl);
 		}
 
-		.deletion-section {
-			padding: var(--spacing-md) var(--spacing-sm);
+		.contact-header {
+			margin-bottom: var(--spacing-xl);
+		}
+
+		.form-container {
+			gap: var(--spacing-xl);
 		}
 
 		.contact-form {
-			padding: var(--spacing-md) var(--spacing-sm);
+			padding: var(--spacing-lg) var(--spacing-md);
+			gap: var(--spacing-lg);
+		}
+
+		.form-group {
+			gap: var(--spacing-sm);
+		}
+
+		.contact-info {
+			gap: var(--spacing-lg);
+		}
+
+		.info-card {
+			padding: var(--spacing-lg) var(--spacing-md);
+			gap: var(--spacing-md);
+		}
+
+		.deletion-section {
+			padding: var(--spacing-xl) var(--spacing-md);
+			margin-bottom: var(--spacing-xl);
+		}
+
+		.deletion-content {
+			gap: var(--spacing-md);
+		}
+
+		.deletion-icon {
+			margin-bottom: var(--spacing-lg);
 		}
 
 		.deletion-steps {
-			padding: var(--spacing-sm) var(--spacing-sm);
+			padding: var(--spacing-lg) var(--spacing-md) var(--spacing-lg) var(--spacing-xl);
+			margin-bottom: var(--spacing-lg);
+			max-width: 100%;
+		}
+
+		.deletion-steps li {
+			text-align: left;
+			line-height: 1.8rem;
+			margin-bottom: var(--spacing-sm);
+		}
+
+		.deletion-info {
+			gap: var(--spacing-sm);
+		}
+
+		.poilu-mobile {
+			height: 150px;
+			width: auto;
 		}
 	}
 </style>

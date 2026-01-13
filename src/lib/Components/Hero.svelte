@@ -48,6 +48,7 @@
 		justify-content: center;
 		position: relative;
 		margin-top: var(--spacing-md);
+		margin-bottom: 100px;
 		box-shadow: var(--shadow);
 		overflow: hidden;
 	}
@@ -65,24 +66,17 @@
 
 	.hero-title {
 		color: rgb(255, 255, 255);
-		font-size: 5rem;
+		font-size: 6rem;
 		font-family: var(--FFTitle);
 		font-weight: 900;
-		margin-top: var(--spacing-sm);
+		/* margin-top: var(--spacing-sm); */
 		text-align: center;
+		line-height: 70px;
 	}
 	.hero-title span {
 		font-size: 3rem;
 	}
 
-	/* .hero-subtitle {
-		font-weight: 800;
-		font-family: var(--FFTitle);
-		text-align: center;
-		font-size: clamp(1.5rem, 4vw, 2rem);
-		color: white;
-		margin-top: var(--spacing-sm);
-	} */
 
 	.hero-description {
 		font-family: var(--FFTitle);
@@ -234,7 +228,9 @@
 			border-radius: var(--radius-sm);
 			height: 1000px;
 		}
-
+		.hero-description {
+		padding: 10px;
+	}
 		.hero-content {
 			padding: var(--spacing-xs);
 		}

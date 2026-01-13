@@ -82,6 +82,7 @@
 		background-repeat: no-repeat;
 		background-size: cover;
 		box-shadow: var(--shadow);
+		margin-bottom: 100px;
 	}
 	.testimonials-container {
 		color: primary;

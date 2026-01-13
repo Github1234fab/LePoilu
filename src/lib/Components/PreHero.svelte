@@ -36,6 +36,7 @@
 		align-items: center;
 		justify-content: center;
 		padding: var(--spacing-md) 0;
+		margin-bottom: 100px;
 	}
 
 	.wrapper-title {
@@ -104,6 +105,7 @@
 		color: #FF6101;
 		text-align: center;
 		margin-bottom: var(--spacing-md);
+		margin-top: 50px;
 	}
 
 	.PreHero-description {

@@ -1,5 +1,5 @@
 <script>
-	import PoiluJumelles from '../../lib/assets/Poilu-jumelles.png';
+	import PoiluJumelles from '../../lib/assets/Poilu-outils.png';
 </script>
 
 <svelte:head>
@@ -16,7 +16,8 @@
 		<div class="hero-content">
 			<h1 class="hero-title">Toutes les fonctionnalités</h1>
 			<p class="hero-subtitle">
-				Le Poilu vous aide à trouver des idées sorties locales et à publier vos propres événements en quelques minutes.
+				Le Poilu vous aide à trouver des idées sorties locales et à publier vos propres événements
+				en quelques minutes.
 			</p>
 			<img class="poilu-jumelles" src={PoiluJumelles} alt="Personnage le poilu avec des jumelles" />
 		</div>
@@ -27,7 +28,9 @@
 		<div class="section-header">
 			<h2 class="section-title">Découvre toutes les fonctionnalités</h2>
 			<p class="section-description">
-				Trouve toutes les infos utiles de ta région. Heures d'ouvertures des commerçants, la localisation des marchés, des bibliothèques, des parcs, des salles de sport et bien plus encore.
+				Trouve toutes les infos utiles de ta région. Heures d'ouvertures des commerçants, la
+				localisation des marchés, des bibliothèques, des parcs, des salles de sport et bien plus
+				encore.
 			</p>
 		</div>
 
@@ -52,7 +55,7 @@
 				</div>
 				<h3 class="feature-title">Publication express</h3>
 				<div class="feature-content">
-					<p>Créer → payer → modération → en ligne.<br><br>Simple et clair.</p>
+					<p>Créer → payer → modération → en ligne.<br /><br />Simple et clair.</p>
 				</div>
 			</article>
 
@@ -62,7 +65,10 @@
 				</div>
 				<h3 class="feature-title">Alertes et favoris</h3>
 				<div class="feature-content">
-					<p>Soyez notifié quand un événement vous correspond.<br><br>Sauvegardez vos événements préférés.</p>
+					<p>
+						Soyez notifié quand un événement vous correspond.<br /><br />Sauvegardez vos événements
+						préférés.
+					</p>
 				</div>
 			</article>
 
@@ -72,7 +78,10 @@
 				</div>
 				<h3 class="feature-title">Cartes & itinéraires</h3>
 				<div class="feature-content">
-					<p>Visualisez rapidement l'emplacement et accédez au trajet.<br><br>Navigation GPS intégrée.</p>
+					<p>
+						Visualisez rapidement l'emplacement et accédez au trajet.<br /><br />Navigation GPS
+						intégrée.
+					</p>
 				</div>
 			</article>
 
@@ -82,7 +91,10 @@
 				</div>
 				<h3 class="feature-title">Likes et partages</h3>
 				<div class="feature-content">
-					<p>Like tes événements favoris.<br><br>Partage-les avec tes amis sur les réseaux sociaux.</p>
+					<p>
+						Like tes événements favoris.<br /><br />Partage-les avec tes amis sur les réseaux
+						sociaux.
+					</p>
 				</div>
 			</article>
 
@@ -92,7 +104,10 @@
 				</div>
 				<h3 class="feature-title">Infos pratiques</h3>
 				<div class="feature-content">
-					<p>Horaires des commerces, marchés, bibliothèques, parcs, salles de sport.<br><br>Tout ce dont tu as besoin.</p>
+					<p>
+						Horaires des commerces, marchés, bibliothèques, parcs, salles de sport.<br /><br />Tout
+						ce dont tu as besoin.
+					</p>
 				</div>
 			</article>
 		</div>
@@ -113,7 +128,7 @@
 
 	/* Hero Section */
 	.hero {
-		background: linear-gradient(135deg, var(--ctaSecondary), #FF6101);
+		background: linear-gradient(135deg, var(--ctaSecondary), #ff6101);
 		border-radius: var(--radius-lg);
 		height: auto;
 		display: flex;
@@ -122,6 +137,7 @@
 		justify-content: center;
 		position: relative;
 		margin-top: var(--spacing-md);
+		margin-bottom: 50px;
 		padding: var(--spacing-xl) var(--spacing-lg);
 		box-shadow: var(--shadow);
 	}
@@ -160,6 +176,8 @@
 		width: auto;
 		filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.3));
 		transition: transform var(--transition-normal);
+
+		bottom: 5px;
 	}
 
 	.poilu-jumelles:hover {
@@ -168,7 +186,7 @@
 
 	/* Features Section */
 	.features-section {
-		background: linear-gradient(135deg, var(--background), #FF6101);
+		background: linear-gradient(135deg, var(--background), #ff6101);
 		border-radius: var(--radius-lg);
 		height: 100%;
 		display: flex;
@@ -240,7 +258,7 @@
 
 	.feature-icon {
 		font-size: clamp(2rem, 4vw, 2.5rem);
-		color: #FF6101;
+		color: #ff6101;
 		background: linear-gradient(135deg, rgba(255, 97, 1, 0.1), rgba(232, 132, 60, 0.1));
 		width: 80px;
 		height: 80px;
@@ -289,10 +307,10 @@
 	}
 
 	.feature-content ul li:before {
-		content: "✓";
+		content: '✓';
 		position: absolute;
 		left: 0;
-		color: #FF6101;
+		color: #ff6101;
 		font-weight: bold;
 	}
 
@@ -300,7 +318,7 @@
 	.btn-cta {
 		display: inline-block;
 		padding: 18px 50px;
-		background: linear-gradient(135deg, #FF6101, var(--ctaSecondary));
+		background-color: var(--cta);
 		color: white;
 		text-decoration: none;
 		font-weight: 700;
@@ -309,8 +327,8 @@
 		transition: all var(--transition-normal);
 		font-family: var(--FFTitle);
 		text-align: center;
-		box-shadow: 0 8px 24px rgba(255, 97, 1, 0.3);
-		border: 2px solid rgba(255, 255, 255, 0.4);
+		box-shadow: 0 8px 24px rgba(23, 23, 23, 0.362);
+		margin-bottom: 50px;
 	}
 
 	.btn-cta:hover {
@@ -385,10 +403,21 @@
 	/* Mobile Small: 480px et moins */
 	@media (max-width: 480px) {
 		.hero {
-			padding: var(--spacing-sm);
+			padding: 20px;
 			border-radius: var(--radius-sm);
 		}
-
+		.hero-title {
+			margin-top: 20px;
+			margin-bottom: 50px;
+		}
+		.section-title{
+			margin-top: 50px;
+			margin-bottom: 50px;
+		}
+		.section-description{
+			margin-top: 0px;
+			margin-bottom: 50px;
+		}
 		.features-section {
 			padding: var(--spacing-sm);
 			border-radius: var(--radius-sm);
@@ -405,6 +434,7 @@
 
 		.btn-cta {
 			padding: 14px 30px;
+			margin-top: 50px;
 		}
 	}
 </style>

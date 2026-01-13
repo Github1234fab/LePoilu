@@ -419,14 +419,50 @@
 
 	/* Mobile Small */
 	@media (max-width: 480px) {
+		main {
+			gap: var(--spacing-xl);
+		}
+
 		.hero {
-			padding: var(--spacing-md) var(--spacing-sm);
+			padding: var(--spacing-lg) var(--spacing-md);
+			margin-bottom: var(--spacing-xl);
 		}
 
 		.story-section,
 		.mission-section,
 		.contact-cta-section {
-			padding: var(--spacing-md) var(--spacing-sm);
+			padding: var(--spacing-xl) var(--spacing-md);
+			margin-bottom: var(--spacing-xl);
+		}
+
+		.story-content {
+			gap: var(--spacing-xl);
+		}
+
+		.story-text {
+			gap: var(--spacing-lg);
+		}
+
+		.mission-header {
+			margin-bottom: var(--spacing-xl);
+		}
+
+		.mission-grid {
+			gap: var(--spacing-lg);
+		}
+
+		.mission-card {
+			padding: var(--spacing-lg) var(--spacing-md);
+			gap: var(--spacing-md);
+		}
+
+		.cta-content {
+			gap: var(--spacing-lg);
+		}
+
+		.poilu-face {
+			height: 150px;
+			width: auto;
 		}
 	}
 </style>

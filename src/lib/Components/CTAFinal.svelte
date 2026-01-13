@@ -60,6 +60,7 @@
 		z-index: 0;
 		padding: var(--spacing-lg);
 		box-shadow: var(--shadow);
+		margin-bottom: 100px;
 	}
 	.cta-container {
 		border-radius: var(--radius-lg);

@@ -51,6 +51,7 @@
 		z-index: 0;
 		padding: var(--spacing-lg);
 		box-shadow: var(--shadow);
+		margin-bottom: 100px;
 	}
 
 	.how-it-works-container {

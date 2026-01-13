@@ -76,6 +76,7 @@
 		z-index: 0;
 		position: relative;
 		box-shadow: var(--shadow);
+		margin-bottom: 100px;
 	}
 
 	.features-header {
