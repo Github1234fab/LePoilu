@@ -9,12 +9,12 @@
 		{
 			number: '2',
 			title: 'Tu fais défiler, tu filtres',
-			description: 'Consulte les évènements en scrollant et en utilisant les filtres.<br><br>Les évènements sont classés du plus proche au plus lointain, chronologiquement parlant.'
+			description: 'Consulte les évènements en scrollant et en utilisant les filtres.<br><br>Les évènements sont classés du plus proche au plus lointain.'
 		},
 		{
 			number: '3',
-			title: 'Découvre et profite',
-			description: 'Explore les événements, planifie tes sorties.<br><br>Like, partage et surtout amuse-toi bien !'
+			title: 'Créer un compte',
+			description: 'Si tu veux utiliser le Poilu dans toutes ses fonctionnalités et aller plus loin, créer ton compte. Ensuite tu pourras marquer tes évènements en favoris, consulter le carnet du poilu, créer tes propres annonces, etc !'
 		}
 	];
 </script>

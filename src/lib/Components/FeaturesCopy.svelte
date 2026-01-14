@@ -35,7 +35,7 @@
 			img: Favoris
 		},
 		{
-			icon: 'fa-solid fa-credit-card',
+			icon: 'fa-solid fa-list-check',
 			title: 'Tu consultes',
 			description: 'Tu peux consulter à tout moment tes favoris, ton espace "mes annonces", dans lequel tu retrouveras toutes les annonces que tu as créer avec son statut.<br><br>Par exemple "en attente de valdiation", ou "payée" ou "gratuite".<br><br>Si ton évènement est payant, tu peux effectuer le paiement directement depuis l\'application, en toute sécurité.',
 			img: Paiements

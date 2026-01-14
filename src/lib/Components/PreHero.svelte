@@ -20,7 +20,7 @@
 				d'activité...
 				<br /><br />Passionné par la vie locale, il adore découvrir et partager les événements qui
 				animent son territoire.
-				<br /><br />Si toi aussi tu souhaites vivre pleinement ta région, suis Le Poilu et ne manque
+				<br /><br />Si toi aussi tu souhaites vivre pleinement ta région, télécharge l'application Le Poilu et ne manque
 				plus jamais un événement près de chez toi !
 			</p>
 			<a class="btn-link-app" href="/Telecharger">Télécharge Le Poilu</a>

@@ -16,7 +16,7 @@
 		<div class="hero-content">
 			<h1 class="hero-title">Toutes les fonctionnalités</h1>
 			<p class="hero-subtitle">
-				Le Poilu vous aide à trouver des idées sorties locales et à publier vos propres événements
+				Le Poilu t'aide à trouver des idées de sorties locales et à publier tes propres événements ou ceux de ton asso,
 				en quelques minutes.
 			</p>
 			<img class="poilu-jumelles" src={PoiluJumelles} alt="Personnage le poilu avec des jumelles" />
@@ -59,28 +59,28 @@
 				</div>
 			</article>
 
-			<article class="feature-card">
+			<!-- <article class="feature-card">
 				<div class="feature-icon">
 					<i class="fa-solid fa-bell"></i>
 				</div>
-				<h3 class="feature-title">Alertes et favoris</h3>
+				<h3 class="feature-title">Favoris</h3>
 				<div class="feature-content">
 					<p>
-						Soyez notifié quand un événement vous correspond.<br /><br />Sauvegardez vos événements
-						préférés.
+						Marque tes évènements préférés comme favoris et retrouve les dans ton espace, après avoir créé ton compte. Tu pourras aussi les partager.
 					</p>
 				</div>
-			</article>
+			</article> -->
 
 			<article class="feature-card">
 				<div class="feature-icon">
 					<i class="fa-solid fa-map-location-dot"></i>
 				</div>
-				<h3 class="feature-title">Cartes & itinéraires</h3>
+				<h3 class="feature-title">Localisation & Itinéraires</h3>
 				<div class="feature-content">
 					<p>
-						Visualisez rapidement l'emplacement et accédez au trajet.<br /><br />Navigation GPS
-						intégrée.
+						
+Visualisez l'emplacement de chaque événement et obtenez 
+l'itinéraire en un clic avec votre app de navigation préférée.
 					</p>
 				</div>
 			</article>
@@ -98,7 +98,7 @@
 				</div>
 			</article>
 
-			<article class="feature-card">
+			<!-- <article class="feature-card">
 				<div class="feature-icon">
 					<i class="fa-solid fa-info-circle"></i>
 				</div>
@@ -109,7 +109,7 @@
 						ce dont tu as besoin.
 					</p>
 				</div>
-			</article>
+			</article> -->
 		</div>
 
 		<a href="/Telecharger" class="btn-cta">Essayez l'app</a>
@@ -227,7 +227,7 @@
 	/* Features Grid */
 	.features-grid {
 		display: grid;
-		grid-template-columns: repeat(3, 1fr);
+		grid-template-columns: repeat(2, 1fr);
 		gap: var(--spacing-md);
 		width: 100%;
 		margin-bottom: var(--spacing-xl);

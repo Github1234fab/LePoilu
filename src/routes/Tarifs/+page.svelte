@@ -3,9 +3,16 @@
 
 	const pricing = [
 		{
+			name: 'Gratuit',
+			price: '0€',
+			details: ['1 annonce', 'Modération standard (< 24h)', 'Visible 30 jours'],
+			icon: 'fa-solid fa-ticket',
+			recommended: false
+		},
+		{
 			name: 'À l\'unité',
 			price: '4,99 €',
-			details: ['1 annonce', 'Modération standard (< 24h)', 'Visible 30 jours'],
+			details: ['1 annonce', 'Modération standard (< 24h)', 'Visible 30 jours', 'Photo ou visuel', "Liens vers l'annonceur et la billeterie"],
 			icon: 'fa-solid fa-ticket',
 			recommended: false
 		},
@@ -218,7 +225,7 @@
 	/* Pricing Grid */
 	.pricing-grid {
 		display: grid;
-		grid-template-columns: repeat(3, 1fr);
+		grid-template-columns: repeat(2, 1fr);
 		gap: var(--spacing-md);
 		width: 100%;
 		margin-bottom: var(--spacing-md);
