@@ -6,27 +6,27 @@
 			name: 'Gratuit',
 			price: '0€',
 			details: ['1 annonce', 'Modération standard (< 24h)', 'Visible 30 jours'],
-			icon: 'fa-solid fa-ticket',
+			icon: 'fa-solid  fa-hand-holding-dollar',
 			recommended: false
 		},
 		{
-			name: 'À l\'unité',
+			name: 'À l\'unité (Premium)',
 			price: '4,99 €',
-			details: ['1 annonce', 'Modération standard (< 24h)', 'Visible 30 jours', 'Photo ou visuel', "Liens vers l'annonceur et la billeterie"],
+			details: ['1 annonce', 'Modération standard (< 24h)', 'Photo, visuel', "Liens vers l'annonceur", "Lien vers la billeterie"],
 			icon: 'fa-solid fa-ticket',
 			recommended: false
 		},
 		{
 			name: 'Pack 10',
-			price: '19,90 €',
-			details: ['10 annonces', 'Modération prioritaire', 'Économisez 50%'],
+			price: '24,99 €',
+			details: ['10 annonces Premium', 'Modération prioritaire', 'Économisez 50%'],
 			icon: 'fa-solid fa-layer-group',
 			recommended: true
 		},
 		{
 			name: 'Pro (mensuel)',
-			price: '24,99 €',
-			details: ['Annonces illimitées', 'Badge organisateur vérifié', 'Support prioritaire'],
+			price: '49,99 €',
+			details: ['Annonces Premium illimitées', 'Badge organisateur vérifié', 'Support prioritaire'],
 			icon: 'fa-solid fa-crown',
 			recommended: false
 		}
@@ -107,7 +107,7 @@
 			<div class="step-item">
 				<div class="step-number">3</div>
 				<h3 class="step-title">Modération rapide</h3>
-				<p class="step-description">Notre équipe vérifie votre annonce en moins de 24h (ou en prioritaire avec le Pack 10).</p>
+				<p class="step-description">Notre équipe vérifie votre annonce en moins de 24h (ou en prioritaire avec le Pack 10 et le pack Pro).</p>
 			</div>
 
 			<div class="step-item">
