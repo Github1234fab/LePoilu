@@ -17,16 +17,16 @@
 			recommended: false
 		},
 		{
-			name: 'Pack 10',
+			name: 'Pack 10 (2.49€/annonce)',
 			price: '24,99 €',
-			details: ['10 annonces Premium', 'Modération prioritaire', 'Économisez 50%'],
+			details: ['10 annonces Premium', "Sans limite de temps", 'Modération prioritaire', 'Économisez 50%'],
 			icon: 'fa-solid fa-layer-group',
 			recommended: true
 		},
 		{
 			name: 'Pro (mensuel)',
 			price: '49,99 €',
-			details: ['Annonces Premium illimitées', 'Badge organisateur vérifié', 'Support prioritaire'],
+			details: ['Annonces Premium illimitées', 'Publication en masse via fichier', 'Modération prioritaire', 'Badge organisateur vérifié', 'Support prioritaire'],
 			icon: 'fa-solid fa-crown',
 			recommended: false
 		}
