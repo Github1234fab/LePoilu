@@ -126,7 +126,8 @@
 			<p class="deletion-intro">Pour supprimer votre compte Le Poilu et toutes les données associées :</p>
 
 			<ol class="deletion-steps">
-				<li>Envoyez un email à : <strong>contact@lepoilu.fr</strong></li>
+				<li>Depuis l'espace "Mon compte" sur l'application <strong>Le Poilu</strong></li>
+				<li>Depuis le site web : <strong>contact@lepoilu.fr</strong></li>
 				<li>Objet : <strong>"Suppression de compte"</strong></li>
 				<li>Indiquez l'adresse email de votre compte</li>
 			</ol>

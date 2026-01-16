@@ -14,7 +14,7 @@
 		{
 			number: '3',
 			title: 'Créer un compte',
-			description: 'Si tu veux utiliser le Poilu dans toutes ses fonctionnalités et aller plus loin, créer ton compte. Ensuite tu pourras marquer tes évènements en favoris, consulter le carnet du poilu, créer tes propres annonces, etc !'
+			description: 'Créer un compte si tu veux utiliser le Poilu dans toutes ses fonctionnalités et aller plus loin. Tu pourras marquer tes évènements en favoris, consulter le carnet du poilu, créer tes propres annonces, etc !'
 		}
 	];
 </script>

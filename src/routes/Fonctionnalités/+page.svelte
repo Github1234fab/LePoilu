@@ -16,7 +16,7 @@
 		<div class="hero-content">
 			<h1 class="hero-title">Toutes les fonctionnalités</h1>
 			<p class="hero-subtitle">
-				Le Poilu t'aide à trouver des idées de sorties locales et à publier tes propres événements ou ceux de ton asso,
+				Le Poilu t'aide à trouver des idées de sorties locales et à publier tes propres événements,
 				en quelques minutes.
 			</p>
 			<img class="poilu-jumelles" src={PoiluJumelles} alt="Personnage le poilu avec des jumelles" />
@@ -28,9 +28,7 @@
 		<div class="section-header">
 			<h2 class="section-title">Découvre toutes les fonctionnalités</h2>
 			<p class="section-description">
-				Trouve toutes les infos utiles de ta région. Heures d'ouvertures des commerçants, la
-				localisation des marchés, des bibliothèques, des parcs, des salles de sport et bien plus
-				encore.
+				Trouve des idées de sorties locales et publie tes propres événements, en quelques minutes.
 			</p>
 		</div>
 
@@ -78,9 +76,9 @@
 				<h3 class="feature-title">Localisation & Itinéraires</h3>
 				<div class="feature-content">
 					<p>
-						
-Visualisez l'emplacement de chaque événement et obtenez 
-l'itinéraire en un clic avec votre app de navigation préférée.
+						Visualise l'emplacement de chaque événement et obtient l'itinéraire en un clic avec ton
+						app de navigation préférée. Tu cliques sur le lieu de l'événement et ton application de
+						navigation s'ouvre avec l'itinéraire.
 					</p>
 				</div>
 			</article>
@@ -110,6 +108,37 @@ l'itinéraire en un clic avec votre app de navigation préférée.
 					</p>
 				</div>
 			</article> -->
+		</div>
+
+		<!-- Professional Section -->
+		<div id="pro" class="section-header" style="margin-top: var(--spacing-xxl);">
+			<h2 class="section-title">Espace Professionnels</h2>
+			<p class="section-description">
+				Des outils dédiés pour simplifier la gestion de vos événements.
+			</p>
+		</div>
+
+		<div class="features-grid" style="grid-template-columns: 1fr; max-width: 700px;">
+			<article class="feature-card" style="min-height: auto; padding: var(--spacing-lg);">
+				<div class="feature-icon">
+					<i class="fa-solid fa-file-csv"></i>
+				</div>
+				<h3 class="feature-title">Import de masse</h3>
+				<div class="feature-content">
+					<p>
+						Vous êtes une mairie, un office de tourisme ou un organisateur ?<br />
+						Gagnez du temps en publiant tous vos événements en une seule fois grâce à notre modèle CSV
+						standardisé.
+					</p>
+					<a
+						href="/modele_import_annonces.xlsx"
+						download="modele_import_annonces.xlsx"
+						class="btn-download"
+					>
+						<i class="fa-solid fa-download"></i> Télécharger le modèle
+					</a>
+				</div>
+			</article>
 		</div>
 
 		<a href="/Telecharger" class="btn-cta">Essayez l'app</a>
@@ -410,11 +439,11 @@ l'itinéraire en un clic avec votre app de navigation préférée.
 			margin-top: 20px;
 			margin-bottom: 50px;
 		}
-		.section-title{
+		.section-title {
 			margin-top: 50px;
 			margin-bottom: 50px;
 		}
-		.section-description{
+		.section-description {
 			margin-top: 0px;
 			margin-bottom: 50px;
 		}
@@ -436,5 +465,26 @@ l'itinéraire en un clic avec votre app de navigation préférée.
 			padding: 14px 30px;
 			margin-top: 50px;
 		}
+	}
+	/* Download Button */
+	.btn-download {
+		display: inline-flex;
+		align-items: center;
+		gap: 10px;
+		margin-top: var(--spacing-md);
+		padding: 12px 30px;
+		background-color: var(--ctaSecondary); /* Using secondary color for resource download */
+		color: white;
+		text-decoration: none;
+		font-weight: 600;
+		border-radius: var(--radius-md);
+		transition: all var(--transition-normal);
+		font-family: var(--FFTitle);
+	}
+
+	.btn-download:hover {
+		background-color: #e55a00; /* Slightly darker shade */
+		transform: translateY(-2px);
+		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 	}
 </style>
