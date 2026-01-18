@@ -70,17 +70,18 @@
 <style>
 	.testimonials {
 		border-radius: var(--radius-lg);
-		height: 1200px;
+		height: auto;
 		width: 100%;
 		display: grid;
 		grid-template-columns: 1fr 1fr;
 		align-items: start;
 		z-index: 0;
 		padding: var(--spacing-md);
+		background-color:  #FF6101;
 		background-image: url('../assets/Poilu-village2.png');
 		background-position: center;
 		background-repeat: no-repeat;
-		background-size: contain;
+		background-size: 70%;
 		box-shadow: var(--shadow);
 		margin-bottom: 100px;
 	}
