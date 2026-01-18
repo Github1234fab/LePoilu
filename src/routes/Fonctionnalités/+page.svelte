@@ -1,5 +1,6 @@
 <script>
 	import PoiluJumelles from '../../lib/assets/Poilu-outils.png';
+	import MockupIphone from '../../lib/assets/Mockup-iphone-lePoilu.jpg';
 </script>
 
 <svelte:head>
@@ -21,6 +22,12 @@
 			</p>
 			<img class="poilu-jumelles" src={PoiluJumelles} alt="Personnage le poilu avec des jumelles" />
 		</div>
+	</section>
+
+	<!-- App Preview Section -->
+	<section class="app-preview">
+		<h2 class="app-preview-title">L'application en action</h2>
+		<img src={MockupIphone} alt="Aperçu de l'application Le Poilu sur iPhone" class="mockup-image" />
 	</section>
 
 	<!-- Features Grid Section -->
@@ -211,6 +218,34 @@
 
 	.poilu-jumelles:hover {
 		transform: scale(1.05);
+	}
+
+	/* App Preview Section */
+	.app-preview {
+		background: linear-gradient(135deg, var(--cta), #1a1a2e);
+		border-radius: var(--radius-lg);
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		padding: var(--spacing-xl) var(--spacing-lg);
+		box-shadow: var(--shadow);
+	}
+
+	.app-preview-title {
+		color: white;
+		font-family: var(--FFTitle);
+		font-size: clamp(1.8rem, 4vw, 2.5rem);
+		font-weight: 900;
+		margin-bottom: var(--spacing-lg);
+		text-align: center;
+	}
+
+	.mockup-image {
+		max-width: 100%;
+		height: auto;
+		border-radius: var(--radius-md);
+		box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
 	}
 
 	/* Features Section */
