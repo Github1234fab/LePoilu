@@ -4,7 +4,7 @@
 	import Android from '../assets/android.png';
 
 	export let downloadLinks = {
-		ios: 'https://www.apple.com/fr/app-store/',
+		ios: 'https://apps.apple.com/fr/app/le-poilu/id6757426596',
 		android: 'https://play.google.com/store/games?hl=fr'
 	};
 </script>

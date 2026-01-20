@@ -25,7 +25,7 @@
 			<img class="lePoilu" src={Poilu} alt="Le personnage Le Poilu" />
 			<p>Ne rates plus jamais un événement avec le Poilu.</p>
 			<div class="container_app-link">
-				<a href="https://www.apple.com/fr/app-store/" class="btn-app-link" target="_blank">
+				<a href="https://apps.apple.com/fr/app/le-poilu/id6757426596" class="btn-app-link" target="_blank">
 					<img class="img-app-link" src={IOS} alt="ios" />
 				</a>
 
