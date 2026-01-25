@@ -142,16 +142,33 @@
 		}
 	}
 
-	import { auth, db } from '$lib/firebase';
+	import { initFirebase } from '$lib/firebase';
 	import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 	import { signInAnonymously } from 'firebase/auth';
 
 	let loading = false;
 	let error = null;
+	let auth, db; // Local instances
+
+	onMount(() => {
+		const firebase = initFirebase();
+		if (firebase) {
+			auth = firebase.auth;
+			db = firebase.db;
+		} else {
+			error = 'Erreur de configuration Firebase. Vérifiez la console.';
+		}
+	});
 
 	async function handleSubmit() {
 		loading = true;
 		error = null;
+
+		if (!auth || !db) {
+			error = 'Firebase non initialisé. Vérifiez vos clés API.';
+			loading = false;
+			return;
+		}
 
 		try {
 			// 1. Ensure user is authenticated (Anonymous or real)
@@ -162,8 +179,6 @@
 			}
 
 			// 2. Prepare Ad Data for Firestore
-			// Note: We are not handling file upload here for MVP simplicity,
-			// assuming image is optional or handled later. In real app, upload first.
 			const adData = {
 				titre: ad.title,
 				description: ad.description,
@@ -423,11 +438,11 @@
 </div>
 
 <style>
-	.page-container {
+	/* .page-container {
 		min-height: 100vh;
 		padding-bottom: var(--spacing-xl);
 		background: var(--lightBg);
-	}
+	} */
 
 	.content-wrapper {
 		padding-top: var(--spacing-lg);

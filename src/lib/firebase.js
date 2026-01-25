@@ -1,27 +1,40 @@
-// Import the functions you need from the SDKs you need
 import { initializeApp, getApps, getApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
+import { browser } from '$app/environment';
 
-// Your web app's Firebase configuration
+// Hardcoded config provided by user
 const firebaseConfig = {
-    apiKey: import.meta.env.PUBLIC_FIREBASE_API_KEY,
-    authDomain: import.meta.env.PUBLIC_FIREBASE_AUTH_DOMAIN,
-    projectId: import.meta.env.PUBLIC_FIREBASE_PROJECT_ID,
-    storageBucket: import.meta.env.PUBLIC_FIREBASE_STORAGE_BUCKET,
-    messagingSenderId: import.meta.env.PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
-    appId: import.meta.env.PUBLIC_FIREBASE_APP_ID
+  apiKey: "AIzaSyAEwpAek6JuWKBWxCZRWHIpJpFtLmngzLE",
+  authDomain: "bddjson.firebaseapp.com",
+  projectId: "bddjson",
+  storageBucket: "bddjson.firebasestorage.app",
+  messagingSenderId: "797023585100",
+  appId: "1:797023585100:web:2b0fe7ee054fdcc6a885e9",
+  measurementId: "G-3JB2081G3X"
 };
 
-// Initialize Firebase (singleton pattern)
 let app;
-if (!getApps().length) {
-    app = initializeApp(firebaseConfig);
-} else {
-    app = getApp();
+let auth;
+let db;
+let storage;
+
+if (browser) {
+    if (!getApps().length) {
+        app = initializeApp(firebaseConfig);
+    } else {
+        app = getApp();
+    }
+    auth = getAuth(app);
+    db = getFirestore(app);
+    storage = getStorage(app);
+    console.log("[Firebase] Initialized on client.");
 }
 
-export const auth = getAuth(app);
-export const db = getFirestore(app);
-export const storage = getStorage(app);
+// Helper for lazy loading if needed, but exports above will work in client components
+const initFirebase = () => {
+    return { auth, db, storage };
+};
+
+export { auth, db, storage, initFirebase };
