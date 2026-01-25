@@ -132,7 +132,8 @@
 		'Stage',
 		'Soirée',
 		'Théâtre',
-		'Visite guidée'
+		'Visite guidée',
+		'Vide maison'
 	];
 
 	function handleImageUpload(e) {
