@@ -24,6 +24,7 @@
 			<a href="/Tarifs" class="nav-link">Tarifs</a>
 			<a href="/Apropos" class="nav-link">À propos</a>
 			<a href="/Contact" class="nav-link">Contact</a>
+			<a href="/carnet/rejoindre" class="nav-link">Espace Commerçant</a>
 		</nav>
 
 		<div class="header-cta">
@@ -42,10 +43,10 @@
 	{#if isMenuOpen}
 		<nav class="nav-mobile" class:open={isMenuOpen}>
 			<a href="/Fonctionnalités" class="nav-link-mobile" on:click={closeMenu}>Fonctionnalités</a>
-			<a href="/Tarifs" class="nav-link-mobile" on:click={closeMenu}>Tarifs</a
-			>
+			<a href="/Tarifs" class="nav-link-mobile" on:click={closeMenu}>Tarifs</a>
 			<a href="/Apropos" class="nav-link-mobile" on:click={closeMenu}>À propos</a>
 			<a href="/Contact" class="nav-link-mobile" on:click={closeMenu}>Contact</a>
+			<a href="/carnet/rejoindre" class="nav-link-mobile" on:click={closeMenu}>Espace Commerçant</a>
 			<a href="/Telecharger" class="nav-link-mobile" on:click={closeMenu}>Télécharger l'app</a>
 		</nav>
 	{/if}

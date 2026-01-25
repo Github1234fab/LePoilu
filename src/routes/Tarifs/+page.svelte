@@ -7,28 +7,49 @@
 			price: '0€',
 			details: ['1 annonce', 'Modération standard (< 24h)', 'Visible 30 jours'],
 			icon: 'fa-solid  fa-hand-holding-dollar',
-			recommended: false
+			recommended: false,
+			link: '/publier?plan=free'
 		},
 		{
-			name: 'À l\'unité (Premium)',
+			name: "À l'unité (Premium)",
 			price: '4,99 €',
-			details: ['1 annonce', 'Modération standard (< 24h)', 'Photo, visuel', "Liens vers l'annonceur", "Lien vers la billeterie"],
+			details: [
+				'1 annonce',
+				'Modération standard (< 24h)',
+				'Photo, visuel',
+				"Liens vers l'annonceur",
+				'Lien vers la billeterie'
+			],
 			icon: 'fa-solid fa-ticket',
-			recommended: false
+			recommended: false,
+			link: '/publier?plan=premium'
 		},
 		{
 			name: 'Pack 10 (2.49€/annonce)',
 			price: '24,99 €',
-			details: ['10 annonces Premium', "Sans limite de temps", 'Modération prioritaire', 'Économisez 50%'],
+			details: [
+				'10 annonces Premium',
+				'Sans limite de temps',
+				'Modération prioritaire',
+				'Économisez 50%'
+			],
 			icon: 'fa-solid fa-layer-group',
-			recommended: true
+			recommended: true,
+			link: '/acheter-plan?plan=pack10'
 		},
 		{
 			name: 'Pro (mensuel)',
 			price: '49,99 €',
-			details: ['Annonces Premium illimitées', 'Publication en masse via fichier', 'Modération prioritaire', 'Badge organisateur vérifié', 'Support prioritaire'],
+			details: [
+				'Annonces Premium illimitées',
+				'Publication en masse via fichier',
+				'Modération prioritaire',
+				'Badge organisateur vérifié',
+				'Support prioritaire'
+			],
 			icon: 'fa-solid fa-crown',
-			recommended: false
+			recommended: false,
+			link: '/acheter-plan?plan=pro'
 		}
 	];
 </script>
@@ -47,7 +68,7 @@
 		<div class="hero-content">
 			<h1 class="hero-title">Publier un événement</h1>
 			<p class="hero-subtitle">
-				Créez votre annonce, payez et elle sera mise en ligne après modération.<br>Offres de lancement disponibles.
+				Créez votre annonce, payez. Elle sera mise en ligne après modération.<br />
 			</p>
 			<img class="poilu-jumelles" src={PoiluJumelles} alt="Personnage le poilu avec des jumelles" />
 		</div>
@@ -57,9 +78,7 @@
 	<section class="pricing-section">
 		<div class="section-header">
 			<h2 class="section-title">Nos tarifs</h2>
-			<p class="section-description">
-				Choisissez la formule qui correspond le mieux à vos besoins
-			</p>
+			<p class="section-description">Choisissez la formule qui correspond le mieux à vos besoins</p>
 		</div>
 
 		<div class="pricing-grid">
@@ -78,7 +97,7 @@
 							<li>{detail}</li>
 						{/each}
 					</ul>
-					<a class="btn-pricing" href="/Telecharger">Commencer</a>
+					<a class="btn-pricing" href={tier.link}>Commencer</a>
 				</article>
 			{/each}
 		</div>
@@ -95,29 +114,38 @@
 			<div class="step-item">
 				<div class="step-number">1</div>
 				<h3 class="step-title">Créez votre événement</h3>
-				<p class="step-description">Renseignez le titre, la date, le lieu, la description et ajoutez une image.</p>
+				<p class="step-description">
+					Renseignez le titre, la date, le lieu, la description et ajoutez une image.
+				</p>
 			</div>
 
 			<div class="step-item">
 				<div class="step-number">2</div>
 				<h3 class="step-title">Choisissez votre formule</h3>
-				<p class="step-description">Sélectionnez l'offre qui correspond à vos besoins et payez en ligne de manière sécurisée.</p>
+				<p class="step-description">
+					Sélectionnez l'offre qui correspond à vos besoins et payez en ligne de manière sécurisée.
+				</p>
 			</div>
 
 			<div class="step-item">
 				<div class="step-number">3</div>
 				<h3 class="step-title">Modération rapide</h3>
-				<p class="step-description">Notre équipe vérifie votre annonce en moins de 24h (ou en prioritaire avec le Pack 10 et le pack Pro).</p>
+				<p class="step-description">
+					Notre équipe vérifie votre annonce en moins de 24h (ou en prioritaire avec le Pack 10 et
+					le pack Pro).
+				</p>
 			</div>
 
 			<div class="step-item">
 				<div class="step-number">4</div>
 				<h3 class="step-title">Publication en ligne</h3>
-				<p class="step-description">Votre événement est publié et visible par tous les utilisateurs de l'application.</p>
+				<p class="step-description">
+					Votre événement est publié et visible par tous les utilisateurs de l'application.
+				</p>
 			</div>
 		</div>
 
-		<a href="/Telecharger" class="btn-cta">Publier mon événement</a>
+		<a href="/publier?plan=free" class="btn-cta">Publier mon événement</a>
 	</section>
 </main>
 
@@ -133,7 +161,7 @@
 
 	/* Hero Section */
 	.hero {
-		background: linear-gradient(135deg, var(--ctaSecondary), #FF6101);
+		background: linear-gradient(135deg, var(--ctaSecondary), #ff6101);
 		border-radius: var(--radius-lg);
 		height: auto;
 		display: flex;
@@ -183,7 +211,7 @@
 
 	/* Pricing Section */
 	.pricing-section {
-		background: linear-gradient(135deg, var(--background), #FF6101);
+		background: linear-gradient(135deg, var(--background), #ff6101);
 		border-radius: var(--radius-lg);
 		height: 100%;
 		display: flex;
@@ -244,13 +272,15 @@
 		background-color: rgba(255, 255, 255, 0.9);
 		border: 2px solid rgba(255, 97, 1, 0.2);
 		box-shadow: var(--shadow3);
-		transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+		transition:
+			transform var(--transition-normal),
+			box-shadow var(--transition-normal);
 		text-align: center;
 		position: relative;
 	}
 
 	.pricing-card.recommended {
-		border: 2px solid #FF6101;
+		border: 2px solid #ff6101;
 		transform: scale(1.05);
 		background-color: rgba(255, 255, 255, 0.95);
 	}
@@ -269,7 +299,7 @@
 		top: -15px;
 		left: 50%;
 		transform: translateX(-50%);
-		background: linear-gradient(135deg, #FF6101, var(--ctaSecondary));
+		background: linear-gradient(135deg, #ff6101, var(--ctaSecondary));
 		color: white;
 		padding: var(--spacing-xs) var(--spacing-md);
 		border-radius: 20px;
@@ -281,7 +311,7 @@
 
 	.pricing-icon {
 		font-size: clamp(2rem, 4vw, 3rem);
-		color: #FF6101;
+		color: #ff6101;
 		background: linear-gradient(135deg, rgba(255, 97, 1, 0.1), rgba(232, 132, 60, 0.1));
 		width: clamp(80px, 12vw, 100px);
 		height: clamp(80px, 12vw, 100px);
@@ -305,7 +335,7 @@
 		font-family: var(--FFTitle);
 		font-weight: 900;
 		font-size: clamp(1.8rem, 4vw, 2.5rem);
-		color: #FF6101;
+		color: #ff6101;
 		margin: var(--spacing-xs) 0;
 	}
 
@@ -326,10 +356,10 @@
 	}
 
 	.pricing-details li:before {
-		content: "✓";
+		content: '✓';
 		position: absolute;
 		left: 0;
-		color: #FF6101;
+		color: #ff6101;
 		font-weight: bold;
 		font-size: clamp(1rem, 2vw, 1.2rem);
 	}
@@ -337,7 +367,7 @@
 	.btn-pricing {
 		display: inline-block;
 		padding: var(--spacing-sm) var(--spacing-lg);
-		background: linear-gradient(135deg, #FF6101, var(--ctaSecondary));
+		background: linear-gradient(135deg, #ff6101, var(--ctaSecondary));
 		color: white;
 		text-decoration: none;
 		font-weight: 700;
@@ -358,7 +388,7 @@
 
 	/* How It Works Section */
 	.howto-section {
-		background: linear-gradient(135deg, var(--ctaSecondary), #FF6101);
+		background: linear-gradient(135deg, var(--ctaSecondary), #ff6101);
 		border-radius: var(--radius-lg);
 		height: 100%;
 		display: flex;
@@ -395,7 +425,9 @@
 		border-radius: var(--radius-md);
 		padding: var(--spacing-md) var(--spacing-md);
 		box-shadow: var(--shadow3);
-		transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+		transition:
+			transform var(--transition-normal),
+			box-shadow var(--transition-normal);
 	}
 
 	.step-item:hover {
@@ -407,7 +439,7 @@
 		font-size: clamp(2rem, 4vw, 2.5rem);
 		font-weight: 900;
 		background: white;
-		color: #FF6101;
+		color: #ff6101;
 		height: clamp(70px, 10vw, 80px);
 		width: clamp(70px, 10vw, 80px);
 		border-radius: 50%;
@@ -441,7 +473,7 @@
 		display: inline-block;
 		padding: var(--spacing-md) var(--spacing-xl);
 		background: white;
-		color: #FF6101;
+		color: #ff6101;
 		text-decoration: none;
 		font-weight: 700;
 		font-size: clamp(1rem, 2.5vw, 1.2rem);
