@@ -142,6 +142,10 @@
 		}
 	}
 
+	import { auth, db } from '$lib/firebase';
+	import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+	import { signInAnonymously } from 'firebase/auth';
+
 	let loading = false;
 	let error = null;
 
@@ -150,8 +154,49 @@
 		error = null;
 
 		try {
-			// In a real implementation: upload ad.image to Storage, then send URL.
-			// Here we send metadata without the file binary.
+			// 1. Ensure user is authenticated (Anonymous or real)
+			let user = auth.currentUser;
+			if (!user) {
+				const userCred = await signInAnonymously(auth);
+				user = userCred.user;
+			}
+
+			// 2. Prepare Ad Data for Firestore
+			// Note: We are not handling file upload here for MVP simplicity,
+			// assuming image is optional or handled later. In real app, upload first.
+			const adData = {
+				titre: ad.title,
+				description: ad.description,
+				lieu: ad.location,
+				ville: ad.municipality,
+				catégorie: ad.category,
+				date: ad.date,
+				horaire:
+					ad.time === 'Personnalisé' ? `${ad.customStartTime} - ${ad.customEndTime}` : ad.time,
+				contact: user.email || 'guest@lepoilu.fr', // Fallback email
+				userId: user.uid,
+				status: 'pending',
+				paid: false,
+				createdAt: serverTimestamp(),
+				tier: plan === 'free' ? 'free' : 'single',
+				lienBilletterie: ad.ticketingUrl,
+				lienAnnonceur: ad.advertiserUrl,
+				image: '' // Placeholder
+			};
+
+			// 3. Create Document in Firestore 'Submissions'
+			const docRef = await addDoc(collection(db, 'Submissions'), adData);
+			const submissionId = docRef.id;
+
+			// 4. If Plan is FREE, we stop here (or redirect to success)
+			if (plan === 'free') {
+				// Free ads don't need payment
+				alert('Annonce envoyée pour validation !');
+				window.location.href = '/';
+				return;
+			}
+
+			// 5. If PAID, proceed to Stripe Checkout with submissionId
 			const response = await fetch('/api/checkout', {
 				method: 'POST',
 				headers: {
@@ -159,38 +204,14 @@
 				},
 				body: JSON.stringify({
 					type: 'ad',
-					planId: plan, // 'free', 'premium', 'pack10', 'pro' ?
-					// NOTE: plan logic in API is looking for 'premium' or 'pack10'.
-					// If plan is 'free', API might need adjustment OR we handle FREE differently (no Stripe).
-					// Assuming FREE goes through normal submission (no checkout)?
-					// USER said: "les annonces sont crées dans Submissions ... paid: boolean".
-					// If FREE, skip checkout?
-					// BUT the user didn't explicitly say "no checkout for free", usually free means just write to DB.
-					// Let's assume for now ALL flows go through API to keep logic centralized,
-					// but checkout API creates a session which implies payment.
-					// FIX: If plan is 'free', we should probably just call a different API to save to DB directly.
-					// HOWEVER, user asked to "connect page to API default".
-					// Let's check plan:
+					planId: plan,
+					submissionId: submissionId, // CRITICAL: Link payment to doc
 					data: {
-						...ad,
-						plan: plan, // Pass plan to API
-						image: null // Can't send file object
+						// Pass minimal info if needed for Stripe metadata display
+						title: ad.title
 					}
 				})
 			});
-
-			// Wait, if plan is FREE, Stripe checkout session creation for 0 EUR might fail or be weird without special config.
-			// Usually free items don't go to Stripe Checkout unless it's a "setup" mode.
-			// Let's assume this submit handler is for PAYING plans.
-			// Free plan logic should be: write to DB -> success.
-			// I will add a check: if plan === 'free', do something else?
-			// User request: "connect pages to API".
-			// Let's send everything to API and let API decide?
-			// My API currently ONLY creates Stripe Sessions. It does NOT write to Firebase directly (that's the webhook job).
-			// So for FREE plans, this API will fail or creating a 0€ session.
-			// Let's modify the frontend to handle FREE separately later or assume the user wants payment flow for now.
-			// Actually, if plan is free, we should probably simulate success or add a 'free' mode to API.
-			// Let's implement the fetching logic first.
 
 			const result = await response.json();
 
@@ -200,13 +221,13 @@
 
 			if (result.url) {
 				window.location.href = result.url;
-			} else {
-				// If no URL returned (maybe free plan handles differently later), alert success
-				alert('Annonce envoyée !');
 			}
 		} catch (err) {
 			console.error('Erreur:', err);
 			error = err.message;
+			if (error.includes('Missing or insufficient permissions')) {
+				error = 'Erreur de permission. Vérifiez que vous êtes connecté.';
+			}
 		} finally {
 			loading = false;
 		}

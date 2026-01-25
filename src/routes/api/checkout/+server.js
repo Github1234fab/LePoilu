@@ -6,7 +6,7 @@ import { stripe } from '$lib/server/stripe';
 
 export async function POST({ request, url }) {
     try {
-        const { type, data, planId } = await request.json();
+        const { type, data, planId, submissionId } = await request.json();
         const origin = url.origin;
 
         let sessionConfig = {
@@ -14,14 +14,14 @@ export async function POST({ request, url }) {
             mode: 'payment',
             success_url: `${origin}/succes?session_id={CHECKOUT_SESSION_ID}`,
             cancel_url: `${origin}/contact?error=payment_cancelled`,
-            metadata: {}, // IMPORTANT: This is where we pass data to your Cloud Function
+            metadata: {}, 
+            client_reference_id: submissionId || data.userId // submissionId is crucial for webhook
         };
 
         if (type === 'ad') {
             // === ONE-OFF AD PAYMENT ===
-            // Mapping fields to 'Submissions' structure
-            const priceInCents = data.plan === 'premium' ? 499 : 2499; // 4.99 or Pack prices
-            const productName = data.plan === 'premium' ? 'Annonce Premium' : 'Pack 10 Annonces';
+            const priceInCents = planId === 'premium' ? 499 : 2499; 
+            const productName = planId === 'premium' ? 'Annonce Premium' : 'Pack 10 Annonces';
 
             sessionConfig.line_items = [{
                 price_data: {
@@ -32,26 +32,12 @@ export async function POST({ request, url }) {
                 quantity: 1,
             }];
 
-            // Metadata for Cloud Function to write to 'Submissions'
+            // Metadata for Cloud Function (webhook expects submissionId)
             sessionConfig.metadata = {
-                type: 'submission',
-                titre: data.title || '',
-                description: data.description || '',
-                lieu: data.location || '',
-                // Communes is likely "lieu" or handled separately, adjusting to provided JSON keys
-                ville: data.municipality || '', // Provide mapping if needed
-                catégorie: data.category || '',
-                date: data.date || '',
-                horaire: data.time || '',
-                contact: data.email || 'user@email.com', // Need user email from context
-                userId: data.userId || 'guest', 
-                tier: data.plan === 'pack10' ? 'pack10' : 'single',
-                image: data.imageUrl || '', // Provide URL from Firebase Storage upload
-                lienBilletterie: data.ticketingUrl || '',
-                lienAnnonceur: data.advertiserUrl || '',
-                // Fields to match your Submissions JSON
-                status: 'pending',
-                paid: 'false' // string/boolean handling in webhook
+                type: 'ad', // Matches default 'else' block in webhook that calls handleAdPayment
+                submissionId: submissionId,
+                planId: planId,
+                userId: data.userId || 'guest'
             };
 
             // If it's a subscription like 'pack10' (credit pack), mode is still 'payment' (one-time)
