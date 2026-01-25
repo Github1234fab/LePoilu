@@ -53,8 +53,8 @@
 		<div class="features-header">
 			<h2 class="section-title">Tout ce dont tu as besoin pour sortir avec Le Poilu</h2>
 			<p class="section-subtitle">
-				Une application complète possèdant tous les outils pour ne plus jamais manquer un événement
-				local
+				Une application complète avec tous les outils pour ne plus jamais manquer un événement
+				local !
 			</p>
 			<img class="poilu-face" src={PoiluFace} alt="Personnage le poilu de face" />
 		</div>
