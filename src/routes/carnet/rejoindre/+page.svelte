@@ -1,5 +1,9 @@
 <script>
 	import { fade, fly, slide } from 'svelte/transition';
+	import { onMount } from 'svelte';
+	import { auth, db } from '$lib/firebase';
+	import { GoogleAuthProvider, signInWithPopup, linkWithPopup } from 'firebase/auth';
+	import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 
 	let step = 1;
 	let selectedPlan = 'premium'; // 'basic' or 'premium'
@@ -53,6 +57,7 @@
 		photos: []
 	};
 
+	// ... merchantCategories and other constants remain the same ...
 	const merchantCategories = [
 		'Restaurant',
 		'Cafe & Bar',
@@ -116,11 +121,62 @@
 		error = null;
 
 		try {
-			// For photos, in a real app, you would upload them to Firebase Storage first
-			// and get the URLs to send to the checkout endpoint.
-			// For this MVP, we are skipping the actual file upload logic to keep it simple,
-			// or passing dummy URLs if needed. The API expects the data structure.
+			// 1. Authentification (Forced Permanent Account)
+			let user = auth.currentUser;
+			const googleProvider = new GoogleAuthProvider();
 
+			// Force Google Sign In if not logged in OR if Anonymous
+			// We do not try to link accounts to avoid complexity/errors.
+			// Sponsors must have a clean Google-authenticated account.
+			if (!user || user.isAnonymous) {
+				try {
+					const result = await signInWithPopup(auth, googleProvider);
+					user = result.user;
+				} catch (authErr) {
+					console.error('Auth Cancelled/Error', authErr);
+					throw new Error('Connexion Google requise pour devenir sponsor.');
+				}
+			}
+
+			// 2. Prepare Data for Firestore
+			const sponsorData = {
+				name: form.companyName,
+				category: form.category,
+				contactName: form.contactName,
+				email: form.email || user.email,
+				phone: form.phone,
+				address: form.address,
+				city: form.city,
+				zip: form.zip,
+				description: form.description,
+				promoOffer: form.promoOffer,
+				website: form.website1,
+				socials: {
+					facebook: form.website2,
+					instagram: form.website3,
+					other: form.website4
+				},
+				openingHours: form.openingHours,
+				userId: user.uid,
+				status: 'pending',
+				createdAt: serverTimestamp(),
+
+				// Plan Info matches what logic expects to manage subscription status
+				currentPlan: {
+					planId: selectedPlan === 'premium' ? 'visibility-monthly' : 'essential-monthly',
+					name: planDetails[selectedPlan].name,
+					isActive: false, // Will be set to true by Webhook
+					startDate: null,
+					renewalDate: null
+				},
+				image: '' // Placeholder for now
+			};
+
+			// 3. Create Document in Firestore 'Sponsors'
+			const docRef = await addDoc(collection(db, 'Sponsors'), sponsorData);
+			const sponsorId = docRef.id;
+
+			// 4. Call Checkout API
 			const response = await fetch('/api/checkout', {
 				method: 'POST',
 				headers: {
@@ -128,12 +184,12 @@
 				},
 				body: JSON.stringify({
 					type: 'sponsor',
-					planId: selectedPlan, // 'basic' or 'premium'
+					planId: selectedPlan,
+					submissionId: sponsorId, // Used as client_reference_id & metadata.sponsorId
 					data: {
 						...form,
-						// Photos are file objects, can't json stringify directly without upload.
-						// We'll skip sending raw files to the checkout endpoint.
-						photos: []
+						userId: user.uid
+						// Pass data for metadata if needed, but DB is source of truth
 					}
 				})
 			});
@@ -141,14 +197,14 @@
 			const result = await response.json();
 
 			if (!response.ok) {
-				throw new Error(result.error || 'Une erreur est survenue');
+				throw new Error(result.error || 'Une erreur est survenue lors du paiement');
 			}
 
 			if (result.url) {
 				window.location.href = result.url;
 			}
 		} catch (err) {
-			console.error('Erreur paiement:', err);
+			console.error('Erreur:', err);
 			error = err.message;
 		} finally {
 			loading = false;

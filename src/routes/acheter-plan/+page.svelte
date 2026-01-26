@@ -1,11 +1,14 @@
 <script>
 	import { page } from '$app/stores';
 	import { fade, fly } from 'svelte/transition';
+	import { auth } from '$lib/firebase';
+	import { GoogleAuthProvider, signInWithPopup, linkWithPopup } from 'firebase/auth';
 
 	let planId = $page.url.searchParams.get('plan');
 
 	const plans = {
 		pack10: {
+			id: 'pack10',
 			name: 'Pack 10 Annonces',
 			price: '24,99 €',
 			description: 'Idéal pour les organisateurs réguliers.',
@@ -16,13 +19,13 @@
 				'Économie de 50%'
 			]
 		},
-		pro: {
-			name: 'Abonnement Pro',
+		unlimited: {
+			id: 'unlimited',
+			name: 'Pass Illimité 30 jours',
 			price: '49,99 €',
-			period: '/mois',
 			description: 'La solution ultime pour les professionnels.',
 			features: [
-				'Annonces illimitées',
+				'Annonces illimitées pendant 30j',
 				'Import CSV en masse',
 				'Badge Organisateur Vérifié',
 				'Support dédié 7j/7'
@@ -40,21 +43,26 @@
 		error = null;
 
 		try {
-			// Logic:
-			// If plan is 'pack10', it's a credit pack for Ads -> type: 'ad' (as defined in checkout API logic for Pack 10)
-			// If plan is 'pro', it's a Sponsor Subscription -> type: 'sponsor' (but checkout API expects sponsor data like company name etc.)
-			// WAIT: The 'Pro' plan on Tarifs page says "Annonces illimitées... Badge organisateur". It sounds like a super-user/organizer plan, NOT necessarily a merchant 'carnet' listing.
-			// However, in previous turns, the 'Pro' plan link was changed to /acheter-plan?plan=pro.
-			// And in the Checkout API I treated 'sponsor' for subscriptions.
-			// If 'Pro' is just a subscription for an organizer to post ads, it might be different from 'Merchant' listing.
-			// Let's assume for now:
-			// - Pack 10 -> Type 'ad' (buying credits)
-			// - Pro -> Type 'sponsor' (subscription) OR verify if Pro needs company details.
-			// The current checkout page mocks a credit card form but lacks company details form for Pro if it's a sponsor.
-			// If 'Pro' is just a user subscription, sending it as 'sponsor' with empty company details might fail if API expects them.
-			// Let's send basic user info for now.
+			// 1. Authentification (Forced Permanent Account)
+			let user = auth.currentUser;
+			const googleProvider = new GoogleAuthProvider();
 
-			const type = planId === 'pack10' ? 'ad' : 'sponsor';
+			if (!user || user.isAnonymous) {
+				try {
+					const result = await signInWithPopup(auth, googleProvider);
+					user = result.user;
+				} catch (authErr) {
+					console.error('Auth Cancelled/Error', authErr);
+					throw new Error('Connexion Google requise pour acheter des crédits.');
+				}
+			}
+
+			// 2. Call Checkout API
+			// We determine 'type' based on plan.
+			// pack10 -> credit_pack
+			// unlimited -> unlimited_pass (handled similarly to credit_pack but different update logic)
+
+			const type = selectedPlan.id === 'pack10' ? 'credit_pack' : 'unlimited_pass';
 
 			const response = await fetch('/api/checkout', {
 				method: 'POST',
@@ -63,13 +71,10 @@
 				},
 				body: JSON.stringify({
 					type: type,
-					planId: planId,
+					planId: selectedPlan.id,
 					data: {
-						plan: planId,
-						// Mock data for context since this checkout page doesn't ask for company details yet
-						// In a real app, if Pro is a sponsor, we should ask for company info here too or link it to user profile.
-						companyName: 'Organisateur Pro',
-						email: 'user@example.com' // Should come from auth
+						userId: user.uid,
+						email: user.email
 					}
 				})
 			});
@@ -100,16 +105,16 @@
 	<div class="checkout-wrapper">
 		<div class="header-section" in:fly={{ y: -20, duration: 800 }}>
 			<h1>Finaliser votre commande</h1>
-			<p>Plus qu'une étape pour profiter de vos avantages.</p>
+			<p>Connectez-vous et payez en toute sécurité.</p>
 		</div>
 
-		<div class="checkout-grid">
+		<div class="checkout-grid centered-grid">
 			<!-- Order Summary -->
 			<div class="summary-card" in:fade={{ delay: 200 }}>
 				<div class="plan-header">
 					<h2>{selectedPlan.name}</h2>
 					<div class="price-tag">
-						{selectedPlan.price}<span class="period">{selectedPlan.period || ''}</span>
+						{selectedPlan.price}
 					</div>
 				</div>
 				<p class="plan-desc">{selectedPlan.description}</p>
@@ -126,58 +131,23 @@
 					<span>Total à payer</span>
 					<span>{selectedPlan.price}</span>
 				</div>
-			</div>
 
-			<!-- Payment Form -->
-			<div class="payment-card" in:fly={{ x: 20, duration: 600, delay: 400 }}>
-				<h3>Moyen de paiement</h3>
-
-				<form on:submit|preventDefault={handlePayment}>
-					<div class="card-input-wrapper">
-						<label for="cardName">Nom sur la carte</label>
-						<input type="text" id="cardName" placeholder="Jean Dupont" required />
-					</div>
-
-					<div class="card-input-wrapper">
-						<label for="cardNumber">Numéro de carte</label>
-						<div class="input-with-icon">
-							<i class="fa-regular fa-credit-card"></i>
-							<input type="text" id="cardNumber" placeholder="0000 0000 0000 0000" required />
-						</div>
-					</div>
-
-					<div class="grid-2">
-						<div class="card-input-wrapper">
-							<label for="expiry">Expiration</label>
-							<input type="text" id="expiry" placeholder="MM/AA" required />
-						</div>
-						<div class="card-input-wrapper">
-							<label for="cvc">CVC</label>
-							<div class="input-with-icon">
-								<i class="fa-solid fa-lock"></i>
-								<input type="text" id="cvc" placeholder="123" required />
-							</div>
-						</div>
-					</div>
-
-					<p class="secure-text">
-						<i class="fa-solid fa-shield-halved"></i> Paiement 100% sécurisé via Stripe
-					</p>
-
-					<div class="actions">
-						<a href="/Tarifs" class="btn-back">Changer d'offre</a>
-						<button type="submit" class="btn-pay" disabled={loading}>
-							{#if loading}
-								<i class="fa-solid fa-spinner fa-spin"></i> Traitement...
-							{:else}
-								Payer {selectedPlan.price} <i class="fa-solid fa-arrow-right"></i>
-							{/if}
-						</button>
-					</div>
+				<!-- Action Button directly in card -->
+				<div class="actions">
+					<button class="btn-pay" on:click={handlePayment} disabled={loading}>
+						{#if loading}
+							<i class="fa-solid fa-spinner fa-spin"></i> Traitement...
+						{:else}
+							Payer avec Stripe <i class="fa-solid fa-arrow-right"></i>
+						{/if}
+					</button>
 					{#if error}
 						<p class="error-text">{error}</p>
 					{/if}
-				</form>
+					<p class="secure-text-small">
+						<i class="fa-solid fa-lock"></i> Paiement sécurisé SSL.
+					</p>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -211,11 +181,10 @@
 		font-size: 1.1rem;
 	}
 
-	.checkout-grid {
-		display: grid;
-		grid-template-columns: 1fr 1.2fr;
-		gap: var(--spacing-lg);
-		align-items: start;
+	/* Centered Grid for Single Card Layout */
+	.checkout-grid.centered-grid {
+		display: flex;
+		justify-content: center;
 	}
 
 	/* Summary Card */
@@ -225,6 +194,8 @@
 		border-radius: var(--radius-lg);
 		box-shadow: var(--shadow3);
 		border: 1px solid var(--border);
+		width: 100%;
+		max-width: 500px;
 	}
 
 	.plan-header {
@@ -244,12 +215,6 @@
 		font-size: 1.8rem;
 		font-weight: 700;
 		color: var(--cta);
-	}
-
-	.period {
-		font-size: 1rem;
-		color: var(--secondary);
-		font-weight: 400;
 	}
 
 	.plan-desc {
@@ -289,102 +254,18 @@
 		font-weight: 700;
 		font-size: 1.2rem;
 		color: var(--text);
-	}
-
-	/* Payment Card */
-	.payment-card {
-		background: white;
-		padding: var(--spacing-xl);
-		border-radius: var(--radius-lg);
-		box-shadow: var(--shadow);
-	}
-
-	.payment-card h3 {
 		margin-bottom: var(--spacing-lg);
-		color: var(--text);
-	}
-
-	.card-input-wrapper {
-		margin-bottom: var(--spacing-md);
-	}
-
-	label {
-		display: block;
-		font-size: 0.9rem;
-		font-weight: 500;
-		color: var(--text);
-		margin-bottom: 5px;
-	}
-
-	input {
-		width: 100%;
-		padding: 12px 16px;
-		border: 2px solid var(--border);
-		border-radius: var(--radius-sm);
-		font-size: 1rem;
-		transition: all var(--transition-fast);
-		font-family: var(--FFBody);
-	}
-
-	.input-with-icon {
-		position: relative;
-	}
-
-	.input-with-icon i {
-		position: absolute;
-		left: 16px;
-		top: 50%;
-		transform: translateY(-50%);
-		color: var(--secondary);
-	}
-
-	.input-with-icon input {
-		padding-left: 45px;
-	}
-
-	input:focus {
-		outline: none;
-		border-color: var(--cta);
-		box-shadow: 0 0 0 4px var(--ctaFade);
-	}
-
-	.grid-2 {
-		display: grid;
-		grid-template-columns: 1fr 1fr;
-		gap: var(--spacing-md);
-	}
-
-	.secure-text {
-		display: flex;
-		align-items: center;
-		gap: 8px;
-		color: #10b981;
-		font-size: 0.9rem;
-		margin: var(--spacing-md) 0;
-		background: #ecfdf5;
-		padding: 10px;
-		border-radius: var(--radius-sm);
 	}
 
 	.actions {
 		display: flex;
+		flex-direction: column;
+		gap: 10px;
 		align-items: center;
-		justify-content: space-between;
-		margin-top: var(--spacing-lg);
-	}
-
-	.btn-back {
-		text-decoration: none;
-		color: var(--secondary);
-		font-weight: 500;
-		transition: color var(--transition-fast);
-	}
-
-	.btn-back:hover {
-		color: var(--text);
 	}
 
 	.btn-pay {
+		width: 100%;
 		padding: 14px 28px;
 		background: var(--cta);
 		color: white;
@@ -394,6 +275,7 @@
 		cursor: pointer;
 		transition: all var(--transition-fast);
 		display: flex;
+		justify-content: center;
 		align-items: center;
 		gap: 10px;
 		font-size: 1.1rem;
@@ -405,24 +287,17 @@
 		box-shadow: 0 5px 15px var(--ctaFade);
 	}
 
-	@media (max-width: 768px) {
-		.checkout-grid {
-			grid-template-columns: 1fr;
-		}
+	.btn-pay:disabled {
+		opacity: 0.7;
+		cursor: not-allowed;
+	}
 
-		.summary-card {
-			order: -1;
-		}
-
-		.actions {
-			flex-direction: column-reverse;
-			gap: var(--spacing-md);
-		}
-
-		.btn-pay {
-			width: 100%;
-			justify-content: center;
-		}
+	.secure-text-small {
+		color: #10b981;
+		font-size: 0.85rem;
+		display: flex;
+		align-items: center;
+		gap: 5px;
 	}
 
 	.error-text {

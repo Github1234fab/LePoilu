@@ -1,7 +1,11 @@
 <script>
 	// export let appName = 'Le Poilu';
 	import Poilu from '../assets/Poilu_mobile.png';
+	import { auth } from '$lib/firebase';
+	import { onMount } from 'svelte';
+
 	let isMenuOpen = false;
+	let user = null;
 
 	function toggleMenu() {
 		isMenuOpen = !isMenuOpen;
@@ -10,6 +14,13 @@
 	function closeMenu() {
 		isMenuOpen = false;
 	}
+
+	onMount(() => {
+		const unsubscribe = auth.onAuthStateChanged((u) => {
+			user = u;
+		});
+		return unsubscribe;
+	});
 </script>
 
 <header class="header">
@@ -22,13 +33,25 @@
 		<nav class="nav-desktop">
 			<a href="/Fonctionnalités" class="nav-link">Fonctionnalités</a>
 			<a href="/Tarifs" class="nav-link">Tarifs</a>
+			<a href="/carnet/rejoindre" class="nav-link">Espace Commerçant</a>
 			<a href="/Apropos" class="nav-link">À propos</a>
 			<a href="/Contact" class="nav-link">Contact</a>
-			<a href="/carnet/rejoindre" class="nav-link">Espace Commerçant</a>
+			
 		</nav>
 
-		<div class="header-cta">
-			<a href="/Telecharger" class="btn-header">Télécharger l'app</a>
+		<div class="header-actions">
+			<a href="/compte" class="user-link" aria-label="Mon Compte">
+				{#if user}
+					<div class="nav-avatar-placeholder">
+						{user.displayName ? user.displayName[0].toUpperCase() : 'U'}
+					</div>
+				{:else}
+					<i class="fa-solid fa-circle-user"></i>
+				{/if}
+			</a>
+			<div class="header-cta">
+				<a href="/Telecharger" class="btn-header">Télécharger l'app</a>
+			</div>
 		</div>
 
 		<!-- Burger menu mobile -->
@@ -42,6 +65,10 @@
 	<!-- Menu mobile -->
 	{#if isMenuOpen}
 		<nav class="nav-mobile" class:open={isMenuOpen}>
+			<a href="/compte" class="nav-link-mobile user-mobile-link" on:click={closeMenu}>
+				<i class="fa-solid fa-circle-user"></i>
+				{user ? 'Mon Compte' : 'Se connecter'}
+			</a>
 			<a href="/Fonctionnalités" class="nav-link-mobile" on:click={closeMenu}>Fonctionnalités</a>
 			<a href="/Tarifs" class="nav-link-mobile" on:click={closeMenu}>Tarifs</a>
 			<a href="/Apropos" class="nav-link-mobile" on:click={closeMenu}>À propos</a>
@@ -53,6 +80,7 @@
 </header>
 
 <style>
+	/* ... existing styles ... */
 	.header {
 		border-radius: var(--radius-lg);
 		background-color: var(--headerBg);
@@ -115,6 +143,51 @@
 
 	.nav-link:hover {
 		color: var(--primaryColor);
+	}
+
+	/* Header Actions (User + CTA) */
+	.header-actions {
+		display: flex;
+		align-items: center;
+		gap: 15px;
+		flex-shrink: 0;
+	}
+
+	.user-link {
+		text-decoration: none; /* Remove underline from link */
+		transition: transform var(--transition-fast);
+	}
+
+	.user-link:hover {
+		transform: scale(1.05); /* Slight zoom on hover */
+	}
+
+	/* Existing CTA styles ... */
+	.header-cta {
+		flex-shrink: 0;
+	}
+
+	.nav-avatar-placeholder {
+		width: 40px;
+		height: 40px;
+		border-radius: 50%;
+		background: linear-gradient(135deg, var(--cta), #ff9f43); /* Gradient punchy */
+		color: white;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-family: var(--FFHead); /* Use header font for style */
+		font-weight: 700;
+		font-size: 1.2rem;
+		border: 2px solid white;
+		box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); /* Soft shadow */
+		transition: all var(--transition-fast);
+		text-transform: uppercase;
+	}
+
+	.user-link:hover .nav-avatar-placeholder {
+		transform: scale(1.1) rotate(5deg); /* Playful hover */
+		box-shadow: 0 6px 14px rgba(0, 0, 0, 0.2);
 	}
 
 	.header-cta {
@@ -239,7 +312,7 @@
 		}
 
 		.nav-desktop,
-		.header-cta {
+		.header-actions {
 			display: none;
 		}
 

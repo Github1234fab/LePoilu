@@ -59,23 +59,64 @@ export async function POST({ request, url }) {
 
             sessionConfig.metadata = {
                 type: 'sponsor',
+                sponsorId: submissionId, 
+                sponsorDocId: submissionId, // MATCHING WEBHOOK EXPECTATION
                 businessName: data.companyName,
-                category: data.category, // Added category to metadata
+                category: data.category, 
                 ownerName: data.contactName,
                 email: data.email,
                 phone: data.phone,
                 address: data.address,
                 city: data.city,
                 postalCode: data.zip,
-                // Matching planId from SponsorPlans
                 planId: isPremium ? 'visibility-monthly' : 'essential-monthly',
-                // New fields
                 website1: data.website1 || '',
                 website2: data.website2 || '',
                 description: data.description || '',
                 promoOffer: data.promoOffer || '',
                 openingHours: data.openingHours || '',
                 userId: data.userId || 'guest'
+            };
+        } else if (type === 'credit_pack') {
+            // === CREDIT PACK (10 ADS) ===
+            // Maps to existing backend 'handlePlanPurchase' logic
+            sessionConfig.line_items = [{
+                price_data: {
+                    currency: 'eur',
+                    product_data: { name: 'Pack 10 Annonces Premium' },
+                    unit_amount: 2499, // 24.99€
+                },
+                quantity: 1,
+            }];
+
+            sessionConfig.metadata = {
+                type: 'plan', // ROUTING TO handlePlanPurchase
+                planId: 'pack10',
+                userId: data.userId,
+                credits: '10', // Backend expects string
+                duration: '0',
+                badge: 'false'
+            };
+
+        } else if (type === 'unlimited_pass') {
+            // === UNLIMITED PASS (30 DAYS) ===
+            // Maps to existing backend 'handlePlanPurchase' logic
+            sessionConfig.line_items = [{
+                price_data: {
+                    currency: 'eur',
+                    product_data: { name: 'Pass Illimité 30 Jours' },
+                    unit_amount: 4999, // 49.99€
+                },
+                quantity: 1,
+            }];
+
+            sessionConfig.metadata = {
+                type: 'plan', // ROUTING TO handlePlanPurchase
+                planId: 'unlimited30',
+                userId: data.userId,
+                credits: '0', 
+                duration: '30', // Backend likely uses this for unlimited validity
+                badge: 'true'
             };
         }
 
