@@ -265,8 +265,8 @@
 		align-items: center;
 		justify-content: flex-start;
 		border-radius: var(--radius-md);
-		padding: var(--spacing-lg) var(--spacing-md);
-		gap: var(--spacing-md);
+		padding: var(--spacing-md);
+		gap: var(--spacing-sm);
 		backdrop-filter: blur(10px);
 		-webkit-backdrop-filter: blur(10px);
 		background-color: rgba(255, 255, 255, 0.9);
@@ -296,37 +296,37 @@
 
 	.badge-recommended {
 		position: absolute;
-		top: -15px;
+		top: -12px;
 		left: 50%;
 		transform: translateX(-50%);
 		background: linear-gradient(135deg, #ff6101, var(--ctaSecondary));
 		color: white;
-		padding: var(--spacing-xs) var(--spacing-md);
+		padding: 4px 12px;
 		border-radius: 20px;
 		font-family: var(--FFTitle);
 		font-weight: 700;
-		font-size: clamp(0.75rem, 1.5vw, 0.85rem);
+		font-size: clamp(0.7rem, 1.2vw, 0.8rem);
 		box-shadow: var(--shadow3);
 	}
 
 	.pricing-icon {
-		font-size: clamp(2rem, 4vw, 3rem);
+		font-size: clamp(1.8rem, 3.5vw, 2.5rem);
 		color: #ff6101;
 		background: linear-gradient(135deg, rgba(255, 97, 1, 0.1), rgba(232, 132, 60, 0.1));
-		width: clamp(80px, 12vw, 100px);
-		height: clamp(80px, 12vw, 100px);
+		width: clamp(60px, 10vw, 80px);
+		height: clamp(60px, 10vw, 80px);
 		border-radius: 50%;
 		display: flex;
 		align-items: center;
 		justify-content: center;
 		box-shadow: var(--shadow3);
-		margin-top: var(--spacing-xs);
+		margin-top: 0;
 	}
 
 	.pricing-name {
 		font-family: var(--FFTitle);
 		font-weight: 700;
-		font-size: clamp(1.2rem, 2.5vw, 1.5rem);
+		font-size: clamp(1.1rem, 2.2vw, 1.4rem);
 		color: var(--textDark);
 		margin: 0;
 	}
@@ -334,25 +334,25 @@
 	.pricing-price {
 		font-family: var(--FFTitle);
 		font-weight: 900;
-		font-size: clamp(1.8rem, 4vw, 2.5rem);
+		font-size: clamp(1.6rem, 3.5vw, 2.2rem);
 		color: #ff6101;
-		margin: var(--spacing-xs) 0;
+		margin: 0;
 	}
 
 	.pricing-details {
 		list-style: none;
 		padding: 0;
-		margin: var(--spacing-md) 0;
+		margin: var(--spacing-sm) 0;
 		flex-grow: 1;
 	}
 
 	.pricing-details li {
 		font-family: var(--FFTitle);
 		color: #555;
-		font-size: clamp(0.9rem, 1.8vw, 1rem);
-		line-height: 2rem;
+		font-size: clamp(0.85rem, 1.6vw, 0.95rem);
+		line-height: 1.6rem;
 		position: relative;
-		padding-left: 25px;
+		padding-left: 22px;
 	}
 
 	.pricing-details li:before {
@@ -361,17 +361,17 @@
 		left: 0;
 		color: #ff6101;
 		font-weight: bold;
-		font-size: clamp(1rem, 2vw, 1.2rem);
+		font-size: clamp(0.9rem, 1.8vw, 1.1rem);
 	}
 
 	.btn-pricing {
 		display: inline-block;
-		padding: var(--spacing-sm) var(--spacing-lg);
+		padding: 10px 20px;
 		background: linear-gradient(135deg, #ff6101, var(--ctaSecondary));
 		color: white;
 		text-decoration: none;
 		font-weight: 700;
-		font-size: clamp(1rem, 2vw, 1.1rem);
+		font-size: clamp(0.95rem, 1.8vw, 1.05rem);
 		border-radius: var(--radius-md);
 		transition: all var(--transition-normal);
 		font-family: var(--FFTitle);

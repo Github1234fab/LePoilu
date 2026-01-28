@@ -36,7 +36,6 @@
 			<a href="/carnet/rejoindre" class="nav-link">Espace Commerçant</a>
 			<a href="/Apropos" class="nav-link">À propos</a>
 			<a href="/Contact" class="nav-link">Contact</a>
-			
 		</nav>
 
 		<div class="header-actions">
@@ -168,8 +167,8 @@
 	}
 
 	.nav-avatar-placeholder {
-		width: 40px;
-		height: 40px;
+		width: 50px;
+		height: 50px;
 		border-radius: 50%;
 		background: linear-gradient(135deg, var(--cta), #ff9f43); /* Gradient punchy */
 		color: white;
@@ -178,16 +177,27 @@
 		justify-content: center;
 		font-family: var(--FFHead); /* Use header font for style */
 		font-weight: 700;
-		font-size: 1.2rem;
+		font-size: 1.5rem;
 		border: 2px solid white;
 		box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); /* Soft shadow */
 		transition: all var(--transition-fast);
 		text-transform: uppercase;
 	}
 
+	.user-link i {
+		font-size: 50px;
+		color: var(--cta);
+		transition: all var(--transition-normal);
+	}
+
 	.user-link:hover .nav-avatar-placeholder {
 		transform: scale(1.1) rotate(5deg); /* Playful hover */
 		box-shadow: 0 6px 14px rgba(0, 0, 0, 0.2);
+	}
+
+	.user-link:hover i {
+		transform: scale(1.1);
+		filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
 	}
 
 	.header-cta {

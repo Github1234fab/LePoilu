@@ -21,11 +21,21 @@
 			Concerts, spectacles, fêtes, randos, etc - découvre tout ce qui se passe autour de chez toi.
 		</p>
 
+		<div class="organizer-cta">
+			<a href="/Tarifs" class="btn-organizer"
+				>🎯 Vous organisez un événement ? Cliquez ici pour le publier</a
+			>
+		</div>
+
 		<div class="hero-cta">
 			<img class="lePoilu" src={Poilu} alt="Le personnage Le Poilu" />
 			<p>Ne rates plus jamais un événement avec le Poilu.</p>
 			<div class="container_app-link">
-				<a href="https://apps.apple.com/fr/app/le-poilu/id6757426596" class="btn-app-link" target="_blank">
+				<a
+					href="https://apps.apple.com/fr/app/le-poilu/id6757426596"
+					class="btn-app-link"
+					target="_blank"
+				>
 					<img class="img-app-link" src={IOS} alt="ios" />
 				</a>
 
@@ -76,7 +86,6 @@
 	.hero-title span {
 		font-size: 3rem;
 	}
-
 
 	.hero-description {
 		font-family: var(--FFTitle);
@@ -229,8 +238,8 @@
 			height: 1000px;
 		}
 		.hero-description {
-		padding: 10px;
-	}
+			padding: 10px;
+		}
 		.hero-content {
 			padding: var(--spacing-xs);
 		}
@@ -250,6 +259,46 @@
 		.hero-title span {
 			font-size: 1.6rem;
 			line-height: 0px;
+		}
+	}
+
+	.organizer-cta {
+		margin-top: var(--spacing-md);
+		display: flex;
+		justify-content: center;
+		width: 100%;
+		margin-bottom: var(--spacing-sm);
+		z-index: 10;
+	}
+
+	.btn-organizer {
+		background-color: white;
+		color: #ff6101;
+		padding: 12px 24px;
+		border-radius: 50px;
+		font-family: var(--FFTitle);
+		font-weight: 700;
+		text-decoration: none;
+		box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+		transition:
+			transform 0.2s,
+			box-shadow 0.2s;
+		font-size: 1.1rem;
+		display: flex;
+		align-items: center;
+		gap: 8px;
+	}
+
+	.btn-organizer:hover {
+		transform: translateY(-2px);
+		box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+	}
+
+	@media (max-width: 480px) {
+		.btn-organizer {
+			font-size: 0.9rem;
+			padding: 10px 16px;
+			text-align: center;
 		}
 	}
 </style>
