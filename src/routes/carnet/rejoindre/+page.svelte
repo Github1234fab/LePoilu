@@ -786,6 +786,7 @@
 
 		.hero-content {
 			padding-right: 0;
+			position: static;
 		}
 
 		.benefits-list {

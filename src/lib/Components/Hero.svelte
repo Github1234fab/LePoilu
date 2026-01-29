@@ -21,10 +21,15 @@
 			Concerts, spectacles, fêtes, randos, etc - découvre tout ce qui se passe autour de chez toi.
 		</p>
 
-		<div class="organizer-cta">
-			<a href="/Tarifs" class="btn-organizer"
-				>🎯 Vous organisez un événement ? Cliquez ici pour le publier</a
-			>
+		<div class="organizer-chips">
+			<a href="/Tarifs" class="chip chip-event">
+				<span class="chip-icon">📅</span>
+				<span>Publier un événement</span>
+			</a>
+			<a href="/Tarifs" class="chip chip-shop">
+				<span class="chip-icon">🏪</span>
+				<span>Créer un espace commerçant</span>
+			</a>
 		</div>
 
 		<div class="hero-cta">
@@ -262,43 +267,72 @@
 		}
 	}
 
-	.organizer-cta {
-		margin-top: var(--spacing-md);
+	.organizer-chips {
 		display: flex;
-		justify-content: center;
-		width: 100%;
-		margin-bottom: var(--spacing-sm);
+		gap: var(--spacing-sm);
+		margin-top: var(--spacing-lg);
+		margin-bottom: var(--spacing-md);
 		z-index: 10;
+		flex-wrap: wrap;
+		justify-content: center;
 	}
 
-	.btn-organizer {
-		background-color: white;
-		color: #ff6101;
+	.chip {
 		padding: 12px 24px;
 		border-radius: 50px;
 		font-family: var(--FFTitle);
 		font-weight: 700;
 		text-decoration: none;
-		box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-		transition:
-			transform 0.2s,
-			box-shadow 0.2s;
-		font-size: 1.1rem;
+		font-size: 1rem;
 		display: flex;
 		align-items: center;
 		gap: 8px;
+		transition: transform 0.2s, box-shadow 0.2s;
 	}
 
-	.btn-organizer:hover {
+	.chip:hover {
 		transform: translateY(-2px);
+	}
+
+	.chip-icon {
+		font-size: 1.2rem;
+	}
+
+	.chip-event {
+		background-color: white;
+		color: #ff6101;
+		box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+	}
+
+	.chip-event:hover {
 		box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
 	}
 
+	.chip-shop {
+		background-color: rgba(255, 255, 255, 0.15);
+		color: white;
+		border: 2px solid white;
+	}
+
+	.chip-shop:hover {
+		background-color: rgba(255, 255, 255, 0.25);
+	}
+
 	@media (max-width: 480px) {
-		.btn-organizer {
-			font-size: 0.9rem;
-			padding: 10px 16px;
-			text-align: center;
+		.organizer-chips {
+			flex-direction: column;
+			align-items: center;
+			gap: var(--spacing-xs);
+		}
+
+		.chip {
+			font-size: 0.85rem;
+			padding: 8px 14px;
+			gap: 6px;
+		}
+
+		.chip-icon {
+			font-size: 1rem;
 		}
 	}
 </style>

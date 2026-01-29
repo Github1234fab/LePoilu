@@ -5,7 +5,7 @@
 		{
 			name: 'Gratuit',
 			price: '0€',
-			details: ['1 annonce', 'Modération standard (< 24h)', 'Visible 30 jours'],
+			details: ['1 annonce', 'Modération standard (< 24h)', 'Visible 30 jours', 'Logo du Poilu'],
 			icon: 'fa-solid  fa-hand-holding-dollar',
 			recommended: false,
 			link: '/publier?plan=free'
@@ -74,10 +74,36 @@
 		</div>
 	</section>
 
+	<!-- Event Types Section -->
+	<section class="event-types-section">
+		<h2 class="section-title">Quels événements publier ?</h2>
+		<p class="section-description">
+			Associations, clubs, mairies, commerçants ou particuliers : tous vos événements ont leur place sur Le Poilu
+		</p>
+		<div class="event-types-grid">
+			<span class="event-tag">🎵 Concerts</span>
+			<span class="event-tag">🎭 Spectacles</span>
+			<span class="event-tag">🎪 Festivals</span>
+			<span class="event-tag">🛒 Marchés</span>
+			<span class="event-tag">🏷️ Brocantes</span>
+			<span class="event-tag">🥾 Randonnées</span>
+			<span class="event-tag">🚴 Balades</span>
+			<span class="event-tag">⚽ Stages</span>
+			<span class="event-tag">🎨 Ateliers créatifs</span>
+			<span class="event-tag">🍷 Dégustations</span>
+			<span class="event-tag">🎉 Fêtes locales</span>
+			<span class="event-tag">🤝 Événements associatifs</span>
+			<span class="event-tag">📚 Conférences</span>
+			<span class="event-tag">🎬 Projections</span>
+			<span class="event-tag">💃 Soirées dansantes</span>
+			<span class="event-tag">🧘 Bien-être</span>
+		</div>
+	</section>
+
 	<!-- Pricing Section -->
 	<section class="pricing-section">
 		<div class="section-header">
-			<h2 class="section-title">Nos tarifs</h2>
+			<h2 class="section-title">Nos tarifs de publication d'évènement</h2>
 			<p class="section-description">Choisissez la formule qui correspond le mieux à vos besoins</p>
 		</div>
 
@@ -207,6 +233,52 @@
 		height: clamp(250px, 40vw, 400px);
 		width: auto;
 		filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.3));
+	}
+
+	/* Event Types Section */
+	.event-types-section {
+		background: white;
+		border-radius: var(--radius-lg);
+		padding: var(--spacing-xl) var(--spacing-lg);
+		box-shadow: var(--shadow);
+		margin-bottom: 50px;
+		text-align: center;
+	}
+
+	.event-types-section .section-title {
+		margin-bottom: var(--spacing-sm);
+	}
+
+	.event-types-section .section-description {
+		margin-bottom: var(--spacing-lg);
+	}
+
+	.event-types-grid {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 12px;
+		justify-content: center;
+		max-width: 900px;
+		margin: 0 auto;
+	}
+
+	.event-tag {
+		background: linear-gradient(135deg, #fff5f2, #fff);
+		border: 1px solid rgba(255, 97, 1, 0.2);
+		color: var(--text);
+		padding: 10px 18px;
+		border-radius: 50px;
+		font-family: var(--FFTitle);
+		font-weight: 600;
+		font-size: 0.95rem;
+		transition: all 0.2s;
+	}
+
+	.event-tag:hover {
+		background: linear-gradient(135deg, #ff6101, var(--ctaSecondary));
+		color: white;
+		transform: translateY(-2px);
+		box-shadow: 0 4px 12px rgba(255, 97, 1, 0.3);
 	}
 
 	/* Pricing Section */
@@ -518,8 +590,18 @@
 		}
 
 		.pricing-section,
-		.howto-section {
+		.howto-section,
+		.event-types-section {
 			padding: var(--spacing-lg) var(--spacing-md);
+		}
+
+		.event-tag {
+			padding: 8px 14px;
+			font-size: 0.85rem;
+		}
+
+		.event-types-grid {
+			gap: 8px;
 		}
 
 		.pricing-grid {

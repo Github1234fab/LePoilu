@@ -1,6 +1,6 @@
 <script>
 	// export let appName = 'Le Poilu';
-	import Poilu from '../assets/Poilu_mobile.png';
+	import Poilu from '../assets/lePoilu.png';
 	import { auth } from '$lib/firebase';
 	import { onMount } from 'svelte';
 
@@ -350,15 +350,49 @@
 		}
 	}
 
-	/* Tablet: 1024px et moins */
-	@media (max-width: 1024px) and (min-width: 769px) {
+	/* Tablet large: 1024px - 900px */
+	@media (max-width: 1024px) and (min-width: 901px) {
 		.nav-desktop {
-			gap: 1.5rem;
+			gap: 1.2rem;
+		}
+
+		.nav-link {
+			font-size: 0.9rem;
 		}
 
 		.btn-header {
 			padding: 0.6rem 1.2rem;
 			font-size: 0.9rem;
+		}
+	}
+
+	/* Tablet small: 900px - 768px */
+	@media (max-width: 900px) and (min-width: 769px) {
+		.nav-desktop {
+			gap: 0.8rem;
+		}
+
+		.nav-link {
+			font-size: 0.85rem;
+		}
+
+		.btn-header {
+			padding: 0.5rem 1rem;
+			font-size: 0.85rem;
+		}
+
+		.poilu-img {
+			height: 80px;
+		}
+
+		.nav-avatar-placeholder {
+			width: 40px;
+			height: 40px;
+			font-size: 1.2rem;
+		}
+
+		.user-link i {
+			font-size: 40px;
 		}
 	}
 </style>

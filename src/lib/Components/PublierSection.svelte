@@ -6,7 +6,7 @@
 <section class="publish-section">
 	<div class="content-container">
 		<div class="text-content">
-			<h2 class="section-title">Vous organisez un événement ?</h2>
+			<h2 class="section-title">Vous souhaitez publier un évènement ?</h2>
 			<p class="section-subtitle">
 				Associations, mairies, commerçants ou particuliers : diffusez vos événements auprès de toute
 				la communauté de l'Ouest Lyonnais.
@@ -30,7 +30,20 @@
 				</div>
 			</div>
 
-			<a href="/Tarifs" class="btn-publish"> Publier une annonce </a>
+			<div class="cta-cards">
+				<a href="/Tarifs" class="cta-card card-event">
+					<span class="card-icon">📅</span>
+					<span class="card-title">Événement</span>
+					<span class="card-desc">Publiez vots évènements ...</span>
+					<span class="card-cta">Publier →</span>
+				</a>
+				<a href="/Tarifs" class="cta-card card-shop">
+					<span class="card-icon">🏪</span>
+					<span class="card-title">Commerçant</span>
+					<span class="card-desc">Créez votre vitrine locale</span>
+					<span class="card-cta">Créer →</span>
+				</a>
+			</div>
 		</div>
 	</div>
 </section>
@@ -111,25 +124,80 @@
 		line-height: 1.5;
 	}
 
-	.btn-publish {
-		display: inline-block;
-		background-color: var(--cta); /* Classic orange button */
-		color: white;
-		padding: 15px 40px;
-		border-radius: 50px;
-		font-family: var(--FFTitle);
-		font-weight: 700;
-		font-size: 1.2rem;
-		text-decoration: none;
-		transition:
-			transform 0.2s,
-			box-shadow 0.2s;
-		box-shadow: 0 4px 15px rgba(255, 97, 1, 0.3);
+	.cta-cards {
+		display: flex;
+		gap: var(--spacing-lg);
+		justify-content: center;
+		flex-wrap: wrap;
 	}
 
-	.btn-publish:hover {
-		transform: scale(1.05);
-		box-shadow: 0 8px 25px rgba(255, 97, 1, 0.5);
+	.cta-card {
+		background-color: #f9f9f9;
+		border-radius: var(--radius-md);
+		padding: 24px 28px;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		text-align: center;
+		text-decoration: none;
+		box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+		transition: transform 0.2s, box-shadow 0.2s;
+		min-width: 220px;
+		max-width: 260px;
+	}
+
+	.cta-card:hover {
+		transform: translateY(-4px);
+		box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+	}
+
+	.card-icon {
+		font-size: 2.5rem;
+		margin-bottom: 10px;
+	}
+
+	.card-title {
+		font-family: var(--FFTitle);
+		font-weight: 700;
+		font-size: 1.4rem;
+		color: var(--text);
+		margin-bottom: 8px;
+	}
+
+	.card-desc {
+		font-size: 0.95rem;
+		color: #666;
+		line-height: 1.4;
+		flex: 1;
+		margin-bottom: 15px;
+	}
+
+	.card-cta {
+		font-family: var(--FFTitle);
+		font-weight: 700;
+		font-size: 1rem;
+		padding: 10px 24px;
+		border-radius: 50px;
+		transition: background-color 0.2s;
+		margin-top: auto;
+	}
+
+	.card-event .card-cta {
+		background-color: #ff6101;
+		color: white;
+	}
+
+	.card-event:hover .card-cta {
+		background-color: #e55500;
+	}
+
+	.card-shop .card-cta {
+		background-color: #2563eb;
+		color: white;
+	}
+
+	.card-shop:hover .card-cta {
+		background-color: #1d4ed8;
 	}
 
 	@media (max-width: 768px) {
@@ -140,6 +208,17 @@
 
 		.publish-section {
 			padding: var(--spacing-lg) var(--spacing-sm);
+		}
+
+		.cta-cards {
+			flex-direction: column;
+			align-items: center;
+			gap: var(--spacing-md);
+		}
+
+		.cta-card {
+			min-width: 280px;
+			max-width: 100%;
 		}
 	}
 </style>

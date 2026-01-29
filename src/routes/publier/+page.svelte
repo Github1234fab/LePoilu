@@ -406,7 +406,7 @@
 			{#if plan === 'free'}
 				<div class="free-plan-note">
 					<i class="fa-solid fa-image"></i>
-					<span>Votre annonce comportera quand même un visuel ( image du Poilu ).</span>
+					<span>Votre annonce sera accompagnée du logo du Poilu.</span>
 				</div>
 			{/if}
 
