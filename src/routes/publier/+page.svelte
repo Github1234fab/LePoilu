@@ -206,8 +206,12 @@
 			// 4. If Plan is FREE, we stop here (or redirect to success)
 			if (plan === 'free') {
 				// Free ads don't need payment
-				alert('Annonce envoyée pour validation !');
-				window.location.href = '/';
+				if ($page.data.from_app) {
+					window.location.href = '/succes?from_app=true&type=free';
+				} else {
+					alert('Annonce envoyée pour validation !');
+					window.location.href = '/';
+				}
 				return;
 			}
 

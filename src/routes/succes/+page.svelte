@@ -8,6 +8,7 @@
 	let sessionId = $page.url.searchParams.get('session_id');
 	// Check data from layout or URL param
 	$: fromApp = data.from_app || $page.url.searchParams.get('from_app') === 'true';
+	$: type = $page.url.searchParams.get('type');
 </script>
 
 <svelte:head>
@@ -20,8 +21,13 @@
 			<i class="fa-solid fa-check"></i>
 		</div>
 
-		<h1>Merci pour votre commande !</h1>
-		<p class="subtitle">Votre paiement a été validé avec succès.</p>
+		{#if type === 'free'}
+			<h1>Annonce créée !</h1>
+			<p class="subtitle">Votre annonce a bien été enregistrée.</p>
+		{:else}
+			<h1>Merci pour votre commande !</h1>
+			<p class="subtitle">Votre paiement a été validé avec succès.</p>
+		{/if}
 
 		<div class="details">
 			<p>Un email de confirmation vous a été envoyé.</p>
@@ -35,7 +41,7 @@
 
 		<div class="actions">
 			{#if fromApp}
-				<a href="lepoilu://callback" class="btn btn-primary">
+				<a href="lepoilu://succes" class="btn btn-primary">
 					<i class="fa-solid fa-mobile-screen"></i> Retourner sur l'application
 				</a>
 			{:else}
