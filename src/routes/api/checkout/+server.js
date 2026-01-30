@@ -4,15 +4,18 @@ import { stripe } from '$lib/server/stripe';
 // 1. Create Checkout Session with 'metadata' containing the ad/sponsor details.
 // 2. Stripe Webhook (already existing cloud function) receives 'checkout.session.completed', reads metadata, and writes to Firebase.
 
-export async function POST({ request, url }) {
+export async function POST({ request, url, cookies }) {
     try {
         const { type, data, planId, submissionId, fromApp } = await request.json();
         const origin = url.origin;
 
+        const fromAppCookie = cookies.get('from_app') === 'true';
+        const isFromApp = fromApp || fromAppCookie;
+
         let sessionConfig = {
             payment_method_types: ['card'],
             mode: 'payment',
-            success_url: `${origin}/succes?session_id={CHECKOUT_SESSION_ID}${fromApp ? '&from_app=true' : ''}`,
+            success_url: `${origin}/succes?session_id={CHECKOUT_SESSION_ID}${isFromApp ? '&from_app=true' : ''}`,
             cancel_url: `${origin}/contact?error=payment_cancelled`,
             metadata: {}, 
             client_reference_id: submissionId || data.userId // submissionId is crucial for webhook

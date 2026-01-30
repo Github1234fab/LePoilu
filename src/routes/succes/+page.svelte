@@ -3,8 +3,11 @@
 	import { page } from '$app/stores';
 	import { fade, fly } from 'svelte/transition';
 
+	export let data;
+
 	let sessionId = $page.url.searchParams.get('session_id');
-	let fromApp = $page.url.searchParams.get('from_app') === 'true';
+	// Check data from layout or URL param
+	$: fromApp = data.from_app || $page.url.searchParams.get('from_app') === 'true';
 </script>
 
 <svelte:head>
