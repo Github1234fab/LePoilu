@@ -4,6 +4,7 @@
 	import { fade, fly } from 'svelte/transition';
 
 	let sessionId = $page.url.searchParams.get('session_id');
+	let fromApp = $page.url.searchParams.get('from_app') === 'true';
 </script>
 
 <svelte:head>
@@ -30,9 +31,15 @@
 		</div>
 
 		<div class="actions">
-			<a href="/" class="btn btn-primary">
-				<i class="fa-solid fa-house"></i> Retour à l'accueil
-			</a>
+			{#if fromApp}
+				<a href="lepoilu://callback" class="btn btn-primary">
+					<i class="fa-solid fa-mobile-screen"></i> Retourner sur l'application
+				</a>
+			{:else}
+				<a href="/" class="btn btn-primary">
+					<i class="fa-solid fa-house"></i> Retour à l'accueil
+				</a>
+			{/if}
 		</div>
 	</div>
 </div>

@@ -6,13 +6,13 @@ import { stripe } from '$lib/server/stripe';
 
 export async function POST({ request, url }) {
     try {
-        const { type, data, planId, submissionId } = await request.json();
+        const { type, data, planId, submissionId, fromApp } = await request.json();
         const origin = url.origin;
 
         let sessionConfig = {
             payment_method_types: ['card'],
             mode: 'payment',
-            success_url: `${origin}/succes?session_id={CHECKOUT_SESSION_ID}`,
+            success_url: `${origin}/succes?session_id={CHECKOUT_SESSION_ID}${fromApp ? '&from_app=true' : ''}`,
             cancel_url: `${origin}/contact?error=payment_cancelled`,
             metadata: {}, 
             client_reference_id: submissionId || data.userId // submissionId is crucial for webhook

@@ -35,6 +35,8 @@
 
 	let selectedPlan = plans[planId] || plans['pack10']; // Default to pack10 if invalid
 
+	let fromApp = $page.url.searchParams.get('from_app') === 'true';
+
 	let loading = false;
 	let error = null;
 
@@ -72,6 +74,7 @@
 				body: JSON.stringify({
 					type: type,
 					planId: selectedPlan.id,
+					fromApp: fromApp,
 					data: {
 						userId: user.uid,
 						email: user.email
