@@ -21,6 +21,10 @@ export async function POST({ request, url, cookies }) {
             client_reference_id: submissionId || data.userId // submissionId is crucial for webhook
         };
 
+        if (data.email) {
+            sessionConfig.customer_email = data.email;
+        }
+
         if (type === 'ad') {
             // === ONE-OFF AD PAYMENT ===
             const priceInCents = planId === 'premium' ? 499 : 2499; 

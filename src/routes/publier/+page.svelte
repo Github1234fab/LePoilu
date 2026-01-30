@@ -22,7 +22,10 @@
 		ticketingUrl: '',
 		advertiserUrl: '',
 		customStartTime: '',
-		customEndTime: ''
+		customStartTime: '',
+		customEndTime: '',
+		email: '',
+		phone: ''
 	};
 
 	const communes = [
@@ -155,6 +158,13 @@
 		if (firebase) {
 			auth = firebase.auth;
 			db = firebase.db;
+
+			// Listen for auth state changes to pre-fill email
+			auth.onAuthStateChanged((user) => {
+				if (user && user.email && !ad.email) {
+					ad.email = user.email;
+				}
+			});
 		} else {
 			error = 'Erreur de configuration Firebase. Vérifiez la console.';
 		}
@@ -188,7 +198,8 @@
 				date: ad.date,
 				horaire:
 					ad.time === 'Personnalisé' ? `${ad.customStartTime} - ${ad.customEndTime}` : ad.time,
-				contact: user.email || 'guest@lepoilu.fr', // Fallback email
+				contact: ad.email || user.email || 'guest@lepoilu.fr',
+				contactPhone: ad.phone,
 				userId: user.uid,
 				status: 'pending',
 				paid: false,
@@ -227,7 +238,8 @@
 					submissionId: submissionId, // CRITICAL: Link payment to doc
 					data: {
 						// Pass minimal info if needed for Stripe metadata display
-						title: ad.title
+						title: ad.title,
+						email: ad.email
 					}
 				})
 			});
@@ -413,6 +425,37 @@
 					<span>Votre annonce sera accompagnée du logo du Poilu.</span>
 				</div>
 			{/if}
+
+			<!-- Contact Info Section -->
+			<div class="contact-section">
+				<h3 class="section-title">Vos Coordonnées</h3>
+				<p class="section-subtitle">
+					Ces informations nous permettent de vous recontacter si besoin.
+				</p>
+
+				<div class="grid-2">
+					<div class="form-group">
+						<label for="email">Email *</label>
+						<input
+							type="email"
+							id="email"
+							bind:value={ad.email}
+							placeholder="votre@email.com"
+							required
+						/>
+					</div>
+					<div class="form-group">
+						<label for="phone">Téléphone *</label>
+						<input
+							type="tel"
+							id="phone"
+							bind:value={ad.phone}
+							placeholder="06 12 34 56 78"
+							required
+						/>
+					</div>
+				</div>
+			</div>
 
 			<p class="disclaimer-text">
 				<i class="fa-solid fa-circle-info"></i> Vérifiez bien vos informations avant de valider. Une
@@ -729,5 +772,24 @@
 		text-align: center;
 		margin-top: 10px;
 		font-weight: 600;
+	}
+
+	.contact-section {
+		margin-top: var(--spacing-lg);
+		padding-top: var(--spacing-md);
+		border-top: 1px solid var(--border);
+	}
+
+	.section-title {
+		font-size: 1.2rem;
+		font-weight: 700;
+		color: var(--text);
+		margin-bottom: var(--spacing-xs);
+	}
+
+	.section-subtitle {
+		color: var(--secondary);
+		font-size: 0.9rem;
+		margin-bottom: var(--spacing-md);
 	}
 </style>
