@@ -1,19 +1,43 @@
 <script>
 	import { auth, db } from '$lib/firebase';
-	import { GoogleAuthProvider, signInWithPopup, signOut } from 'firebase/auth';
-	import { doc, getDoc, collection, query, where, getDocs } from 'firebase/firestore';
+	import {
+		signOut,
+		signInWithEmailAndPassword,
+		createUserWithEmailAndPassword,
+		updateProfile,
+		sendPasswordResetEmail
+	} from 'firebase/auth';
+	import { doc, getDoc, collection, query, where, getDocs, setDoc } from 'firebase/firestore';
 	import { onMount } from 'svelte';
 	import { fade } from 'svelte/transition';
+	import { goto } from '$app/navigation';
 
 	let user = null;
 	let userData = null;
 	let sponsorData = null;
 	let loading = true;
 
+	// Form State
+	let email = '';
+	let password = '';
+	let name = ''; // For registration
+	let isRegistering = false;
+	let isResettingPassword = false;
+	let errorMessage = '';
+	let successMessage = '';
+	let formLoading = false;
+
 	onMount(() => {
 		const unsubscribe = auth.onAuthStateChanged(async (u) => {
 			user = u;
 			if (user) {
+				// Check for redirect param
+				const params = new URLSearchParams(window.location.search);
+				const redirect = params.get('redirect');
+				if (redirect) {
+					goto(redirect);
+					return;
+				}
 				await fetchUserData(user.uid);
 			} else {
 				userData = null;
@@ -46,13 +70,80 @@
 		}
 	}
 
-	async function login() {
-		const provider = new GoogleAuthProvider();
+	async function handleEmailAuth() {
+		errorMessage = '';
+		successMessage = '';
+		formLoading = true;
 		try {
-			await signInWithPopup(auth, provider);
-			// onAuthStateChanged will handle the rest
+			if (isRegistering) {
+				// REGISTER
+				if (!name.trim()) {
+					throw new Error('Le nom est obligatoire.');
+				}
+				const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+				const newUser = userCredential.user;
+
+				await updateProfile(newUser, {
+					displayName: name
+				});
+
+				// Create User Document in Firestore
+				await setDoc(doc(db, 'Users', newUser.uid), {
+					email: newUser.email,
+					displayName: name,
+					createdAt: new Date(),
+					role: 'user'
+				});
+			} else {
+				// LOGIN
+				await signInWithEmailAndPassword(auth, email, password);
+			}
 		} catch (error) {
-			console.error('Erreur connexion:', error);
+			console.error('Auth Error:', error);
+			// Translate common firebase errors
+			if (error.code === 'auth/email-already-in-use') {
+				errorMessage = 'Cet email est déjà utilisé.';
+			} else if (error.code === 'auth/invalid-email') {
+				errorMessage = 'Email invalide.';
+			} else if (error.code === 'auth/weak-password') {
+				errorMessage = 'Le mot de passe doit faire au moins 6 caractères.';
+			} else if (
+				error.code === 'auth/user-not-found' ||
+				error.code === 'auth/wrong-password' ||
+				error.code === 'auth/invalid-credential'
+			) {
+				errorMessage = 'Email ou mot de passe incorrect.';
+			} else {
+				errorMessage = error.message;
+			}
+		} finally {
+			formLoading = false;
+		}
+	}
+
+	async function handlePasswordReset() {
+		if (!email) {
+			errorMessage = 'Veuillez entrer votre email.';
+			return;
+		}
+		errorMessage = '';
+		successMessage = '';
+		formLoading = true;
+		try {
+			await sendPasswordResetEmail(auth, email);
+			successMessage = 'Email de réinitialisation envoyé ! Vérifiez votre boîte mail.';
+			isResettingPassword = false; // Return to login view potentially, or stay to show success
+		} catch (error) {
+			console.error('Reset Error:', error);
+			if (error.code === 'auth/user-not-found') {
+				errorMessage = 'Aucun compte associé à cet email.';
+			} else if (error.code === 'auth/invalid-email') {
+				errorMessage = 'Email invalide.';
+			} else {
+				errorMessage = error.message;
+			}
+		} finally {
+			formLoading = false;
 		}
 	}
 
@@ -80,10 +171,109 @@
 			<!-- Not Logged In State -->
 			<div class="login-card" in:fade>
 				<h1>Bienvenue sur Le Poilu</h1>
-				<p>Connectez-vous pour gérer vos annonces, vos crédits et votre abonnement.</p>
-				<button class="btn-google" on:click={login}>
-					<i class="fa-brands fa-google"></i> Continuer avec Google
-				</button>
+				<p class="subtitle">Connectez-vous pour gérer vos annonces et votre espace.</p>
+
+				{#if errorMessage}
+					<div class="error-message">
+						<i class="fa-solid fa-triangle-exclamation"></i>
+						{errorMessage}
+					</div>
+				{/if}
+
+				{#if successMessage}
+					<div class="success-message">
+						<i class="fa-solid fa-check-circle"></i>
+						{successMessage}
+					</div>
+				{/if}
+
+				{#if isResettingPassword}
+					<div class="auth-form">
+						<h3>Réinitialiser le mot de passe</h3>
+						<p class="small-text">
+							Entrez votre email pour recevoir un lien de réinitialisation. (Pensez à vérifier les
+							spams de votre boîte mail)
+						</p>
+
+						<div class="input-group">
+							<i class="fa-solid fa-envelope input-icon"></i>
+							<input type="email" placeholder="Email" bind:value={email} required />
+						</div>
+
+						<button class="btn-primary" on:click={handlePasswordReset} disabled={formLoading}>
+							{formLoading ? 'Envoi...' : 'Envoyer le lien'}
+						</button>
+
+						<button
+							class="toggle-auth"
+							on:click={() => {
+								isResettingPassword = false;
+								errorMessage = '';
+								successMessage = '';
+							}}
+						>
+							Retour à la connexion
+						</button>
+					</div>
+				{:else}
+					<form on:submit|preventDefault={handleEmailAuth} class="auth-form">
+						{#if isRegistering}
+							<div class="input-group">
+								<i class="fa-solid fa-user input-icon"></i>
+								<input type="text" placeholder="Votre Nom" bind:value={name} required />
+							</div>
+						{/if}
+
+						<div class="input-group">
+							<i class="fa-solid fa-envelope input-icon"></i>
+							<input type="email" placeholder="Email" bind:value={email} required />
+						</div>
+
+						<div class="input-group">
+							<i class="fa-solid fa-lock input-icon"></i>
+							<input
+								type="password"
+								placeholder="Mot de passe"
+								bind:value={password}
+								required
+								minlength="6"
+							/>
+						</div>
+
+						{#if !isRegistering}
+							<div class="forgot-password">
+								<button
+									type="button"
+									on:click={() => {
+										isResettingPassword = true;
+										errorMessage = '';
+									}}
+								>
+									Mot de passe oublié ?
+								</button>
+							</div>
+						{/if}
+
+						<button type="submit" class="btn-primary" disabled={formLoading}>
+							{formLoading ? 'Chargement...' : isRegistering ? "S'inscrire" : 'Se connecter'}
+						</button>
+					</form>
+
+					<div class="divider">
+						<span>OU</span>
+					</div>
+
+					<button
+						class="toggle-auth"
+						on:click={() => {
+							isRegistering = !isRegistering;
+							errorMessage = '';
+							successMessage = '';
+						}}
+					>
+						{isRegistering ? 'Déjà un compte ? Se connecter' : "Pas encore de compte ? S'inscrire"}
+					</button>
+				{/if}
 			</div>
 		{:else}
 			<!-- Logged In State -->
@@ -219,25 +409,147 @@
 		color: var(--secondary);
 	}
 
-	.btn-google {
-		background: white;
-		border: 1px solid var(--border);
-		padding: 12px 24px;
+	.btn-primary {
+		width: 100%;
+		background: linear-gradient(135deg, #ff6101, var(--ctaSecondary));
+		color: white;
+		border: none;
+		padding: 12px;
 		border-radius: 50px;
+		font-weight: 700;
 		font-size: 1rem;
-		font-weight: 500;
-		display: inline-flex;
-		align-items: center;
-		gap: 10px;
 		cursor: pointer;
-		transition: all var(--transition-fast);
-		color: var(--text);
+		margin-top: 10px;
+		transition: transform 0.2s;
 	}
 
-	.btn-google:hover {
-		background: #f8f9fa;
-		border-color: #dadce0;
-		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+	.btn-primary:hover {
+		transform: scale(1.02);
+	}
+
+	.btn-primary:disabled {
+		opacity: 0.7;
+		cursor: not-allowed;
+	}
+
+	/* Form Styles */
+	.auth-form {
+		display: flex;
+		flex-direction: column;
+		gap: 15px;
+		margin-bottom: 20px;
+	}
+
+	.input-group {
+		position: relative;
+	}
+
+	.input-icon {
+		position: absolute;
+		left: 15px;
+		top: 50%;
+		transform: translateY(-50%);
+		color: #999;
+	}
+
+	.input-group input {
+		width: 100%;
+		padding: 12px 12px 12px 40px;
+		border: 1px solid #ddd;
+		border-radius: 12px;
+		font-size: 1rem;
+		box-sizing: border-box; /* Important fix */
+		outline: none;
+		transition: border-color 0.2s;
+	}
+
+	.input-group input:focus {
+		border-color: #ff6101;
+	}
+
+	.divider {
+		display: flex;
+		align-items: center;
+		text-align: center;
+		margin: 20px 0;
+		color: #aaa;
+		font-size: 0.8rem;
+		font-weight: 600;
+	}
+
+	.divider::before,
+	.divider::after {
+		content: '';
+		flex: 1;
+		border-bottom: 1px solid #eee;
+	}
+
+	.divider span {
+		padding: 0 10px;
+	}
+
+	.toggle-auth {
+		background: none;
+		border: none;
+		color: #ff6101;
+		font-weight: 600;
+		margin-top: 20px;
+		cursor: pointer;
+		font-size: 0.9rem;
+	}
+
+	.toggle-auth:hover {
+		text-decoration: underline;
+	}
+
+	.error-message {
+		background-color: #fee2e2;
+		color: #b91c1c;
+		padding: 10px;
+		border-radius: 8px;
+		font-size: 0.9rem;
+		margin-bottom: 15px;
+		text-align: left;
+	}
+
+	.success-message {
+		background-color: #dcfce7;
+		color: #15803d;
+		padding: 10px;
+		border-radius: 8px;
+		font-size: 0.9rem;
+		margin-bottom: 15px;
+		text-align: left;
+	}
+
+	.forgot-password {
+		display: flex;
+		justify-content: flex-end;
+	}
+
+	.forgot-password button {
+		background: none;
+		border: none;
+		color: var(--secondary);
+		font-size: 0.85rem;
+		cursor: pointer;
+		padding: 0;
+	}
+
+	.forgot-password button:hover {
+		color: var(--cta);
+		text-decoration: underline;
+	}
+
+	.small-text {
+		font-size: 0.9rem;
+		color: var(--secondary);
+		margin-bottom: 15px;
+	}
+
+	.subtitle {
+		color: #666;
+		margin-bottom: 25px;
 	}
 
 	/* Dashboard */

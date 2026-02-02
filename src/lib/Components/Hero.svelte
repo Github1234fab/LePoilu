@@ -26,7 +26,7 @@
 				<span class="chip-icon">📅</span>
 				<span>Publier un événement</span>
 			</a>
-			<a href="/Tarifs" class="chip chip-shop">
+			<a href="/carnet/rejoindre" class="chip chip-shop">
 				<span class="chip-icon">🏪</span>
 				<span>Créer un espace commerçant</span>
 			</a>

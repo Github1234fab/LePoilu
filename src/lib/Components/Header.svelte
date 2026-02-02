@@ -42,7 +42,11 @@
 			<a href="/compte" class="user-link" aria-label="Mon Compte">
 				{#if user}
 					<div class="nav-avatar-placeholder">
-						{user.displayName ? user.displayName[0].toUpperCase() : 'U'}
+						{user.displayName
+							? user.displayName[0].toUpperCase()
+							: user.email
+								? user.email[0].toUpperCase()
+								: 'U'}
 					</div>
 				{:else}
 					<i class="fa-solid fa-circle-user"></i>

@@ -20,7 +20,8 @@
 				"Pas d'offre promotionnelle pour vos clients (sur présentation de l'app)",
 				'Pas de photos',
 				'Pas de lien web',
-				"Pas d'horaires"
+				"Pas d'horaires",
+				"Pas de bouton d'appel"
 			]
 		},
 		premium: {
@@ -29,8 +30,13 @@
 			amount: '49,00 €',
 			features: [
 				'Fiche complète',
-				'Photos & Horaires',
-				'Lien site web & Tél',
+				'Nom du commerce',
+				'Catégorie',
+				'Adresse',
+				'Contact',
+				'Photos',
+				'Horaires',
+				'lien web',
 				"Offre promotionnelle pour vos clients (sur présentation de l'app)",
 				"Bouton d'appel",
 				'Meilleure visibilité'
@@ -220,6 +226,9 @@
 	<!-- Hero / Intro Section -->
 	<div class="hero-split">
 		<div class="hero-content">
+			<div class="badge-coming-soon" in:fade={{ delay: 100 }}>
+				<i class="fa-solid fa-clock"></i> Disponible Bientôt
+			</div>
 			<h1 in:fly={{ y: 20, duration: 600 }}>
 				Développez votre activité avec <span class="highlight">Le Poilu</span>
 			</h1>
@@ -493,6 +502,21 @@
 		padding-right: var(--spacing-lg);
 		position: sticky;
 		top: 100px;
+	}
+
+	.badge-coming-soon {
+		display: inline-flex;
+		align-items: center;
+		gap: 8px;
+		background: #fff0eb;
+		color: #ff6101;
+		padding: 6px 16px;
+		border-radius: 50px;
+		font-weight: 700;
+		font-size: 0.9rem;
+		margin-bottom: var(--spacing-md);
+		border: 1px solid rgba(255, 97, 1, 0.2);
+		box-shadow: 0 2px 5px rgba(255, 97, 1, 0.1);
 	}
 
 	.hero-content h1 {

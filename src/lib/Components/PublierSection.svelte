@@ -37,7 +37,7 @@
 					<span class="card-desc">Publiez vots évènements ...</span>
 					<span class="card-cta">Publier →</span>
 				</a>
-				<a href="/Tarifs" class="cta-card card-shop">
+				<a href="/carnet/rejoindre" class="cta-card card-shop">
 					<span class="card-icon">🏪</span>
 					<span class="card-title">Commerçant</span>
 					<span class="card-desc">Créez votre vitrine locale</span>

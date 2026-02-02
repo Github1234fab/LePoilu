@@ -1,5 +1,7 @@
 <script>
 	import PoiluJumelles from '../../lib/assets/Poilu-jumelles.png';
+	import { auth } from '$lib/firebase';
+	import { goto } from '$app/navigation';
 
 	const pricing = [
 		{
@@ -52,6 +54,17 @@
 			link: '/acheter-plan?plan=pro'
 		}
 	];
+
+	async function handlePlanSelection(e, link) {
+		e.preventDefault();
+		const user = auth.currentUser;
+		if (user) {
+			goto(link);
+		} else {
+			const encodedLink = encodeURIComponent(link);
+			goto(`/compte?redirect=${encodedLink}`);
+		}
+	}
 </script>
 
 <svelte:head>
@@ -64,7 +77,7 @@
 
 <main>
 	<!-- Hero Section -->
-	<section class="hero">
+	<!-- <section class="hero">
 		<div class="hero-content">
 			<h1 class="hero-title">Publier un événement</h1>
 			<p class="hero-subtitle">
@@ -72,33 +85,7 @@
 			</p>
 			<img class="poilu-jumelles" src={PoiluJumelles} alt="Personnage le poilu avec des jumelles" />
 		</div>
-	</section>
-
-	<!-- Event Types Section -->
-	<section class="event-types-section">
-		<h2 class="section-title">Quels événements publier ?</h2>
-		<p class="section-description">
-			Associations, clubs, mairies, commerçants ou particuliers : tous vos événements ont leur place sur Le Poilu
-		</p>
-		<div class="event-types-grid">
-			<span class="event-tag">🎵 Concerts</span>
-			<span class="event-tag">🎭 Spectacles</span>
-			<span class="event-tag">🎪 Festivals</span>
-			<span class="event-tag">🛒 Marchés</span>
-			<span class="event-tag">🏷️ Brocantes</span>
-			<span class="event-tag">🥾 Randonnées</span>
-			<span class="event-tag">🚴 Balades</span>
-			<span class="event-tag">⚽ Stages</span>
-			<span class="event-tag">🎨 Ateliers créatifs</span>
-			<span class="event-tag">🍷 Dégustations</span>
-			<span class="event-tag">🎉 Fêtes locales</span>
-			<span class="event-tag">🤝 Événements associatifs</span>
-			<span class="event-tag">📚 Conférences</span>
-			<span class="event-tag">🎬 Projections</span>
-			<span class="event-tag">💃 Soirées dansantes</span>
-			<span class="event-tag">🧘 Bien-être</span>
-		</div>
-	</section>
+	</section> -->
 
 	<!-- Pricing Section -->
 	<section class="pricing-section">
@@ -123,14 +110,20 @@
 							<li>{detail}</li>
 						{/each}
 					</ul>
-					<a class="btn-pricing" href={tier.link}>Commencer</a>
+					<a
+						class="btn-pricing"
+						href={tier.link}
+						on:click={(e) => handlePlanSelection(e, tier.link)}
+					>
+						Commencer
+					</a>
 				</article>
 			{/each}
 		</div>
 	</section>
 
 	<!-- How It Works Section -->
-	<section class="howto-section">
+	<!-- <section class="howto-section">
 		<div class="howto-header">
 			<h2 class="section-title">Comment ça marche ?</h2>
 			<p class="section-description">Quatre étapes simples pour publier votre événement</p>
@@ -171,8 +164,14 @@
 			</div>
 		</div>
 
-		<a href="/publier?plan=free" class="btn-cta">Publier mon événement</a>
-	</section>
+		<a
+			href="/publier?plan=free"
+			class="btn-cta"
+			on:click={(e) => handlePlanSelection(e, '/publier?plan=free')}
+		>
+			Publier mon événement
+		</a>
+	</section> -->
 </main>
 
 <style>
@@ -233,52 +232,6 @@
 		height: clamp(250px, 40vw, 400px);
 		width: auto;
 		filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.3));
-	}
-
-	/* Event Types Section */
-	.event-types-section {
-		background: white;
-		border-radius: var(--radius-lg);
-		padding: var(--spacing-xl) var(--spacing-lg);
-		box-shadow: var(--shadow);
-		margin-bottom: 50px;
-		text-align: center;
-	}
-
-	.event-types-section .section-title {
-		margin-bottom: var(--spacing-sm);
-	}
-
-	.event-types-section .section-description {
-		margin-bottom: var(--spacing-lg);
-	}
-
-	.event-types-grid {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 12px;
-		justify-content: center;
-		max-width: 900px;
-		margin: 0 auto;
-	}
-
-	.event-tag {
-		background: linear-gradient(135deg, #fff5f2, #fff);
-		border: 1px solid rgba(255, 97, 1, 0.2);
-		color: var(--text);
-		padding: 10px 18px;
-		border-radius: 50px;
-		font-family: var(--FFTitle);
-		font-weight: 600;
-		font-size: 0.95rem;
-		transition: all 0.2s;
-	}
-
-	.event-tag:hover {
-		background: linear-gradient(135deg, #ff6101, var(--ctaSecondary));
-		color: white;
-		transform: translateY(-2px);
-		box-shadow: 0 4px 12px rgba(255, 97, 1, 0.3);
 	}
 
 	/* Pricing Section */
@@ -471,10 +424,10 @@
 		box-shadow: var(--shadow);
 	}
 
-	.howto-header .section-title,
+	/* .howto-header .section-title,
 	.howto-header .section-description {
 		color: white;
-	}
+	} */
 
 	.steps-grid {
 		display: grid;
@@ -590,8 +543,7 @@
 		}
 
 		.pricing-section,
-		.howto-section,
-		.event-types-section {
+		.howto-section {
 			padding: var(--spacing-lg) var(--spacing-md);
 		}
 

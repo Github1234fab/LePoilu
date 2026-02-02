@@ -7,6 +7,7 @@
 	import HIW from '$lib/Components/HowItWorks.svelte';
 	import Testimonials from '$lib/Components/Testimonials.svelte';
 	import CTAFinal from '$lib/Components/CTAFinal.svelte';
+	import EventTypes from '$lib/Components/EventTypes.svelte';
 	// import Footer from "$lib/Components/Footer.svelte";
 	import './styles.css';
 </script>
@@ -15,11 +16,12 @@
 	<!-- <Header/>  -->
 	<Hero />
 	<PreHero />
+	<EventTypes />
 	<PublierSection />
 	<Features />
 
 	<HIW />
-	
+
 	<Testimonials />
 	<CTAFinal />
 	<!-- <Footer/> -->
