@@ -24,8 +24,7 @@
 		customStartTime: '',
 		customStartTime: '',
 		customEndTime: '',
-		email: '',
-		phone: ''
+		customEndTime: ''
 	};
 
 	const communes = [
@@ -146,29 +145,60 @@
 	}
 
 	import { initFirebase } from '$lib/firebase';
-	import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+	import { collection, addDoc, serverTimestamp, updateDoc, doc, getDoc } from 'firebase/firestore';
 	import { signInAnonymously } from 'firebase/auth';
+	import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 	let loading = false;
 	let error = null;
-	let auth, db; // Local instances
+	let uploadProgress = null; // Track upload status
+	let auth, db, storage; // Local instances
 
 	onMount(() => {
 		const firebase = initFirebase();
 		if (firebase) {
 			auth = firebase.auth;
 			db = firebase.db;
+			storage = firebase.storage;
 
-			// Listen for auth state changes to pre-fill email
+			// Listen for auth state changes
 			auth.onAuthStateChanged((user) => {
-				if (user && user.email && !ad.email) {
-					ad.email = user.email;
-				}
+				// No longer pre-filling ad.email as field is removed
 			});
 		} else {
 			error = 'Erreur de configuration Firebase. Vérifiez la console.';
 		}
 	});
+
+	async function uploadImageToStorage(file, submissionId) {
+		if (!storage) {
+			throw new Error('Firebase Storage non initialisé');
+		}
+
+		try {
+			// Generate unique filename with timestamp
+			const timestamp = Date.now();
+			const fileExtension = file.name.split('.').pop();
+			const filename = `${timestamp}.${fileExtension}`;
+
+			// Create reference to storage location
+			const storageRef = ref(storage, `ads/${submissionId}/${filename}`);
+
+			// Upload file
+			uploadProgress = "Téléchargement de l'image...";
+			await uploadBytes(storageRef, file);
+
+			// Get download URL
+			const downloadURL = await getDownloadURL(storageRef);
+			uploadProgress = null;
+
+			return downloadURL;
+		} catch (err) {
+			uploadProgress = null;
+			console.error('Erreur upload image:', err);
+			throw new Error("Échec du téléchargement de l'image");
+		}
+	}
 
 	async function handleSubmit() {
 		loading = true;
@@ -198,8 +228,8 @@
 				date: ad.date,
 				horaire:
 					ad.time === 'Personnalisé' ? `${ad.customStartTime} - ${ad.customEndTime}` : ad.time,
-				contact: ad.email || user.email || 'guest@lepoilu.fr',
-				contactPhone: ad.phone,
+				contact: user.email || 'guest@lepoilu.fr',
+				contactPhone: '',
 				userId: user.uid,
 				status: 'pending',
 				paid: false,
@@ -214,6 +244,21 @@
 			const docRef = await addDoc(collection(db, 'Submissions'), adData);
 			const submissionId = docRef.id;
 
+			// 3.5. Upload image if provided (for paid plans)
+			if (ad.image && plan !== 'free') {
+				try {
+					const imageUrl = await uploadImageToStorage(ad.image, submissionId);
+					// Update the document with the image URL
+					await updateDoc(doc(db, 'Submissions', submissionId), {
+						image: imageUrl
+					});
+				} catch (uploadError) {
+					console.error('Image upload failed:', uploadError);
+					// Continue anyway - the ad is created, just without image
+					error = `Annonce créée mais l'image n'a pas pu être téléchargée: ${uploadError.message}`;
+				}
+			}
+
 			// 4. If Plan is FREE, we stop here (or redirect to success)
 			if (plan === 'free') {
 				// Free ads don't need payment
@@ -221,7 +266,56 @@
 					window.location.href = '/succes?from_app=true&type=free';
 				} else {
 					alert('Annonce envoyée pour validation !');
-					window.location.href = '/';
+					window.location.href = '/compte';
+				}
+				return;
+			}
+
+			// 4.5. If Plan is CREDIT, deduct credit and proceed
+			if (plan === 'credit') {
+				// Check if user has credits
+				const userDocRef = doc(db, 'Users', user.uid);
+				const userDoc = await getDoc(userDocRef);
+
+				if (!userDoc.exists()) {
+					error = 'Profil utilisateur introuvable.';
+					loading = false;
+					return;
+				}
+
+				const userData = userDoc.data();
+				const currentCredits = userData?.subscription?.credits || 0;
+
+				if (currentCredits <= 0) {
+					error = "Vous n'avez plus de crédits. Veuillez en acheter.";
+					loading = false;
+					return;
+				}
+
+				// Deduct one credit
+				await updateDoc(userDocRef, {
+					'subscription.credits': currentCredits - 1
+				});
+
+				// Update the submission to mark it as paid with credit
+				await updateDoc(doc(db, 'Submissions', submissionId), {
+					paid: true,
+					tier: 'single',
+					paymentMethod: 'credit'
+				});
+
+				// Only redirect if no error occurred (especially image upload)
+				if (!error) {
+					// Redirect to success
+					if ($page.data.from_app) {
+						window.location.href = '/succes?from_app=true&type=credit';
+					} else {
+						alert('Annonce publiée avec succès ! Un crédit a été déduit.');
+						window.location.href = '/compte';
+					}
+				} else {
+					// Show error but don't redirect - credit was already deducted
+					loading = false;
 				}
 				return;
 			}
@@ -239,7 +333,7 @@
 					data: {
 						// Pass minimal info if needed for Stripe metadata display
 						title: ad.title,
-						email: ad.email
+						email: user.email || ''
 					}
 				})
 			});
@@ -426,41 +520,17 @@
 				</div>
 			{/if}
 
-			<!-- Contact Info Section -->
-			<div class="contact-section">
-				<h3 class="section-title">Vos Coordonnées</h3>
-				<p class="section-subtitle">
-					Ces informations nous permettent de vous recontacter si besoin.
-				</p>
-
-				<div class="grid-2">
-					<div class="form-group">
-						<label for="email">Email *</label>
-						<input
-							type="email"
-							id="email"
-							bind:value={ad.email}
-							placeholder="votre@email.com"
-							required
-						/>
-					</div>
-					<div class="form-group">
-						<label for="phone">Téléphone *</label>
-						<input
-							type="tel"
-							id="phone"
-							bind:value={ad.phone}
-							placeholder="06 12 34 56 78"
-							required
-						/>
-					</div>
-				</div>
-			</div>
-
 			<p class="disclaimer-text">
 				<i class="fa-solid fa-circle-info"></i> Vérifiez bien vos informations avant de valider. Une
 				fois soumise, votre annonce sera relue par notre équipe de modération avant d'être publiée.
 			</p>
+
+			{#if uploadProgress}
+				<div class="upload-progress">
+					<i class="fa-solid fa-spinner fa-spin"></i>
+					<span>{uploadProgress}</span>
+				</div>
+			{/if}
 
 			<div class="actions">
 				<a href="/Tarifs" class="btn btn-secondary">Retour</a>
@@ -774,7 +844,27 @@
 		font-weight: 600;
 	}
 
-	.contact-section {
+	.upload-progress {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 10px;
+		padding: 1rem;
+		background: #e6f7ff;
+		border-left: 4px solid #1890ff;
+		border-radius: var(--radius-sm);
+		color: var(--text);
+		margin-top: var(--spacing-md);
+		font-family: var(--FFBody);
+		font-weight: 600;
+	}
+
+	.upload-progress i {
+		color: #1890ff;
+		font-size: 1.2rem;
+	}
+
+	/* .contact-section {
 		margin-top: var(--spacing-lg);
 		padding-top: var(--spacing-md);
 		border-top: 1px solid var(--border);
@@ -791,5 +881,5 @@
 		color: var(--secondary);
 		font-size: 0.9rem;
 		margin-bottom: var(--spacing-md);
-	}
+	} */
 </style>

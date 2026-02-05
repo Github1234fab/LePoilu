@@ -344,7 +344,7 @@
 								<p class="stat-sub">{sponsorData.currentPlan?.name || 'Sponsor'}</p>
 							{:else}
 								<p class="stat-number inactive">Aucun</p>
-								<a href="/carnet/rejoindre" class="btn-sm">Devenir Sponsor</a>
+								<a href="/carnet/rejoindre" class="btn-sm">Créer un espace commerçant</a>
 							{/if}
 						</div>
 					</div>
@@ -352,9 +352,16 @@
 
 				<!-- Actions / Links -->
 				<div class="menu-list">
-					<a href="/Tarifs" class="menu-item">
+					<a
+						href={userData?.subscription?.credits > 0 ? '/publier?plan=credit' : '/Tarifs'}
+						class="menu-item"
+					>
 						<i class="fa-solid fa-plus"></i>
-						<span>Publier une annonce</span>
+						<span>
+							{userData?.subscription?.credits > 0
+								? 'Publier une annonce (utiliser un crédit)'
+								: 'Publier une annonce'}
+						</span>
 						<i class="fa-solid fa-chevron-right arrow"></i>
 					</a>
 					<a href="/carnet/rejoindre" class="menu-item">
