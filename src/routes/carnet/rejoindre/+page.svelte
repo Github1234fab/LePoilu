@@ -3,6 +3,7 @@
 	import screenA from '$lib/assets/screen_sponsorA.webp';
 	import screenB from '$lib/assets/screen_sponsorB.webp';
 	import screenD from '$lib/assets/screen_SponsorD.webp';
+	import screenF from '$lib/assets/screen_SponsorF.webp';
 </script>
 
 <svelte:head>
@@ -28,7 +29,7 @@
 
 		<div class="hero-visual" in:fly={{ x: 50, duration: 800, delay: 300 }}>
 			<div class="phone-mockup">
-				<img src={screenB} alt="Exemple d'offre sur mobile" />
+				<img src={screenF} alt="Exemple d'offre sur mobile" />
 				<div class="floating-card">
 					<i class="fa-solid fa-check-circle text-success"></i> "Bonjour ! J'ai vu votre offre sur Le
 					Poilu."
