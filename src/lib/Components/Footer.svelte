@@ -130,7 +130,7 @@
 		flex-direction: column;
 		gap: var(--spacing-xs);
 		min-width: 150px;
-		align-items: center;
+		align-items: flex-start;
 		justify-content: center;
 	}
 
@@ -140,7 +140,7 @@
 		transition: all var(--transition-normal);
 		padding: var(--spacing-xs) 0;
 		display: flex;
-		align-items: center;
+		align-items: flex-start;
 		justify-content: center;
 	}
 
@@ -153,6 +153,8 @@
 		list-style-type: none;
 		display: flex;
 		flex-direction: column;
+		align-items: flex-start;
+		justify-content: center;
 		gap: var(--spacing-xs);
 	}
 

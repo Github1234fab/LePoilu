@@ -1,527 +1,168 @@
 <script>
-	import { fade, fly, slide } from 'svelte/transition';
-	import { onMount } from 'svelte';
-	import { auth, db } from '$lib/firebase';
-	import { GoogleAuthProvider, signInWithPopup, linkWithPopup } from 'firebase/auth';
-	import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
-
-	let step = 1;
-	let selectedPlan = 'premium'; // 'basic' or 'premium'
-
-	const planDetails = {
-		basic: {
-			name: 'Essentiel',
-			price: '19€',
-			amount: '19,00 €',
-			features: [
-				'Nom du commerce',
-				'Catégorie',
-				'Adresse',
-				"Pas d'offre promotionnelle pour vos clients (sur présentation de l'app)",
-				'Pas de photos',
-				'Pas de lien web',
-				"Pas d'horaires",
-				"Pas de bouton d'appel"
-			]
-		},
-		premium: {
-			name: 'Premium',
-			price: '49€',
-			amount: '49,00 €',
-			features: [
-				'Fiche complète',
-				'Nom du commerce',
-				'Catégorie',
-				'Adresse',
-				'Contact',
-				'Photos',
-				'Horaires',
-				'lien web',
-				"Offre promotionnelle pour vos clients (sur présentation de l'app)",
-				"Bouton d'appel",
-				'Meilleure visibilité'
-			]
-		}
-	};
-
-	let form = {
-		companyName: '',
-		category: '',
-		contactName: '',
-		email: '',
-		phone: '',
-		address: '',
-		city: '',
-		zip: '',
-		description: '',
-		promoOffer: '',
-		website1: '',
-		website2: '',
-		website3: '',
-		website4: '',
-		openingHours: '',
-		photos: []
-	};
-
-	// ... merchantCategories and other constants remain the same ...
-	const merchantCategories = [
-		'Restaurant',
-		'Cafe & Bar',
-		'Boulangerie-Patisserie',
-		'Traiteur',
-		'Epicerie fine',
-		'Plombier',
-		'Electricien',
-		'Peintre',
-		'Menuisier',
-		'Jardinier',
-		'Mode & Vetements',
-		'Decoration',
-		'Librairie',
-		'Fleuriste',
-		'Quincaillerie',
-		'Coiffeur',
-		'Estheticienne',
-		'Massage',
-		'Salle de sport',
-		'Garage',
-		'Carrossier',
-		'Avocat',
-		'Comptable',
-		'Agence immobiliere'
-	];
-
-	function handlePhotos(e) {
-		if (e.target.files) {
-			form.photos = Array.from(e.target.files).slice(0, 6);
-		}
-	}
-
-	const benefits = [
-		{
-			icon: 'fa-eye',
-			title: 'Visibilité locale',
-			desc: 'Touchez les utilisateurs autour de votre commerce.'
-		},
-		{
-			icon: 'fa-ticket',
-			title: 'Offres exclusives',
-			desc: 'Attirez de nouveaux clients avec des promos dédiées (Plan Premium).'
-		},
-		{
-			icon: 'fa-store',
-			title: 'Vitrine digitale',
-			desc: "Votre présence sur l'application Le Poilu, avec un espace Pro."
-		}
-	];
-
-	function togglePlan(plan) {
-		selectedPlan = plan;
-	}
-
-	let loading = false;
-	let error = null;
-
-	async function submitForm() {
-		loading = true;
-		error = null;
-
-		try {
-			// 1. Authentification (Forced Permanent Account)
-			let user = auth.currentUser;
-			const googleProvider = new GoogleAuthProvider();
-
-			// Force Google Sign In if not logged in OR if Anonymous
-			// We do not try to link accounts to avoid complexity/errors.
-			// Sponsors must have a clean Google-authenticated account.
-			if (!user || user.isAnonymous) {
-				try {
-					const result = await signInWithPopup(auth, googleProvider);
-					user = result.user;
-				} catch (authErr) {
-					console.error('Auth Cancelled/Error', authErr);
-					throw new Error('Connexion Google requise pour devenir sponsor.');
-				}
-			}
-
-			// 2. Prepare Data for Firestore
-			const sponsorData = {
-				name: form.companyName,
-				category: form.category,
-				contactName: form.contactName,
-				email: form.email || user.email,
-				phone: form.phone,
-				address: form.address,
-				city: form.city,
-				zip: form.zip,
-				description: form.description,
-				promoOffer: form.promoOffer,
-				website: form.website1,
-				socials: {
-					facebook: form.website2,
-					instagram: form.website3,
-					other: form.website4
-				},
-				openingHours: form.openingHours,
-				userId: user.uid,
-				status: 'pending',
-				createdAt: serverTimestamp(),
-
-				// Plan Info matches what logic expects to manage subscription status
-				currentPlan: {
-					planId: selectedPlan === 'premium' ? 'visibility-monthly' : 'essential-monthly',
-					name: planDetails[selectedPlan].name,
-					isActive: false, // Will be set to true by Webhook
-					startDate: null,
-					renewalDate: null
-				},
-				image: '' // Placeholder for now
-			};
-
-			// 3. Create Document in Firestore 'Sponsors'
-			const docRef = await addDoc(collection(db, 'Sponsors'), sponsorData);
-			const sponsorId = docRef.id;
-
-			// 4. Call Checkout API
-			const response = await fetch('/api/checkout', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify({
-					type: 'sponsor',
-					planId: selectedPlan,
-					submissionId: sponsorId, // Used as client_reference_id & metadata.sponsorId
-					data: {
-						...form,
-						userId: user.uid
-						// Pass data for metadata if needed, but DB is source of truth
-					}
-				})
-			});
-
-			const result = await response.json();
-
-			if (!response.ok) {
-				throw new Error(result.error || 'Une erreur est survenue lors du paiement');
-			}
-
-			if (result.url) {
-				window.location.href = result.url;
-			}
-		} catch (err) {
-			console.error('Erreur:', err);
-			error = err.message;
-		} finally {
-			loading = false;
-		}
-	}
+	import { fade, fly } from 'svelte/transition';
+	import screenA from '$lib/assets/screen_sponsorA.webp';
+	import screenB from '$lib/assets/screen_sponsorB.webp';
+	import screenD from '$lib/assets/screen_SponsorD.webp';
 </script>
 
 <svelte:head>
-	<title>Rejoindre le Carnet - Le Poilu</title>
+	<title>Attirez de nouveaux clients - Le Poilu</title>
 </svelte:head>
 
 <div class="page-wrapper">
-	<!-- Hero / Intro Section -->
-	<div class="hero-split">
+	<!-- HERO SECTION -->
+	<header class="hero-section">
 		<div class="hero-content">
-			<div class="badge-coming-soon" in:fade={{ delay: 100 }}>
-				<i class="fa-solid fa-clock"></i> Disponible Bientôt
-			</div>
+			<div class="badge-new" in:fade={{ delay: 100 }}><i class="fa-solid fa-bolt"></i> Nouveau</div>
 			<h1 in:fly={{ y: 20, duration: 600 }}>
-				Développez votre activité avec <span class="highlight">Le Poilu</span>
+				Transformez l'audience du <span class="highlight">Poilu</span> en clients.
 			</h1>
-			<p in:fade={{ delay: 200 }}>
-				Rejoignez notre carnet de bonnes adresses et connectez-vous avec des milliers d'utilisateurs
-				locaux.
+			<p class="hero-subtitle" in:fade={{ delay: 200 }}>
+				Le principe est simple : Vous proposez une offre exclusive sur l'app. La tribu du Poilu
+				vient en profiter !
 			</p>
-
-			<div class="benefits-list" in:fade={{ delay: 400 }}>
-				{#each benefits as benefit}
-					<div class="benefit-item">
-						<div class="benefit-icon">
-							<i class="fa-solid {benefit.icon}"></i>
-						</div>
-						<div class="benefit-text">
-							<h4>{benefit.title}</h4>
-							<p>{benefit.desc}</p>
-						</div>
-					</div>
-				{/each}
-			</div>
+			<a href="/carnet/rejoindre/inscription" class="cta-button big-pulse">
+				Je lance mon offre <i class="fa-solid fa-arrow-right"></i>
+			</a>
 		</div>
 
-		<!-- Registration Form -->
-		<div class="form-section">
-			<div class="form-card" in:fly={{ y: 50, duration: 600, delay: 200 }}>
-				<div class="form-header">
-					<h2>Devenez Partenaire</h2>
-					<div class="toggle-container">
-						<button
-							class="toggle-btn {selectedPlan === 'basic' ? 'active' : ''}"
-							on:click={() => togglePlan('basic')}>Essentiel</button
-						>
-						<button
-							class="toggle-btn {selectedPlan === 'premium' ? 'active' : ''}"
-							on:click={() => togglePlan('premium')}>Premium</button
-						>
-					</div>
+		<div class="hero-visual" in:fly={{ x: 50, duration: 800, delay: 300 }}>
+			<div class="phone-mockup">
+				<img src={screenB} alt="Exemple d'offre sur mobile" />
+				<div class="floating-card">
+					<i class="fa-solid fa-check-circle text-success"></i> "Bonjour ! J'ai vu votre offre sur Le
+					Poilu."
 				</div>
-
-				<div class="price-display">
-					<span class="amount">{planDetails[selectedPlan].price}</span><span class="period"
-						>/mois</span
-					>
-				</div>
-
-				<ul class="plan-features-list">
-					{#each planDetails[selectedPlan].features as feature}
-						<li>
-							{#if feature.startsWith('Pas')}
-								<i class="fa-solid fa-xmark text-danger"></i>
-							{:else}
-								<i class="fa-solid fa-check text-success"></i>
-							{/if}
-							{feature}
-						</li>
-					{/each}
-				</ul>
-
-				<form on:submit|preventDefault={submitForm}>
-					<div class="form-row">
-						<div class="input-group">
-							<label for="company">Nom de l'entreprise</label>
-							<input type="text" id="company" bind:value={form.companyName} required />
-						</div>
-					</div>
-
-					<div class="form-row">
-						<div class="input-group">
-							<label for="category">Catégorie professionnelle</label>
-							<select id="category" bind:value={form.category} required>
-								<option value="" disabled selected>Choisir...</option>
-								{#each merchantCategories as cat}
-									<option value={cat}>{cat}</option>
-								{/each}
-							</select>
-						</div>
-					</div>
-
-					<div class="form-row grid-2">
-						<div class="input-group">
-							<label for="contact">Votre nom</label>
-							<input type="text" id="contact" bind:value={form.contactName} required />
-						</div>
-						<div class="input-group">
-							<label for="phone">Téléphone</label>
-							<input type="tel" id="phone" bind:value={form.phone} required />
-						</div>
-					</div>
-
-					<div class="form-row">
-						<div class="input-group">
-							<label for="email">Email professionnel</label>
-							<input type="email" id="email" bind:value={form.email} required />
-						</div>
-					</div>
-
-					<div class="form-row grid-2">
-						<div class="input-group">
-							<label for="city">Ville</label>
-							<input type="text" id="city" bind:value={form.city} required />
-						</div>
-						<div class="input-group">
-							<label for="zip">Code Postal</label>
-							<input type="text" id="zip" bind:value={form.zip} required />
-						</div>
-					</div>
-
-					{#if selectedPlan === 'premium'}
-						<div class="premium-section" transition:slide>
-							<div class="premium-header">
-								<i class="fa-solid fa-star"></i> Informations Premium
-							</div>
-
-							<div class="form-row">
-								<div class="input-group">
-									<label for="description">Description de votre activité</label>
-									<textarea
-										id="description"
-										bind:value={form.description}
-										rows="3"
-										placeholder="Présentez votre activité..."
-									></textarea>
-								</div>
-							</div>
-
-							<div class="form-row">
-								<div class="input-group">
-									<label for="promo">Offre promotionnelle (Clients App)</label>
-									<textarea
-										id="promo"
-										bind:value={form.promoOffer}
-										rows="2"
-										placeholder="Ex: -10% sur le menu du midi..."
-									></textarea>
-								</div>
-							</div>
-
-							<div class="form-row">
-								<div class="input-group">
-									<label for="hours">Horaires d'ouverture</label>
-									<textarea
-										id="hours"
-										bind:value={form.openingHours}
-										rows="3"
-										placeholder="Lundi: 9h-18h..."
-									></textarea>
-								</div>
-							</div>
-
-							<div class="form-row">
-								<div class="input-group">
-									<label for="web1">Site internet (Principal)</label>
-									<input
-										type="url"
-										id="web1"
-										bind:value={form.website1}
-										placeholder="https://..."
-									/>
-								</div>
-							</div>
-
-							<div class="form-row">
-								<div class="input-group">
-									<label for="web2">Lien Facebook</label>
-									<input
-										type="url"
-										id="web2"
-										bind:value={form.website2}
-										placeholder="https://facebook.com/..."
-									/>
-								</div>
-							</div>
-
-							<div class="form-row">
-								<div class="input-group">
-									<label for="web3">Lien Instagram</label>
-									<input
-										type="url"
-										id="web3"
-										bind:value={form.website3}
-										placeholder="https://instagram.com/..."
-									/>
-								</div>
-							</div>
-
-							<div class="form-row">
-								<div class="input-group">
-									<label for="web4">Autre lien (TikTok, LinkedIn...)</label>
-									<input
-										type="url"
-										id="web4"
-										bind:value={form.website4}
-										placeholder="https://..."
-									/>
-								</div>
-							</div>
-
-							<div class="form-row">
-								<div class="input-group">
-									<label for="photos">Photos (Max 6)</label>
-									<div class="file-upload">
-										<input
-											type="file"
-											id="photos"
-											multiple
-											accept="image/*"
-											on:change={handlePhotos}
-										/>
-										<div class="file-placeholder">
-											<i class="fa-solid fa-camera"></i>
-											<span
-												>{form.photos.length > 0
-													? `${form.photos.length} photo(s) sélectionnée(s)`
-													: 'Ajouter des photos'}</span
-											>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					{/if}
-
-					<div class="total-bar">
-						<div class="total-text">Total à régler aujourd'hui</div>
-						<div class="total-amount">{planDetails[selectedPlan].amount}</div>
-					</div>
-
-					<button
-						type="submit"
-						class="submit-btn"
-						class:btn-premium={selectedPlan === 'premium'}
-						disabled={loading}
-					>
-						{#if loading}
-							<i class="fa-solid fa-spinner fa-spin"></i> Redirection vers le paiement...
-						{:else if selectedPlan === 'premium'}
-							Rejoindre en Premium <i class="fa-solid fa-star"></i>
-						{:else}
-							Rejoindre l'Essentiel <i class="fa-solid fa-arrow-right"></i>
-						{/if}
-					</button>
-					{#if error}
-						<p class="error-text">{error}</p>
-					{/if}
-					<p class="disclaimer">Sans engagement. Annulable à tout moment.</p>
-				</form>
 			</div>
 		</div>
-	</div>
+	</header>
+
+	<!-- STEPS SECTION -->
+	<section class="steps-section">
+		<h2 class="section-title">Comment ça marche ?</h2>
+		<div class="steps-grid">
+			<div class="step-card">
+				<div class="step-number">1</div>
+				<h3>Vous créez votre fiche</h3>
+				<p>Renseignez vos infos et choisissez votre plan Premium.</p>
+			</div>
+			<div class="step-line"></div>
+			<div class="step-card">
+				<div class="step-number">2</div>
+				<h3>Vous définissez une offre</h3>
+				<p>Ex: "Café offert", "-20% le mardi", "Dessert offert"...</p>
+			</div>
+			<div class="step-line"></div>
+			<div class="step-card">
+				<div class="step-number">3</div>
+				<h3>Les clients arrivent</h3>
+				<p>Ils présentent l'offre sur leur téléphone lors du passage en caisse.</p>
+			</div>
+		</div>
+	</section>
+
+	<!-- SHOWCASE SECTION (NEW) -->
+	<section class="showcase-section">
+		<h2 class="section-title">L'application "All-in-one" de l'ouest Lyonnais</h2>
+		<p class="section-subtitle">
+			Une interface moderne et intuitive qui met votre commerce en valeur.
+		</p>
+
+		<div class="app-screens">
+			<div class="screen-item" in:fly={{ y: 50, duration: 800 }}>
+				<img src={screenA} alt="Liste des commerces" />
+				<div class="screen-caption">Un Carnet Clair</div>
+			</div>
+			<div class="screen-item center-screen" in:fly={{ y: 50, duration: 800, delay: 200 }}>
+				<img src={screenB} alt="Fiche commerce détaillée" />
+				<div class="screen-caption">Votre Fiche Complète</div>
+			</div>
+			<div class="screen-item" in:fly={{ y: 50, duration: 800, delay: 400 }}>
+				<img src={screenD} alt="Offre promotionalle" />
+				<div class="screen-caption">Vos Offres Exclusives</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- EXAMPLES SECTION -->
+	<section class="examples-section">
+		<h2 class="section-title">Des exemples concrets</h2>
+		<p class="section-subtitle">Quel que soit votre métier, vous avez une offre à proposer.</p>
+
+		<div class="examples-grid">
+			<!-- Example 1 -->
+			<div class="example-card">
+				<div class="example-icon"><i class="fa-solid fa-bread-slice"></i></div>
+				<div class="example-content">
+					<h3>Boulangerie</h3>
+					<div class="offer-box">"1 Croissant offert pour tout achat de 10€"</div>
+					<p class="result">
+						<i class="fa-solid fa-chart-line"></i> +15 paniers moyens augmentés / semaine
+					</p>
+				</div>
+			</div>
+
+			<!-- Example 2 -->
+			<div class="example-card">
+				<div class="example-icon"><i class="fa-solid fa-scissors"></i></div>
+				<div class="example-content">
+					<h3>Coiffeur</h3>
+					<div class="offer-box">"-20% sur la coupe Homme le Mardi matin"</div>
+					<p class="result"><i class="fa-solid fa-clock"></i> Remplissage des créneaux creux</p>
+				</div>
+			</div>
+
+			<!-- Example 3 -->
+			<div class="example-card">
+				<div class="example-icon"><i class="fa-solid fa-utensils"></i></div>
+				<div class="example-content">
+					<h3>Restaurateur</h3>
+					<div class="offer-box">"Le café offert pour tout Menu du Jour"</div>
+					<p class="result">
+						<i class="fa-solid fa-heart"></i> Fidélisation de la clientèle locale
+					</p>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- FINAL CTA -->
+	<section class="final-cta">
+		<h2>Prêt à booster votre activité ?</h2>
+		<a href="/carnet/rejoindre/inscription" class="cta-button">
+			Rejoindre Le Carnet <i class="fa-solid fa-star"></i>
+		</a>
+		<p class="sub-cta">Sans engagement. Annulable à tout moment.</p>
+	</section>
 </div>
 
 <style>
-	.page-wrapper {
-		min-height: 100vh;
-		background: linear-gradient(135deg, #fff5f2 0%, #ffffff 100%);
-		padding: var(--spacing-lg) 0;
+	:global(body) {
+		margin: 0;
+		font-family: 'Poppins', sans-serif;
 	}
 
-	.hero-split {
+	.page-wrapper {
+		background: #ffffff;
+		overflow-x: hidden;
+	}
+
+	/* --- HERO --- */
+	.hero-section {
+		min-height: 80vh;
 		max-width: var(--desktop);
 		margin: 0 auto;
-		padding: 0 var(--spacing-md);
 		display: grid;
 		grid-template-columns: 1fr 1fr;
-		gap: var(--spacing-xl);
-		align-items: start;
-	}
-
-	.hero-content {
-		padding-right: var(--spacing-lg);
-		position: sticky;
-		top: 100px;
-	}
-
-	.badge-coming-soon {
-		display: inline-flex;
 		align-items: center;
-		gap: 8px;
-		background: #fff0eb;
-		color: #ff6101;
-		padding: 6px 16px;
-		border-radius: 50px;
-		font-weight: 700;
-		font-size: 0.9rem;
-		margin-bottom: var(--spacing-md);
-		border: 1px solid rgba(255, 97, 1, 0.2);
-		box-shadow: 0 2px 5px rgba(255, 97, 1, 0.1);
+		padding: var(--spacing-xl) var(--spacing-md);
+		gap: var(--spacing-xl);
 	}
 
 	.hero-content h1 {
+		font-family: var(--FFTitle);
 		font-size: 3.5rem;
-		line-height: 1.2;
+		line-height: 1.1;
 		margin-bottom: var(--spacing-md);
 		color: var(--text);
 	}
@@ -529,7 +170,7 @@
 	.highlight {
 		color: var(--cta);
 		position: relative;
-		z-index: 1;
+		white-space: nowrap;
 	}
 
 	.highlight::after {
@@ -545,327 +186,328 @@
 		transform: rotate(-2deg);
 	}
 
-	.hero-content p {
-		font-size: 1.2rem;
+	.hero-subtitle {
+		font-size: 1.3rem;
 		color: var(--secondary);
 		margin-bottom: var(--spacing-lg);
+		line-height: 1.6;
+		max-width: 90%;
 	}
 
-	.benefits-list {
-		display: flex;
-		flex-direction: column;
-		gap: var(--spacing-md);
-	}
-
-	.benefit-item {
-		display: flex;
-		gap: var(--spacing-md);
-		align-items: flex-start;
-	}
-
-	.benefit-icon {
-		width: 50px;
-		height: 50px;
-		background: white;
-		border-radius: 12px;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		font-size: 1.5rem;
-		color: var(--cta);
-		box-shadow: var(--shadow3);
-		flex-shrink: 0;
-	}
-
-	.benefit-text h4 {
-		margin-bottom: 5px;
-		color: var(--text);
-		font-size: 1.1rem;
-	}
-
-	.benefit-text p {
-		font-size: 0.95rem;
-		margin-bottom: 0;
-		color: var(--secondary);
-	}
-
-	/* Form Section */
-	.form-card {
-		background: white;
-		border-radius: var(--radius-lg);
-		padding: var(--spacing-lg);
-		box-shadow: var(--shadow);
-		border: 1px solid white;
-	}
-
-	.form-header {
-		text-align: center;
-		margin-bottom: var(--spacing-md);
-	}
-
-	.form-header h2 {
-		color: var(--text);
-		margin-bottom: var(--spacing-md);
-	}
-
-	.toggle-container {
+	.badge-new {
 		display: inline-flex;
-		background: var(--lightBg);
-		padding: 5px;
-		border-radius: 50px;
-	}
-
-	.toggle-btn {
-		padding: 8px 16px;
-		border-radius: 50px;
-		border: none;
-		background: transparent;
-		cursor: pointer;
-		font-family: var(--FFBody);
-		font-weight: 500;
-		color: var(--secondary);
-		transition: all var(--transition-fast);
-		white-space: nowrap;
-	}
-
-	.toggle-btn.active {
-		background: white;
-		color: var(--cta);
-		box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-	}
-
-	.price-display {
-		text-align: center;
-		margin-bottom: var(--spacing-lg);
-		color: var(--text);
-	}
-
-	.price-display .amount {
-		font-size: 3rem;
-		font-weight: 700;
-		color: var(--accent);
-	}
-
-	.price-display .period {
-		font-size: 1.2rem;
-		color: var(--secondary);
-	}
-
-	/* Inputs */
-	.form-row {
-		margin-bottom: var(--spacing-sm);
-	}
-
-	.grid-2 {
-		display: grid;
-		grid-template-columns: 1fr 1fr;
-		gap: var(--spacing-sm);
-	}
-
-	.input-group label {
-		display: block;
-		font-size: 0.9rem;
-		font-weight: 500;
-		margin-bottom: 5px;
-		color: var(--text);
-	}
-
-	.input-group input {
-		width: 100%;
-		padding: 10px 15px;
-		border: 1px solid var(--border);
-		border-radius: var(--radius-sm);
-		font-family: var(--FFBody);
-		transition: all var(--transition-fast);
-	}
-
-	.input-group input:focus {
-		outline: none;
-		border-color: var(--cta);
-		box-shadow: 0 0 0 3px var(--ctaFade);
-	}
-
-	/* Also style Select and Textarea like Inputs */
-	.input-group select,
-	.input-group textarea {
-		width: 100%;
-		padding: 10px 15px;
-		border: 1px solid var(--border);
-		border-radius: var(--radius-sm);
-		font-family: var(--FFBody);
-		transition: all var(--transition-fast);
-		background: white;
-	}
-
-	.input-group select:focus,
-	.input-group textarea:focus {
-		outline: none;
-		border-color: var(--cta);
-		box-shadow: 0 0 0 3px var(--ctaFade);
-	}
-
-	/* Premium Section Styling */
-	.premium-section {
-		background: #fff5f2;
-		border: 1px dashed var(--cta);
-		border-radius: var(--radius-md);
-		padding: var(--spacing-md);
-		margin-bottom: var(--spacing-md);
-		margin-top: var(--spacing-md);
-	}
-
-	.premium-header {
-		color: var(--cta);
-		font-weight: 700;
-		margin-bottom: var(--spacing-md);
-		display: flex;
 		align-items: center;
 		gap: 8px;
+		background: #e6f4ea;
+		color: #1e8e3e;
+		padding: 6px 16px;
+		border-radius: 50px;
+		font-weight: 700;
+		font-size: 0.9rem;
+		margin-bottom: var(--spacing-md);
+		text-transform: uppercase;
 	}
 
-	.file-upload {
+	/* Hero Visual */
+	.phone-mockup {
 		position: relative;
-		border: 2px dashed var(--border);
-		background: white;
-		border-radius: var(--radius-sm);
-		padding: 20px;
-		text-align: center;
-		cursor: pointer;
-		transition: all var(--transition-fast);
+		width: 280px;
+		margin: 0 auto;
 	}
 
-	.file-upload:hover {
-		border-color: var(--cta);
-	}
-
-	.file-upload input {
-		position: absolute;
-		top: 0;
-		left: 0;
+	.phone-mockup img {
 		width: 100%;
-		height: 100%;
-		opacity: 0;
-		cursor: pointer;
+		border-radius: 30px;
+		box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+		border: 8px solid white;
 	}
 
-	.file-placeholder {
+	.floating-card {
+		position: absolute;
+		bottom: 10%;
+		left: -40px;
+		background: white;
+		padding: 15px 20px;
+		border-radius: 12px;
+		box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+		font-weight: 600;
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		width: 300px;
+		font-size: 0.9rem;
+		animation: float 4s ease-in-out infinite;
+	}
+
+	@keyframes float {
+		0%,
+		100% {
+			transform: translateY(0);
+		}
+		50% {
+			transform: translateY(-10px);
+		}
+	}
+
+	/* --- STEPS --- */
+	.steps-section {
+		background: #f8f9fa;
+		padding: var(--spacing-xl) var(--spacing-md);
+		text-align: center;
+	}
+
+	.section-title {
+		font-size: 2.5rem;
+		margin-bottom: var(--spacing-xl);
+		color: var(--text);
+		font-family: var(--FFTitle);
+	}
+
+	.steps-grid {
+		max-width: 1000px;
+		margin: 0 auto;
+		display: flex;
+		justify-content: space-between;
+		align-items: flex-start;
+		position: relative;
+	}
+
+	.step-card {
+		flex: 1;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		color: var(--secondary);
-		gap: 5px;
+		gap: 15px;
+		padding: 0 20px;
 	}
 
-	.total-bar {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		padding: var(--spacing-md) 0;
-		margin-top: var(--spacing-md);
-		border-top: 1px solid var(--border);
-		font-weight: 700;
-	}
-
-	.total-amount {
-		font-size: 1.3rem;
-		color: var(--text);
-	}
-
-	.submit-btn {
-		width: 100%;
-		padding: 15px;
+	.step-number {
+		width: 50px;
+		height: 50px;
 		background: var(--cta);
 		color: white;
-		border: none;
-		border-radius: var(--radius-md);
-		font-size: 1.1rem;
-		font-weight: 600;
-		cursor: pointer;
-		transition: all var(--transition-fast);
+		font-size: 1.5rem;
+		font-weight: 700;
+		border-radius: 50%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		margin-bottom: 10px;
+	}
+
+	.step-card h3 {
+		font-size: 1.2rem;
+		margin-bottom: 5px;
+	}
+	.step-card p {
+		font-size: 0.95rem;
+		color: var(--secondary);
+	}
+
+	.step-line {
+		flex: 0.5;
+		height: 2px;
+		background: #e9ecef;
+		margin-top: 25px;
+	}
+
+	/* --- SHOWCASE --- */
+	.showcase-section {
+		padding: var(--spacing-xl) var(--spacing-md);
+		text-align: center;
+		background: white;
+		overflow: hidden;
+	}
+
+	.app-screens {
 		display: flex;
 		justify-content: center;
-		align-items: center;
-		gap: 10px;
+		align-items: flex-end; /* Align bottom to handle different sizes if any */
+		gap: 30px;
+		padding-top: 30px;
+		flex-wrap: wrap;
 	}
 
-	.submit-btn:hover {
-		background: var(--ctaHover);
-		transform: translateY(-2px);
-		box-shadow: 0 5px 15px var(--ctaFade);
-	}
-
-	.disclaimer {
-		text-align: center;
-		font-size: 0.8rem;
-		margin-top: 10px;
-		color: var(--secondary);
-	}
-
-	@media (max-width: 1024px) {
-		.hero-split {
-			grid-template-columns: 1fr;
-			text-align: center;
-			gap: var(--spacing-lg);
-		}
-
-		.hero-content {
-			padding-right: 0;
-			position: static;
-		}
-
-		.benefits-list {
-			align-items: flex-start;
-			text-align: left;
-			max-width: 500px;
-			margin: 0 auto;
-		}
-
-		.highlight::after {
-			left: 50%;
-			transform: translateX(-50%) rotate(-2deg);
-			width: 200px;
-		}
-	}
-
-	/* Form Features List */
-	.plan-features-list {
-		list-style: none;
-		margin-bottom: var(--spacing-lg);
-		padding: 0 var(--spacing-md);
-	}
-
-	.plan-features-list li {
-		margin-bottom: 8px;
-		color: var(--secondary);
+	.screen-item {
 		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 15px;
+		width: 220px;
+	}
+
+	.screen-item img {
+		width: 100%;
+		border-radius: 20px;
+		box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+		border: 6px solid #f8f9fa;
+		transition: transform 0.3s ease;
+	}
+
+	.screen-item:hover img {
+		transform: translateY(-10px);
+	}
+
+	.center-screen {
+		z-index: 2;
+		width: 240px; /* Slightly bigger */
+	}
+
+	.center-screen img {
+		box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+		border: 8px solid white;
+	}
+
+	.screen-caption {
+		font-weight: 700;
+		color: var(--text);
+		font-size: 1.1rem;
+	}
+
+	/* --- EXAMPLES --- */
+	.examples-section {
+		padding: var(--spacing-xl) var(--spacing-md);
+		max-width: var(--desktop);
+		margin: 0 auto;
+		text-align: center;
+	}
+
+	.section-subtitle {
+		font-size: 1.2rem;
+		color: var(--secondary);
+		margin-top: -30px;
+		margin-bottom: var(--spacing-xl);
+	}
+
+	.examples-grid {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: var(--spacing-lg);
+	}
+
+	.example-card {
+		background: white;
+		border: 1px solid #eee;
+		border-radius: var(--radius-lg);
+		padding: 30px;
+		transition: transform 0.3s ease;
+		box-shadow: 0 5px 15px rgba(0, 0, 0, 0.03);
+	}
+
+	.example-card:hover {
+		transform: translateY(-10px);
+		box-shadow: 0 15px 30px rgba(0, 0, 0, 0.08);
+	}
+
+	.example-icon {
+		font-size: 2.5rem;
+		color: var(--secondary);
+		margin-bottom: 20px;
+	}
+
+	.offer-box {
+		background: #fff5f2;
+		color: var(--cta);
+		font-weight: 700;
+		padding: 10px;
+		border-radius: 8px;
+		margin: 15px 0;
+		font-size: 0.95rem;
+		border: 1px dashed var(--ctaFade);
+	}
+
+	.result {
+		font-size: 0.85rem;
+		color: #10b981;
+		font-weight: 600;
+	}
+
+	/* --- FINAL CTA --- */
+	.final-cta {
+		background: #073b4c;
+		color: white;
+		text-align: center;
+		padding: var(--spacing-xl) var(--spacing-md);
+	}
+
+	.final-cta h2 {
+		color: white;
+		margin-bottom: var(--spacing-lg);
+		font-size: 2.5rem;
+	}
+
+	.cta-button {
+		display: inline-flex;
 		align-items: center;
 		gap: 10px;
-		font-size: 0.95rem;
+		background: var(--cta);
+		color: white;
+		padding: 15px 30px;
+		border-radius: 50px;
+		font-weight: 700;
+		font-size: 1.2rem;
+		text-decoration: none;
+		transition: all 0.3s ease;
+		box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+	}
+
+	.cta-button:hover {
+		transform: scale(1.05);
+		background: var(--ctaHover);
+		box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+	}
+
+	.big-pulse {
+		animation: pulse 2s infinite;
+	}
+
+	@keyframes pulse {
+		0% {
+			box-shadow: 0 0 0 0 rgba(217, 70, 122, 0.4);
+		}
+		70% {
+			box-shadow: 0 0 0 15px rgba(217, 70, 122, 0);
+		}
+		100% {
+			box-shadow: 0 0 0 0 rgba(217, 70, 122, 0);
+		}
+	}
+
+	.sub-cta {
+		margin-top: 15px;
+		opacity: 0.7;
+		font-size: 0.9rem;
 	}
 
 	.text-success {
 		color: #10b981;
 	}
-	.text-danger {
-		color: #ef4444;
-		opacity: 0.7;
-	}
 
-	.btn-premium {
-		background: linear-gradient(135deg, var(--cta), #ff6101);
-		box-shadow: 0 4px 15px rgba(255, 97, 1, 0.4);
-	}
+	/* RESPONSIVE */
+	@media (max-width: 1024px) {
+		.hero-section {
+			grid-template-columns: 1fr;
+			text-align: center;
+		}
 
-	@media (max-width: 480px) {
-		.grid-2 {
+		.hero-content h1 {
+			font-size: 2.5rem;
+		}
+		.hero-subtitle {
+			margin: 0 auto var(--spacing-lg) auto;
+		}
+
+		.steps-grid {
+			flex-direction: column;
+			align-items: center;
+			gap: 30px;
+		}
+		.step-line {
+			display: none;
+		}
+
+		.examples-grid {
 			grid-template-columns: 1fr;
 		}
-	}
-
-	.error-text {
-		color: #ef4444;
-		text-align: center;
-		margin-top: 10px;
-		font-weight: 500;
 	}
 </style>
