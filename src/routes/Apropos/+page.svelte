@@ -36,7 +36,7 @@
 				</p>
 			</div>
 			<div class="story-image">
-				<img src={PoiluVillage} alt="Village du Poilu" />
+				<img src={PoiluVillage} alt="Le Poilu dans un village" />
 			</div>
 		</div>
 	</section>
