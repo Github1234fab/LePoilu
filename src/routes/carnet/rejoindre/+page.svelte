@@ -2,8 +2,8 @@
 	import { fade, fly } from 'svelte/transition';
 	import screenA from '$lib/assets/screen_sponsorA.webp';
 	import screenB from '$lib/assets/screen_sponsorB.webp';
-	import screenD from '$lib/assets/screen_SponsorD.webp';
-	import screenF from '$lib/assets/screen_SponsorF.webp';
+	import screenD from '$lib/assets/screen_sponsor_d.webp';
+	import screenF from '$lib/assets/screen_sponsor_f.webp';
 </script>
 
 <svelte:head>
