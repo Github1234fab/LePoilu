@@ -5,22 +5,22 @@
 	import { db } from '$lib/firebase';
 	import { doc, getDoc, updateDoc, increment } from 'firebase/firestore';
 
-	import ChevronRightIcon from '$lib/components/icons/ChevronRightIcon.svelte';
-	import StarIcon from '$lib/components/icons/StarIcon.svelte';
-	import GiftIcon from '$lib/components/icons/GiftIcon.svelte';
-	import CheckCircleIcon from '$lib/components/icons/CheckCircleIcon.svelte';
-	import LocationOutlineIcon from '$lib/components/icons/LocationOutlineIcon.svelte';
-	import LocationIcon from '$lib/components/icons/LocationIcon.svelte';
-	import TimeOutlineIcon from '$lib/components/icons/TimeOutlineIcon.svelte';
-	import MapOutlineIcon from '$lib/components/icons/MapOutlineIcon.svelte';
-	import CallIcon from '$lib/components/icons/CallIcon.svelte';
-	import NavigateIcon from '$lib/components/icons/NavigateIcon.svelte';
-	import MailIcon from '$lib/components/icons/MailIcon.svelte';
-	import GlobeOutlineIcon from '$lib/components/icons/GlobeOutlineIcon.svelte';
-	import ImageOutlineIcon from '$lib/components/icons/ImageOutlineIcon.svelte';
-	import LogoFacebookIcon from '$lib/components/icons/LogoFacebookIcon.svelte';
-	import LogoInstagramIcon from '$lib/components/icons/LogoInstagramIcon.svelte';
-	import AppsIcon from '$lib/components/icons/AppsIcon.svelte';
+	import ChevronRightIcon from '$lib/Components/icons/ChevronRightIcon.svelte';
+	import StarIcon from '$lib/Components/icons/StarIcon.svelte';
+	import GiftIcon from '$lib/Components/icons/GiftIcon.svelte';
+	import CheckCircleIcon from '$lib/Components/icons/CheckCircleIcon.svelte';
+	import LocationOutlineIcon from '$lib/Components/icons/LocationOutlineIcon.svelte';
+	import LocationIcon from '$lib/Components/icons/LocationIcon.svelte';
+	import TimeOutlineIcon from '$lib/Components/icons/TimeOutlineIcon.svelte';
+	import MapOutlineIcon from '$lib/Components/icons/MapOutlineIcon.svelte';
+	import CallIcon from '$lib/Components/icons/CallIcon.svelte';
+	import NavigateIcon from '$lib/Components/icons/NavigateIcon.svelte';
+	import MailIcon from '$lib/Components/icons/MailIcon.svelte';
+	import GlobeOutlineIcon from '$lib/Components/icons/GlobeOutlineIcon.svelte';
+	import ImageOutlineIcon from '$lib/Components/icons/ImageOutlineIcon.svelte';
+	import LogoFacebookIcon from '$lib/Components/icons/LogoFacebookIcon.svelte';
+	import LogoInstagramIcon from '$lib/Components/icons/LogoInstagramIcon.svelte';
+	import AppsIcon from '$lib/Components/icons/AppsIcon.svelte';
 
 	let sponsorId = $page.params.id;
 	let sponsor = null;

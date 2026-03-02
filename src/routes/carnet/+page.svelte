@@ -5,18 +5,18 @@
 	import { collection, query, where, orderBy, onSnapshot, getDocs } from 'firebase/firestore';
 	import { onAuthStateChanged } from 'firebase/auth';
 
-	import AppsIcon from '$lib/components/icons/AppsIcon.svelte';
-	import RestaurantIcon from '$lib/components/icons/RestaurantIcon.svelte';
-	import ConstructIcon from '$lib/components/icons/ConstructIcon.svelte';
-	import StorefrontIcon from '$lib/components/icons/StorefrontIcon.svelte';
-	import FitnessIcon from '$lib/components/icons/FitnessIcon.svelte';
-	import CarIcon from '$lib/components/icons/CarIcon.svelte';
-	import BriefcaseIcon from '$lib/components/icons/BriefcaseIcon.svelte';
-	import StarIcon from '$lib/components/icons/StarIcon.svelte';
-	import GiftIcon from '$lib/components/icons/GiftIcon.svelte';
-	import ChevronRightIcon from '$lib/components/icons/ChevronRightIcon.svelte';
-	import SearchIcon from '$lib/components/icons/SearchIcon.svelte';
-	import BusinessOutlineIcon from '$lib/components/icons/BusinessOutlineIcon.svelte';
+	import AppsIcon from '$lib/Components/icons/AppsIcon.svelte';
+	import RestaurantIcon from '$lib/Components/icons/RestaurantIcon.svelte';
+	import ConstructIcon from '$lib/Components/icons/ConstructIcon.svelte';
+	import StorefrontIcon from '$lib/Components/icons/StorefrontIcon.svelte';
+	import FitnessIcon from '$lib/Components/icons/FitnessIcon.svelte';
+	import CarIcon from '$lib/Components/icons/CarIcon.svelte';
+	import BriefcaseIcon from '$lib/Components/icons/BriefcaseIcon.svelte';
+	import StarIcon from '$lib/Components/icons/StarIcon.svelte';
+	import GiftIcon from '$lib/Components/icons/GiftIcon.svelte';
+	import ChevronRightIcon from '$lib/Components/icons/ChevronRightIcon.svelte';
+	import SearchIcon from '$lib/Components/icons/SearchIcon.svelte';
+	import BusinessOutlineIcon from '$lib/Components/icons/BusinessOutlineIcon.svelte';
 
 	let sponsors = [];
 	let loading = true;

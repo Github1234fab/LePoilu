@@ -6,20 +6,20 @@
     import { onAuthStateChanged } from 'firebase/auth';
     
     // Icons
-    import StorefrontIcon from '$lib/components/icons/StorefrontIcon.svelte';
-    import TimeIcon from '$lib/components/icons/TimeIcon.svelte';
-    import CheckCircleIcon from '$lib/components/icons/CheckCircleIcon.svelte';
-    import CloseCircleIcon from '$lib/components/icons/CloseCircleIcon.svelte';
-    import AlertCircleIcon from '$lib/components/icons/AlertCircleIcon.svelte';
-    import PauseCircleIcon from '$lib/components/icons/PauseCircleIcon.svelte';
-    import StarIcon from '$lib/components/icons/StarIcon.svelte';
-    import EyeIcon from '$lib/components/icons/EyeIcon.svelte';
-    import CursorClickIcon from '$lib/components/icons/CursorClickIcon.svelte';
-    import GiftIcon from '$lib/components/icons/GiftIcon.svelte';
-    import EditIcon from '$lib/components/icons/EditIcon.svelte';
-    import ImageIcon from '$lib/components/icons/ImageIcon.svelte';
-    import MailIcon from '$lib/components/icons/MailIcon.svelte';
-    import ChevronRightIcon from '$lib/components/icons/ChevronRightIcon.svelte';
+    import StorefrontIcon from '$lib/Components/icons/StorefrontIcon.svelte';
+    import TimeIcon from '$lib/Components/icons/TimeIcon.svelte';
+    import CheckCircleIcon from '$lib/Components/icons/CheckCircleIcon.svelte';
+    import CloseCircleIcon from '$lib/Components/icons/CloseCircleIcon.svelte';
+    import AlertCircleIcon from '$lib/Components/icons/AlertCircleIcon.svelte';
+    import PauseCircleIcon from '$lib/Components/icons/PauseCircleIcon.svelte';
+    import StarIcon from '$lib/Components/icons/StarIcon.svelte';
+    import EyeIcon from '$lib/Components/icons/EyeIcon.svelte';
+    import CursorClickIcon from '$lib/Components/icons/CursorClickIcon.svelte';
+    import GiftIcon from '$lib/Components/icons/GiftIcon.svelte';
+    import EditIcon from '$lib/Components/icons/EditIcon.svelte';
+    import ImageIcon from '$lib/Components/icons/ImageIcon.svelte';
+    import MailIcon from '$lib/Components/icons/MailIcon.svelte';
+    import ChevronRightIcon from '$lib/Components/icons/ChevronRightIcon.svelte';
 
     let user = null;
     let sponsor = null;

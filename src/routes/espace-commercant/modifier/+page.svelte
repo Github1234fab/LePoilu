@@ -6,12 +6,12 @@
 	import { onAuthStateChanged } from 'firebase/auth';
 
 	// Icons
-	import InformationCircleIcon from '$lib/components/icons/InformationCircleIcon.svelte';
-	import CheckCircleIcon from '$lib/components/icons/CheckCircleIcon.svelte';
-	import AlertCircleIcon from '$lib/components/icons/AlertCircleIcon.svelte';
-	import ChevronRightIcon from '$lib/components/icons/ChevronRightIcon.svelte';
-	import CopyIcon from '$lib/components/icons/CopyIcon.svelte';
-	import EditIcon from '$lib/components/icons/EditIcon.svelte';
+	import InformationCircleIcon from '$lib/Components/icons/InformationCircleIcon.svelte';
+	import CheckCircleIcon from '$lib/Components/icons/CheckCircleIcon.svelte';
+	import AlertCircleIcon from '$lib/Components/icons/AlertCircleIcon.svelte';
+	import ChevronRightIcon from '$lib/Components/icons/ChevronRightIcon.svelte';
+	import CopyIcon from '$lib/Components/icons/CopyIcon.svelte';
+	import EditIcon from '$lib/Components/icons/EditIcon.svelte';
 
 	let user = null;
 	let sponsor = null;

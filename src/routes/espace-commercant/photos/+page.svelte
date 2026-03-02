@@ -7,17 +7,17 @@
 	import { onAuthStateChanged } from 'firebase/auth';
 
 	// Icons
-	import InformationCircleIcon from '$lib/components/icons/InformationCircleIcon.svelte';
-	import LockClosedIcon from '$lib/components/icons/LockClosedIcon.svelte';
-	import CheckCircleIcon from '$lib/components/icons/CheckCircleIcon.svelte';
-	import AddCircleIcon from '$lib/components/icons/AddCircleIcon.svelte';
-	import TrashIcon from '$lib/components/icons/TrashIcon.svelte';
-	import SunnyIcon from '$lib/components/icons/SunnyIcon.svelte';
-	import ResizeIcon from '$lib/components/icons/ResizeIcon.svelte';
-	import EyeIcon from '$lib/components/icons/EyeIcon.svelte';
-	import AlbumsIcon from '$lib/components/icons/AlbumsIcon.svelte';
-	import ChevronRightIcon from '$lib/components/icons/ChevronRightIcon.svelte';
-	import AlertCircleIcon from '$lib/components/icons/AlertCircleIcon.svelte';
+	import InformationCircleIcon from '$lib/Components/icons/InformationCircleIcon.svelte';
+	import LockClosedIcon from '$lib/Components/icons/LockClosedIcon.svelte';
+	import CheckCircleIcon from '$lib/Components/icons/CheckCircleIcon.svelte';
+	import AddCircleIcon from '$lib/Components/icons/AddCircleIcon.svelte';
+	import TrashIcon from '$lib/Components/icons/TrashIcon.svelte';
+	import SunnyIcon from '$lib/Components/icons/SunnyIcon.svelte';
+	import ResizeIcon from '$lib/Components/icons/ResizeIcon.svelte';
+	import EyeIcon from '$lib/Components/icons/EyeIcon.svelte';
+	import AlbumsIcon from '$lib/Components/icons/AlbumsIcon.svelte';
+	import ChevronRightIcon from '$lib/Components/icons/ChevronRightIcon.svelte';
+	import AlertCircleIcon from '$lib/Components/icons/AlertCircleIcon.svelte';
 
 	const MAX_PHOTOS = 5;
 

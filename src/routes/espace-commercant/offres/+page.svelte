@@ -6,15 +6,15 @@
 	import { onAuthStateChanged } from 'firebase/auth';
 
 	// Icons
-	import GiftIcon from '$lib/components/icons/GiftIcon.svelte';
-	import InformationCircleIcon from '$lib/components/icons/InformationCircleIcon.svelte';
-	import CalendarIcon from '$lib/components/icons/CalendarIcon.svelte';
-	import EyeIcon from '$lib/components/icons/EyeIcon.svelte';
-	import EyeOffIcon from '$lib/components/icons/EyeOffIcon.svelte';
-	import CheckCircleIcon from '$lib/components/icons/CheckCircleIcon.svelte';
-	import TrashIcon from '$lib/components/icons/TrashIcon.svelte';
-	import ChevronRightIcon from '$lib/components/icons/ChevronRightIcon.svelte';
-	import AlertCircleIcon from '$lib/components/icons/AlertCircleIcon.svelte';
+	import GiftIcon from '$lib/Components/icons/GiftIcon.svelte';
+	import InformationCircleIcon from '$lib/Components/icons/InformationCircleIcon.svelte';
+	import CalendarIcon from '$lib/Components/icons/CalendarIcon.svelte';
+	import EyeIcon from '$lib/Components/icons/EyeIcon.svelte';
+	import EyeOffIcon from '$lib/Components/icons/EyeOffIcon.svelte';
+	import CheckCircleIcon from '$lib/Components/icons/CheckCircleIcon.svelte';
+	import TrashIcon from '$lib/Components/icons/TrashIcon.svelte';
+	import ChevronRightIcon from '$lib/Components/icons/ChevronRightIcon.svelte';
+	import AlertCircleIcon from '$lib/Components/icons/AlertCircleIcon.svelte';
 
 	let user = null;
 	let sponsor = null;

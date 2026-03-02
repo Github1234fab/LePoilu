@@ -6,21 +6,21 @@
 	import { onAuthStateChanged } from 'firebase/auth';
 
 	// Icons
-	import EyeIcon from '$lib/components/icons/EyeIcon.svelte';
-	import GiftIcon from '$lib/components/icons/GiftIcon.svelte';
-	import StatsChartIcon from '$lib/components/icons/StatsChartIcon.svelte';
-	import PricetagIcon from '$lib/components/icons/PricetagIcon.svelte';
-	import StarIcon from '$lib/components/icons/StarIcon.svelte';
-	import CheckCircleIcon from '$lib/components/icons/CheckCircleIcon.svelte';
-	import ArrowForwardIcon from '$lib/components/icons/ArrowForwardIcon.svelte';
-	import ShieldCheckmarkIcon from '$lib/components/icons/ShieldCheckmarkIcon.svelte';
-	import LockClosedIcon from '$lib/components/icons/LockClosedIcon.svelte';
-	import CloseCircleIcon from '$lib/components/icons/CloseCircleIcon.svelte';
-	import ReceiptIcon from '$lib/components/icons/ReceiptIcon.svelte';
-	import MailIcon from '$lib/components/icons/MailIcon.svelte';
-	import ChevronRightIcon from '$lib/components/icons/ChevronRightIcon.svelte';
-	import GlobeOutlineIcon from '$lib/components/icons/GlobeOutlineIcon.svelte';
-	import AlertCircleIcon from '$lib/components/icons/AlertCircleIcon.svelte';
+	import EyeIcon from '$lib/Components/icons/EyeIcon.svelte';
+	import GiftIcon from '$lib/Components/icons/GiftIcon.svelte';
+	import StatsChartIcon from '$lib/Components/icons/StatsChartIcon.svelte';
+	import PricetagIcon from '$lib/Components/icons/PricetagIcon.svelte';
+	import StarIcon from '$lib/Components/icons/StarIcon.svelte';
+	import CheckCircleIcon from '$lib/Components/icons/CheckCircleIcon.svelte';
+	import ArrowForwardIcon from '$lib/Components/icons/ArrowForwardIcon.svelte';
+	import ShieldCheckmarkIcon from '$lib/Components/icons/ShieldCheckmarkIcon.svelte';
+	import LockClosedIcon from '$lib/Components/icons/LockClosedIcon.svelte';
+	import CloseCircleIcon from '$lib/Components/icons/CloseCircleIcon.svelte';
+	import ReceiptIcon from '$lib/Components/icons/ReceiptIcon.svelte';
+	import MailIcon from '$lib/Components/icons/MailIcon.svelte';
+	import ChevronRightIcon from '$lib/Components/icons/ChevronRightIcon.svelte';
+	import GlobeOutlineIcon from '$lib/Components/icons/GlobeOutlineIcon.svelte';
+	import AlertCircleIcon from '$lib/Components/icons/AlertCircleIcon.svelte';
 
 	const CF_URL = 'https://us-central1-bddjson.cloudfunctions.net/createSponsorCheckoutSession';
 
