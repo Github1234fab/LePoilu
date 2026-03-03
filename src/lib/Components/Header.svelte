@@ -34,7 +34,7 @@
 			<a href="/Fonctionnalités" class="nav-link">Fonctionnalités</a>
 			<a href="/Tarifs" class="nav-link">Tarifs</a>
 			<a href="/carnet" class="nav-link">Le Carnet</a>
-			<a href="/carnet/rejoindre" class="nav-link">Espace Commerçant</a>
+			<a href="/espace-commercant" class="nav-link">Espace Commerçant</a>
 			<a href="/Apropos" class="nav-link">À propos</a>
 			<a href="/Contact" class="nav-link">Contact</a>
 		</nav>
@@ -78,7 +78,8 @@
 			<a href="/carnet" class="nav-link-mobile" on:click={closeMenu}>Le Carnet</a>
 			<a href="/Apropos" class="nav-link-mobile" on:click={closeMenu}>À propos</a>
 			<a href="/Contact" class="nav-link-mobile" on:click={closeMenu}>Contact</a>
-			<a href="/carnet/rejoindre" class="nav-link-mobile" on:click={closeMenu}>Espace Commerçant</a>
+			<a href="/espace-commercant" class="nav-link-mobile" on:click={closeMenu}>Espace Commerçant</a
+			>
 			<a href="/Telecharger" class="nav-link-mobile" on:click={closeMenu}>Télécharger l'app</a>
 		</nav>
 	{/if}

@@ -76,7 +76,7 @@
 			user = currentUser;
 			if (!user) {
 				// Not strictly requiring auth conceptually until checkout, but doing it here
-				window.location.href = '/login?redirect=/espace-commercant/rejoindre';
+				window.location.href = '/compte?redirect=/espace-commercant/rejoindre';
 			} else {
 				fetchPlans();
 			}

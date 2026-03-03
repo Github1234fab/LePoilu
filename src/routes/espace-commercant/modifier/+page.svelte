@@ -50,7 +50,7 @@
 			if (user) {
 				fetchSponsorData(user.uid);
 			} else {
-				window.location.href = '/login?redirect=/espace-commercant/modifier';
+				window.location.href = '/compte?redirect=/espace-commercant/modifier';
 			}
 		});
 		return () => unsubscribe();

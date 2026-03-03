@@ -43,7 +43,7 @@
 				<ul class="footer-list">
 					<li><a href="/Apropos" class="footer-link">À propos</a></li>
 					<li><a href="/Contact" class="footer-link">Contact</a></li>
-					<li><a href="/carnet/rejoindre" class="footer-link">Espace Commerçant</a></li>
+					<li><a href="/espace-commercant" class="footer-link">Espace Commerçant</a></li>
 				</ul>
 			</div>
 

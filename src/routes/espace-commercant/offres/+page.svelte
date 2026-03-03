@@ -37,7 +37,7 @@
 			if (user) {
 				fetchSponsorData(user.uid);
 			} else {
-				window.location.href = '/login?redirect=/espace-commercant/offres';
+				window.location.href = '/compte?redirect=/espace-commercant/offres';
 			}
 		});
 		return () => unsubscribe();
