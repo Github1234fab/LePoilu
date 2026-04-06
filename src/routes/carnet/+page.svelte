@@ -27,12 +27,18 @@
 
 	const sectors = [
 		{ id: 'all', label: 'Tous', icon: AppsIcon },
-		{ id: 'food', label: 'Restauration', icon: RestaurantIcon },
-		{ id: 'services', label: 'Services', icon: ConstructIcon },
+		{ id: 'food', label: 'Alimentation', icon: RestaurantIcon },
+		{ id: 'restaurant', label: 'Restauration', icon: RestaurantIcon },
 		{ id: 'retail', label: 'Commerces', icon: StorefrontIcon },
+		{ id: 'crafts', label: 'Artisans', icon: ConstructIcon },
+		{ id: 'services', label: 'Services', icon: BriefcaseIcon },
 		{ id: 'wellness', label: 'Bien-être', icon: FitnessIcon },
-		{ id: 'auto', label: 'Auto', icon: CarIcon },
-		{ id: 'professional', label: 'Pro', icon: BriefcaseIcon }
+		{ id: 'beauty', label: 'Mode & Beauté', icon: StorefrontIcon },
+		{ id: 'health', label: 'Santé', icon: FitnessIcon },
+		{ id: 'auto', label: 'Auto & Moto', icon: CarIcon },
+		{ id: 'leisure', label: 'Loisirs & Culture', icon: StarIcon },
+		{ id: 'realestate', label: 'Immobilier', icon: BusinessOutlineIcon },
+		{ id: 'professional', label: 'Indépendants', icon: BriefcaseIcon }
 	];
 
 	onMount(() => {
@@ -82,7 +88,7 @@
 		if (userHasSponsor) {
 			window.location.href = '/espace-commercant';
 		} else {
-			window.location.href = '/espace-commercant/rejoindre';
+			window.location.href = '/carnet/rejoindre';
 		}
 	}
 </script>
@@ -92,6 +98,24 @@
 </svelte:head>
 
 <div class="carnet-page">
+	<!-- Merchant CTA Banner (Moved to top) -->
+	<section class="merchant-cta-banner">
+		<div class="cta-content">
+			<div class="cta-text-side">
+				<div class="cta-badge-pro">
+					<i class="fa-solid fa-bolt"></i> PRO
+				</div>
+				<p>
+					Vous êtes un commerce local ? <br />
+					<span class="highlight-vibrant">Boostez votre visibilité</span> sur Le Poilu.
+				</p>
+			</div>
+			<a href="/carnet/rejoindre" class="cta-button-vibrant big-pulse">
+				En savoir plus <i class="fa-solid fa-arrow-right"></i>
+			</a>
+		</div>
+	</section>
+
 	<!-- Header Area Premium -->
 	<header class="carnet-header">
 		<div class="header-bg-glow"></div>
@@ -108,7 +132,6 @@
 					<div>
 						<h1 class="header-title">
 							Les Bons Plans
-							<span class="badge-annuaire">Annuaire</span>
 						</h1>
 						<p class="header-subtitle">DÉCOUVREZ VOS COMMERCES & OFFRES LOCALES</p>
 					</div>
@@ -175,6 +198,10 @@
 								<div class="badge-offer">
 									<div class="icon-small"><GiftIcon /></div>
 									OFFRE INCLUSE
+								</div>
+							{:else if sponsor.isModel}
+								<div class="badge-model">
+									MODÈLE
 								</div>
 							{/if}
 
@@ -276,6 +303,125 @@
 		pointer-events: none;
 	}
 
+	/* MERCHANT CTA BANNER - REJOINRE INSPIRED */
+	.merchant-cta-banner {
+		padding: 2.5rem var(--spacing-sm);
+		background: #fffcf9;
+		position: relative;
+		overflow: hidden;
+		border-bottom: 1px solid var(--borderColor);
+	}
+
+	.cta-content {
+		max-width: var(--desktop);
+		margin: 0 auto;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		gap: 2rem;
+		background: white;
+		padding: 2rem 3rem;
+		border-radius: var(--radius-lg);
+		border: 2px dashed #fbd5c6;
+		box-shadow: 0 10px 30px rgba(175, 52, 12, 0.05);
+	}
+
+	.cta-text-side {
+		display: flex;
+		flex-direction: column;
+		gap: 0.75rem;
+	}
+
+	.cta-badge-pro {
+		display: inline-flex;
+		align-items: center;
+		gap: 8px;
+		background: #fff5f2;
+		color: var(--accent);
+		padding: 6px 16px;
+		border-radius: 50px;
+		font-weight: 800;
+		font-size: 0.8rem;
+		text-transform: uppercase;
+		width: fit-content;
+		border: 1px solid #fbd5c6;
+	}
+
+	.cta-text-side p {
+		font-size: 1.25rem;
+		font-weight: 700;
+		color: var(--textDark);
+		line-height: 1.4;
+	}
+
+	.highlight-vibrant {
+		color: var(--cta);
+		position: relative;
+		display: inline-block;
+		z-index: 1;
+	}
+
+	.highlight-vibrant::after {
+		content: '';
+		position: absolute;
+		bottom: 2px;
+		left: -2px;
+		right: -2px;
+		height: 10px;
+		background: #fbd5c6;
+		z-index: -1;
+		opacity: 0.6;
+		transform: rotate(-1deg);
+		border-radius: 2px;
+	}
+
+	.cta-button-vibrant {
+		display: inline-flex;
+		align-items: center;
+		gap: 12px;
+		background: var(--cta);
+		color: white;
+		padding: 1rem 2rem;
+		border-radius: 50px;
+		font-weight: 800;
+		font-size: 1.1rem;
+		text-decoration: none;
+		transition: all 0.3s ease;
+		box-shadow: 0 8px 25px rgba(217, 70, 122, 0.25);
+		white-space: nowrap;
+	}
+
+	.cta-button-vibrant:hover {
+		transform: translateY(-3px) scale(1.05);
+		background: var(--ctaHover);
+		box-shadow: 0 12px 30px rgba(217, 70, 122, 0.35);
+	}
+
+	.big-pulse {
+		animation: cta-pulse 2s infinite;
+	}
+
+	@keyframes cta-pulse {
+		0% { box-shadow: 0 0 0 0 rgba(217, 70, 122, 0.4); }
+		70% { box-shadow: 0 0 0 15px rgba(217, 70, 122, 0); }
+		100% { box-shadow: 0 0 0 0 rgba(217, 70, 122, 0); }
+	}
+
+	@media (max-width: 768px) {
+		.cta-content {
+			flex-direction: column;
+			text-align: center;
+			padding: 2rem;
+		}
+		.cta-text-side {
+			align-items: center;
+		}
+		.cta-button-vibrant {
+			width: 100%;
+			justify-content: center;
+		}
+	}
+
 	.carnet-header-container {
 		max-width: var(--desktop);
 		margin: 0 auto;
@@ -337,16 +483,7 @@
 		flex-wrap: wrap;
 	}
 
-	.badge-annuaire {
-		display: inline-flex;
-		background-color: rgba(255, 183, 158, 0.15);
-		color: var(--accent);
-		font-size: 0.65rem;
-		text-transform: uppercase;
-		font-weight: 700;
-		padding: 2px 8px;
-		border-radius: 4px;
-	}
+
 
 	.header-subtitle {
 		font-size: 0.85rem;
@@ -602,20 +739,34 @@
 		bottom: 12px;
 		right: 12px;
 		background-color: rgba(255, 255, 255, 0.95);
-		backdrop-filter: blur(8px);
-		color: var(--primary);
+		backdrop-filter: blur(4px);
+		padding: 4px 10px;
+		border-radius: 6px;
+		font-size: 0.65rem;
 		font-weight: 800;
-		font-size: 0.625rem;
-		padding: 8px 12px;
-		border-radius: 8px;
-		text-transform: uppercase;
-		letter-spacing: 0.05em;
+		color: var(--primary);
 		display: flex;
 		align-items: center;
-		gap: 6px;
-		z-index: 2;
-		box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-		transition: transform var(--transition-normal);
+		gap: 4px;
+		box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+		z-index: 10;
+		border: 1px solid rgba(255, 183, 158, 0.3);
+	}
+
+	.badge-model {
+		position: absolute;
+		bottom: 12px;
+		right: 12px;
+		background-color: #6366f1; /* Indigo */
+		color: white;
+		padding: 4px 10px;
+		border-radius: 6px;
+		font-size: 0.65rem;
+		font-weight: 800;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+		z-index: 10;
 	}
 
 	.sponsor-card:hover .badge-offer {

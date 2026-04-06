@@ -28,7 +28,7 @@
 			</a>
 			<a href="/carnet/rejoindre" class="chip chip-shop">
 				<span class="chip-icon">🏪</span>
-				<span>Créer un espace commerçant</span>
+				<span>Créer mon espace commerçant</span>
 			</a>
 		</div>
 

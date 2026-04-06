@@ -9,8 +9,20 @@
 	} from 'firebase/auth';
 	import { doc, getDoc, collection, query, where, getDocs, setDoc } from 'firebase/firestore';
 	import { onMount } from 'svelte';
-	import { fade } from 'svelte/transition';
 	import { goto } from '$app/navigation';
+	import { fade, slide } from 'svelte/transition';
+
+	// Merchant Icons Integration
+	import StorefrontIcon from '$lib/Components/icons/StorefrontIcon.svelte';
+	import StarIcon from '$lib/Components/icons/StarIcon.svelte';
+	import EyeIcon from '$lib/Components/icons/EyeIcon.svelte';
+	import CursorClickIcon from '$lib/Components/icons/CursorClickIcon.svelte';
+	import GiftIcon from '$lib/Components/icons/GiftIcon.svelte';
+	import EditIcon from '$lib/Components/icons/EditIcon.svelte';
+	import ImageIcon from '$lib/Components/icons/ImageIcon.svelte';
+	import MailIcon from '$lib/Components/icons/MailIcon.svelte';
+	import ChevronRightIcon from '$lib/Components/icons/ChevronRightIcon.svelte';
+	import AlertCircleIcon from '$lib/Components/icons/AlertCircleIcon.svelte';
 
 	let user = null;
 	let userData = null;
@@ -63,12 +75,32 @@
 			const querySnapshot = await getDocs(q);
 			if (!querySnapshot.empty) {
 				// Take the first one found (assuming one business per user for now)
-				sponsorData = querySnapshot.docs[0].data();
+				sponsorData = { id: querySnapshot.docs[0].id, ...querySnapshot.docs[0].data() };
 			}
 		} catch (error) {
 			console.error('Erreur chargement données:', error);
 		}
 	}
+
+	function getStatusInfo(status) {
+		switch (status) {
+			case 'pending':
+				return { label: 'En attente de modération', color: 'pending' };
+			case 'approved':
+				return { label: 'Fiche active', color: 'active' };
+			case 'rejected':
+				return { label: 'Fiche rejetée', color: 'error' };
+			case 'expired':
+				return { label: 'Abonnement expiré', color: 'error' };
+			default:
+				return { label: status || 'Inconnu', color: 'default' };
+		}
+	}
+
+	$: statusInfo = sponsorData ? getStatusInfo(sponsorData.status) : null;
+	$: isPremium = sponsorData?.currentPlan?.type === 'premium';
+	$: isMerchantActive = sponsorData?.currentPlan?.isActive;
+	$: isSponsorExpired = sponsorData?.status === 'expired' || (sponsorData && !isMerchantActive);
 
 	async function handleEmailAuth() {
 		errorMessage = '';
@@ -330,28 +362,142 @@
 						</div>
 					</div>
 
-					<!-- Sponsor Card -->
-					<div class="stat-card">
-						<div class="icon-bg sponsor-icon">
-							<i class="fa-solid fa-store"></i>
-						</div>
-						<div class="stat-content">
-							<h3>Espace Commerçant</h3>
-							{#if sponsorData}
-								<p class="stat-number {sponsorData.currentPlan?.isActive ? 'active' : 'pending'}">
-									{sponsorData.currentPlan?.isActive ? 'Actif' : 'En attente'}
+					<!-- Sponsor Header (Show if merchant) -->
+					{#if sponsorData}
+						<div class="stat-card pro-status-card">
+							<div class="icon-bg sponsor-icon">
+								<i class="fa-solid fa-store"></i>
+							</div>
+							<div class="stat-content">
+								<h3>Statut Professionnel</h3>
+								<p class="stat-number {statusInfo.color}">
+									{statusInfo.label}
 								</p>
 								<p class="stat-sub">{sponsorData.currentPlan?.name || 'Sponsor'}</p>
-							{:else}
-								<p class="stat-number inactive">Aucun</p>
-								<a href="/carnet/rejoindre" class="btn-sm">Créer un espace commerçant</a>
+							</div>
+						</div>
+					{/if}
+				</div>
+
+				<!-- MERCHANT DASHBOARD INTEGRATION -->
+				{#if sponsorData}
+					<div class="merchant-dashboard-section" in:fade>
+						<div class="section-divider">
+							<span>MA VITRINE PROFESSIONNELLE</span>
+						</div>
+
+						<header class="merchant-hero">
+							<div class="hero-text">
+								<h2>{sponsorData.businessName}</h2>
+								<p class="category-tag">{sponsorData.category}</p>
+							</div>
+							{#if isPremium}
+								<div class="premium-tag">
+									<StarIcon class="star-icon" />
+									<span>PREMIUM</span>
+								</div>
+							{/if}
+						</header>
+
+						{#if sponsorData.status === 'approved' && isMerchantActive}
+							<div class="stats-mini-grid">
+								<div class="stat-mini-card">
+									<div class="mini-icon text-primary"><EyeIcon /></div>
+									<div class="mini-data">
+										<span class="value">{sponsorData.stats?.views || 0}</span>
+										<span class="label">Vues</span>
+									</div>
+								</div>
+								<div class="stat-mini-card">
+									<div class="mini-icon text-green"><CursorClickIcon /></div>
+									<div class="mini-data">
+										<span class="value">{sponsorData.stats?.clicks || 0}</span>
+										<span class="label">Clics</span>
+									</div>
+								</div>
+								<div class="stat-mini-card">
+									<div class="mini-icon text-orange"><GiftIcon /></div>
+									<div class="mini-data">
+										<span class="value">{sponsorData.stats?.offersShown || 0}</span>
+										<span class="label">Offres</span>
+									</div>
+								</div>
+							</div>
+						{/if}
+
+						{#if sponsorData.status === 'rejected'}
+							<div class="alert-box error">
+								<div class="alert-icon"><AlertCircleIcon /></div>
+								<div class="alert-content">
+									<h4>Fiche refusée</h4>
+									<p>{sponsorData.rejectionReason || 'Contactez-nous pour plus de détails.'}</p>
+								</div>
+							</div>
+						{/if}
+
+						<div class="pro-actions-grid">
+							<a href="/espace-commercant/modifier" class="pro-action-card">
+								<div class="card-icon edit"><EditIcon /></div>
+								<div class="card-text">
+									<h4>Modifier ma fiche</h4>
+									<p>Infos, adresse, horaires...</p>
+								</div>
+								<ChevronRightIcon class="chevron" />
+							</a>
+
+							<a href="/espace-commercant/offres" class="pro-action-card">
+								<div class="card-icon offer"><GiftIcon /></div>
+								<div class="card-text">
+									<h4>Mon Offre</h4>
+									<p>{sponsorData.specialOffer?.isActive ? 'Offre active' : 'Créer un bon plan'}</p>
+								</div>
+								<ChevronRightIcon class="chevron" />
+							</a>
+
+							<a href="/espace-commercant/photos" class="pro-action-card">
+								<div class="card-icon photo"><ImageIcon /></div>
+								<div class="card-text">
+									<h4>Mes Photos</h4>
+									<p>{sponsorData.images?.length || 0} / 5 photos</p>
+								</div>
+								<ChevronRightIcon class="chevron" />
+							</a>
+
+							{#if sponsorData.status === 'approved'}
+								<a href={`/carnet/${sponsorData.id}`} target="_blank" class="pro-action-card preview">
+									<div class="card-icon preview"><EyeIcon /></div>
+									<div class="card-text">
+										<h4>Voir ma vitrine</h4>
+										<p>Aperçu public</p>
+									</div>
+									<ChevronRightIcon class="chevron" />
+								</a>
 							{/if}
 						</div>
 					</div>
-				</div>
+				{:else}
+					<!-- Standard User / Non-Merchant CTA -->
+					<div class="become-pro-cta" in:fade>
+						<div class="pro-cta-card">
+							<div class="pro-badge">ESPACE PRO</div>
+							<div class="cta-inner">
+								<div class="cta-text">
+									<h3>Boostez votre commerce local</h3>
+									<p>Rejoignez Le Carnet et proposez des offres exclusives à la tribu du Poilu.</p>
+								</div>
+								<a href="/carnet/rejoindre" class="btn-cta-pro">
+									En savoir plus <i class="fa-solid fa-arrow-right"></i>
+								</a>
+							</div>
+						</div>
+					</div>
+				{/if}
 
-				<!-- Actions / Links -->
+				<!-- Standard Actions -->
 				<div class="menu-list">
+					<div class="section-divider">
+						<span>MES ÉVÉNEMENTS</span>
+					</div>
 					<a
 						href={userData?.subscription?.credits > 0 ? '/publier?plan=credit' : '/Tarifs'}
 						class="menu-item"
@@ -362,11 +508,6 @@
 								? 'Publier une annonce (utiliser un crédit)'
 								: 'Publier une annonce'}
 						</span>
-						<i class="fa-solid fa-chevron-right arrow"></i>
-					</a>
-					<a href="/carnet/rejoindre" class="menu-item">
-						<i class="fa-solid fa-store"></i>
-						<span>Apparaissez sur le Carnet en tant que commerçant</span>
 						<i class="fa-solid fa-chevron-right arrow"></i>
 					</a>
 				</div>
@@ -735,5 +876,236 @@
 		.btn-logout {
 			width: 100%;
 		}
+	}
+
+	/* --- Unified Merchant Integration Styles --- */
+	.section-divider {
+		display: flex;
+		align-items: center;
+		margin: 2rem 0 1.5rem;
+		color: var(--secondary);
+		font-size: 0.75rem;
+		font-weight: 800;
+		letter-spacing: 0.1em;
+	}
+
+	.section-divider::after {
+		content: '';
+		flex: 1;
+		height: 1px;
+		background: var(--border);
+		margin-left: 1rem;
+		opacity: 0.5;
+	}
+
+	.merchant-dashboard-section {
+		display: flex;
+		flex-direction: column;
+		gap: 1.5rem;
+	}
+
+	.merchant-hero {
+		background: #fff8f0;
+		border: 1px solid #ffe8d6;
+		padding: 2rem;
+		border-radius: var(--radius-lg);
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		position: relative;
+		overflow: hidden;
+	}
+
+	.merchant-hero::before {
+		content: '';
+		position: absolute;
+		top: -50%;
+		left: -50%;
+		width: 200%;
+		height: 200%;
+		background: radial-gradient(circle, rgba(255, 183, 158, 0.15) 0%, rgba(255, 255, 255, 0) 70%);
+		pointer-events: none;
+	}
+
+	.merchant-hero h2 {
+		font-size: 1.75rem;
+		font-weight: 900;
+		color: var(--text);
+		margin: 0;
+	}
+
+	.category-tag {
+		color: var(--cta);
+		font-weight: 700;
+		font-size: 0.9rem;
+		margin-top: 5px;
+	}
+
+	.premium-tag {
+		background: var(--text);
+		color: #facc15;
+		display: flex;
+		align-items: center;
+		gap: 6px;
+		padding: 6px 12px;
+		border-radius: 50px;
+		font-size: 0.75rem;
+		font-weight: 900;
+	}
+
+	.stats-mini-grid {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 1rem;
+	}
+
+	.stat-mini-card {
+		background: white;
+		padding: 1.25rem;
+		border-radius: var(--radius-md);
+		border: 1px solid var(--border);
+		display: flex;
+		align-items: center;
+		gap: 1rem;
+	}
+
+	.mini-icon {
+		width: 40px;
+		height: 40px;
+		background: var(--lightBg);
+		border-radius: 50%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	:global(.mini-icon svg) {
+		width: 1.25rem;
+		height: 1.25rem;
+	}
+
+	.mini-data {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.mini-data .value {
+		font-size: 1.25rem;
+		font-weight: 800;
+	}
+
+	.mini-data .label {
+		font-size: 0.75rem;
+		color: var(--secondary);
+		text-transform: uppercase;
+		font-weight: 700;
+	}
+
+	.pro-actions-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+		gap: 1rem;
+	}
+
+	.pro-action-card {
+		background: white;
+		padding: 1.25rem;
+		border-radius: var(--radius-md);
+		text-decoration: none;
+		display: flex;
+		align-items: center;
+		gap: 1.25rem;
+		border: 1px solid var(--border);
+		transition: all 0.2s;
+	}
+
+	.pro-action-card:hover {
+		transform: translateY(-3px);
+		box-shadow: var(--shadow3);
+		border-color: var(--cta);
+	}
+
+	.card-icon {
+		width: 48px;
+		height: 48px;
+		border-radius: 12px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	:global(.card-icon svg) { width: 1.5rem; height: 1.5rem; }
+
+	.card-icon.edit { background: #e0f2fe; color: #0284c7; }
+	.card-icon.offer { background: #fff7ed; color: #ea580c; }
+	.card-icon.photo { background: #fdf2f8; color: #db2777; }
+	.card-icon.preview { background: #f0fdf4; color: #16a34a; }
+
+	.card-text { flex: 1; }
+	.card-text h4 { font-size: 1rem; font-weight: 700; color: var(--text); }
+	.card-text p { font-size: 0.85rem; color: var(--secondary); margin-top: 2px; }
+
+	.alert-box {
+		padding: 1rem;
+		border-radius: var(--radius-md);
+		display: flex;
+		gap: 1rem;
+		background: #fee2e2;
+		border: 1px solid #fecaca;
+		color: #991b1b;
+	}
+
+	/* Become Pro CTA Section */
+	.pro-cta-card {
+		background: linear-gradient(135deg, #073B4C 0%, #11647d 100%);
+		padding: 2.5rem;
+		border-radius: var(--radius-lg);
+		color: white;
+		position: relative;
+		overflow: hidden;
+		box-shadow: 0 15px 35px rgba(7, 59, 76, 0.2);
+	}
+
+	.pro-badge {
+		position: absolute;
+		top: 1.5rem;
+		right: 1.5rem;
+		background: rgba(255, 255, 255, 0.15);
+		padding: 0.4rem 1rem;
+		border-radius: 50px;
+		font-size: 0.7rem;
+		font-weight: 900;
+		letter-spacing: 0.1em;
+	}
+
+	.cta-inner h3 { color: white; font-size: 1.5rem; font-weight: 800; margin-bottom: 0.75rem; }
+	.cta-inner p { color: rgba(255, 255, 255, 0.8); margin-bottom: 1.5rem; max-width: 450px; }
+
+	.btn-cta-pro {
+		display: inline-flex;
+		align-items: center;
+		gap: 10px;
+		background: white;
+		color: #073B4C;
+		padding: 0.8rem 1.8rem;
+		border-radius: 50px;
+		font-weight: 800;
+		text-decoration: none;
+		transition: all 0.2s;
+	}
+
+	.btn-cta-pro:hover {
+		transform: scale(1.05);
+		background: #ffb79e;
+	}
+
+	/* Status Colors */
+	.stat-number.active { color: #10b981; }
+	.stat-number.pending { color: #f97316; }
+	.stat-number.error { color: #ef4444; }
+
+	@media (max-width: 768px) {
+		.stats-mini-grid { grid-template-columns: 1fr; }
+		.merchant-hero { flex-direction: column; text-align: center; gap: 1rem; }
 	}
 </style>

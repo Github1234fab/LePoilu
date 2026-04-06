@@ -14,9 +14,9 @@
 	<!-- HERO SECTION -->
 	<header class="hero-section">
 		<div class="hero-content">
-			<div class="badge-new" in:fade={{ delay: 100 }}><i class="fa-solid fa-bolt"></i> Nouveau</div>
+			<div class="badge-pro" in:fade={{ delay: 100 }}><i class="fa-solid fa-store"></i> ESPACE PRO</div>
 			<h1 in:fly={{ y: 20, duration: 600 }}>
-				Transformez l'audience du <span class="highlight">Poilu</span> en clients.
+				Créer mon espace <span class="highlight">commerçant</span> sur Le Poilu.
 			</h1>
 			<p class="hero-subtitle" in:fade={{ delay: 200 }}>
 				Le principe est simple : Vous proposez une offre exclusive sur l'app. La tribu du Poilu
@@ -37,6 +37,15 @@
 			</div>
 		</div>
 	</header>
+	
+	<!-- QUICK ACTION SECTION (REMOVED FINAL CTA DOWN, MOVED UP) -->
+	<section class="final-cta">
+		<h2>Prêt à booster votre activité ?</h2>
+		<a href="/carnet/rejoindre/inscription" class="cta-button">
+			Créer mon espace commerçant <i class="fa-solid fa-star"></i>
+		</a>
+		<p class="sub-cta">Sans engagement. Annulable à tout moment.</p>
+	</section>
 
 	<!-- STEPS SECTION -->
 	<section class="steps-section">
@@ -126,15 +135,6 @@
 			</div>
 		</div>
 	</section>
-
-	<!-- FINAL CTA -->
-	<section class="final-cta">
-		<h2>Prêt à booster votre activité ?</h2>
-		<a href="/carnet/rejoindre/inscription" class="cta-button">
-			Rejoindre Le Carnet <i class="fa-solid fa-star"></i>
-		</a>
-		<p class="sub-cta">Sans engagement. Annulable à tout moment.</p>
-	</section>
 </div>
 
 <style>
@@ -195,18 +195,20 @@
 		max-width: 90%;
 	}
 
-	.badge-new {
+	.badge-pro {
 		display: inline-flex;
 		align-items: center;
 		gap: 8px;
-		background: #e6f4ea;
-		color: #1e8e3e;
+		background: #fff5f2;
+		color: var(--cta);
 		padding: 6px 16px;
 		border-radius: 50px;
-		font-weight: 700;
-		font-size: 0.9rem;
+		font-weight: 800;
+		font-size: 0.8rem;
 		margin-bottom: var(--spacing-md);
 		text-transform: uppercase;
+		border: 1px solid #fbd5c6;
+		letter-spacing: 0.05em;
 	}
 
 	/* Hero Visual */

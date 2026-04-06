@@ -207,243 +207,188 @@
 	}
 </script>
 
-<svelte:head>
-	<title>Mes photos - Le Poilu</title>
-</svelte:head>
-
-<div class="min-h-screen bg-gray-50 pb-20 pt-6">
-	<main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="edit-page-container">
+	<main class="edit-main-content">
 		<!-- Navigation / Back Button -->
-		<a
-			href="/espace-commercant"
-			class="inline-flex items-center text-sm font-medium text-gray-500 hover:text-gray-900 mb-6 transition-colors"
-		>
-			<ChevronRightIcon class="h-4 w-4 mr-1 rotate-180" />
-			Retour à l'espace commerçant
+		<a href="/compte" class="back-link">
+			<div class="icon-back"><ChevronRightIcon /></div>
+			<span>Retour à mon compte</span>
 		</a>
 
-		<div class="mb-8">
-			<h1 class="text-3xl font-bold text-gray-900 font-poppins">Mes photos pro</h1>
-			<p class="mt-2 text-gray-600">
-				Gérez les photos qui apparaissent sur votre fiche vitrine Le Carnet.
+		<header class="edit-header">
+			<h1>Ma Galerie Pro</h1>
+			<p>
+				Gérez les photos qui apparaissent sur votre fiche vitrine Le Carnet. 
+				Les visuels de qualité attirent plus de clients !
 			</p>
-		</div>
+		</header>
 
 		{#if loading}
-			<div class="flex justify-center py-12">
-				<div class="animate-spin rounded-full h-10 w-10 border-b-2 border-primary"></div>
+			<div class="loading-state">
+				<div class="spinner"></div>
+				<p>Chargement de vos visuels...</p>
 			</div>
 		{:else if sponsor}
-			<div class="space-y-8" in:fade>
+			<div class="edit-form-wrapper" in:fade>
 				<!-- Hidden file input -->
 				<input
 					bind:this={fileInput}
 					type="file"
 					accept="image/png, image/jpeg, image/jpg, image/webp"
-					class="hidden"
+					class="hidden-input"
 					on:change={handleFileSelect}
 				/>
 
-				<!-- Info Box -->
-				<div class="bg-blue-50 border border-blue-100 rounded-xl p-4 flex gap-4">
-					<div class="text-blue-500 mt-0.5"><InformationCircleIcon class="h-6 w-6" /></div>
-					<p class="text-sm text-blue-800 leading-relaxed">
-						Ajoutez jusqu'à {MAX_PHOTOS} photos de votre commerce. Les vitrines avec des photos de qualité
-						attirent <strong class="font-bold">2 fois plus de clients</strong> !
-					</p>
-				</div>
-
 				<!-- Alerts -->
 				{#if errorMsg}
-					<div class="bg-red-50 border-l-4 border-red-500 p-4 rounded-md">
-						<div class="flex">
-							<div class="flex-shrink-0"><AlertCircleIcon class="h-5 w-5 text-red-400" /></div>
-							<div class="ml-3"><p class="text-sm text-red-700">{errorMsg}</p></div>
-						</div>
+					<div class="alert error" in:slide>
+						<div class="alert-icon"><AlertCircleIcon /></div>
+						<p>{errorMsg}</p>
 					</div>
 				{/if}
 
 				{#if successMsg}
-					<div class="bg-green-50 border-l-4 border-green-500 p-4 rounded-md">
-						<div class="flex">
-							<div class="flex-shrink-0"><CheckCircleIcon class="h-5 w-5 text-green-400" /></div>
-							<div class="ml-3"><p class="text-sm text-green-700">{successMsg}</p></div>
-						</div>
+					<div class="alert success" in:slide>
+						<div class="alert-icon"><CheckCircleIcon /></div>
+						<p>{successMsg}</p>
 					</div>
 				{/if}
 
 				{#if !isPremium}
-					<!-- Non-Premium State -->
-					<div
-						class="bg-white rounded-2xl shadow-sm border border-gray-100 p-10 text-center flex flex-col items-center"
-					>
-						<div class="bg-gray-100 p-6 rounded-full inline-block mb-6">
-							<LockClosedIcon class="h-16 w-16 text-gray-400" />
+					<!-- PREMIUM LOCK SCREEN -->
+					<div class="premium-lock-card" in:fade>
+						<div class="lock-visual">
+							<div class="lock-icon-bg">
+								<LockClosedIcon />
+							</div>
+							<div class="pulse-ring"></div>
 						</div>
-						<h2 class="text-2xl font-bold text-gray-900 mb-3">Fonctionnalité Premium</h2>
-						<p class="text-gray-600 mb-8 max-w-lg mx-auto">
-							L'ajout de photos pour mettre en valeur votre commerce est réservé aux abonnés de la
-							formule <strong class="font-semibold text-gray-900">Visibilité Maximale</strong>.
-						</p>
+						
+						<div class="lock-content">
+							<span class="lock-badge">EXCLUSIF PREMIUM</span>
+							<h2>Sublimez votre fiche avec des photos</h2>
+							<p>
+								L'ajout de visuels pour mettre en valeur votre commerce est réservé aux abonnés de la
+								formule <strong class="highlight">Visibilité Maximale</strong>.
+							</p>
 
-						<div class="flex flex-col gap-4 items-start text-left mb-8 max-w-xs mx-auto">
-							<div class="flex items-center gap-3">
-								<CheckCircleIcon class="h-5 w-5 text-green-500 shrink-0" />
-								<span class="font-medium text-gray-800">Galerie de {MAX_PHOTOS} photos</span>
+							<div class="pro-benefits">
+								<div class="benefit-tag"><CheckCircleIcon /> <span>5 Photos HD</span></div>
+								<div class="benefit-tag"><CheckCircleIcon /> <span>Lien Site Web</span></div>
+								<div class="benefit-tag"><CheckCircleIcon /> <span>Priorité de tri</span></div>
 							</div>
-							<div class="flex items-center gap-3">
-								<CheckCircleIcon class="h-5 w-5 text-green-500 shrink-0" />
-								<span class="font-medium text-gray-800">Mise en avant sur l'app</span>
-							</div>
-							<div class="flex items-center gap-3">
-								<CheckCircleIcon class="h-5 w-5 text-green-500 shrink-0" />
-								<span class="font-medium text-gray-800">Bouton site web débloqué</span>
-							</div>
+
+							<a href="/espace-commercant" class="btn-upgrade">
+								<AlbumsIcon />
+								Passer en Premium
+							</a>
 						</div>
-
-						<a
-							href="/espace-commercant"
-							class="bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-bold py-4 px-8 rounded-full transition-colors inline-flex items-center gap-2 shadow-sm"
-						>
-							<AlbumsIcon class="h-5 w-5" />
-							Gérer mon abonnement Premium
-						</a>
 					</div>
 				{:else}
-					<!-- Premium State - Photo Gallery -->
-					<div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 sm:p-8">
-						<div class="flex justify-between items-center mb-6">
-							<h2 class="text-xl font-bold text-gray-900 flex items-center gap-2">
-								<span>🖼️</span> Galerie photo
-							</h2>
-							<div class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm font-bold">
-								{images.length} / {MAX_PHOTOS}
+					<!-- PHOTO GALLERY -->
+					<div class="info-note-pro">
+						<div class="note-icon-pro"><InformationCircleIcon /></div>
+						<p>
+							Ajoutez jusqu'à {MAX_PHOTOS} photos. La première photo est votre <strong>image de couverture</strong> 
+							et apparaîtra sur les résultats de recherche.
+						</p>
+					</div>
+
+					<section class="gallery-card">
+						<div class="gallery-header">
+							<div class="card-title">
+								<span class="emoji">🖼️</span>
+								<h2>Ma Collection</h2>
+							</div>
+							<div class="photo-counter">
+								<span>{images.length}</span> / {MAX_PHOTOS}
 							</div>
 						</div>
 
-						<!-- Photo Grid -->
-						<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+						<div class="photos-grid">
 							{#each images as imageUrl, index}
-								<div
-									class="aspect-[4/3] rounded-xl overflow-hidden relative group border border-gray-200"
-								>
-									<img
-										src={imageUrl}
-										alt={`Image du commerce ${index + 1}`}
-										class="w-full h-full object-cover"
-									/>
-
-									<!-- Badges and controls -->
-									<div
-										class="absolute inset-x-0 top-0 p-2 flex justify-between bg-gradient-to-b from-black/50 to-transparent"
-									>
-										<span class="bg-black/60 text-white text-xs font-bold px-2 py-1 rounded-md">
-											{index === 0 ? 'Couverture' : `#${index + 1}`}
-										</span>
-										<button
-											on:click={() => deleteImage(imageUrl, index)}
-											class="bg-red-500/90 hover:bg-red-500 text-white p-1.5 rounded-full transition-colors opacity-0 group-hover:opacity-100 focus:opacity-100"
-											title="Supprimer la photo"
-										>
-											<TrashIcon class="h-4 w-4" />
+								<div class="photo-item group" in:fade>
+									<img src={imageUrl} alt={`Commerce ${index + 1}`} loading="lazy" />
+									
+									<div class="photo-overlay">
+										<button class="btn-delete-photo" on:click={() => deleteImage(imageUrl, index)} title="Supprimer">
+											<TrashIcon />
 										</button>
 									</div>
+
+									{#if index === 0}
+										<div class="cover-badge">
+											<i class="fa-solid fa-star"></i>
+											COUVERTURE
+										</div>
+									{/if}
 								</div>
 							{/each}
 
-							<!-- Add Button -->
 							{#if images.length < MAX_PHOTOS}
-								<button
-									on:click={triggerFileInput}
-									disabled={isUploading}
-									class="aspect-[4/3] rounded-xl border-2 border-dashed border-primary bg-primary/5 hover:bg-primary/10 flex flex-col items-center justify-center transition-colors group disabled:opacity-50 disabled:cursor-not-allowed"
+								<button 
+									on:click={triggerFileInput} 
+									disabled={isUploading} 
+									class="btn-add-photo {isUploading ? 'is-uploading' : ''}"
 								>
 									{#if isUploading}
-										<div class="relative w-12 h-12 flex items-center justify-center">
-											<div class="absolute inset-0 border-4 border-gray-200 rounded-full"></div>
-											<div
-												class="absolute inset-0 border-4 border-primary rounded-full border-t-transparent animate-spin"
-											></div>
-											<span class="text-xs font-bold text-primary">{uploadProgress}%</span>
+										<div class="upload-progress-circle">
+											<svg viewBox="0 0 36 36">
+												<path class="circle-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+												<path class="circle" stroke-dasharray="{uploadProgress}, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+											</svg>
+											<span class="progress-text">{uploadProgress}%</span>
 										</div>
-										<span class="mt-2 text-sm font-semibold text-primary">Envoi...</span>
+										<span class="upload-label">Envoi...</span>
 									{:else}
-										<AddCircleIcon
-											class="h-10 w-10 text-primary mb-2 group-hover:scale-110 transition-transform"
-										/>
-										<span class="text-sm font-bold text-primary">Ajouter une photo</span>
+										<div class="add-icon-bg">
+											<AddCircleIcon />
+										</div>
+										<span class="add-label">Ajouter une photo</span>
 									{/if}
 								</button>
 							{/if}
 						</div>
-
-						<!-- Order info -->
-						{#if images.length > 1}
-							<p class="mt-4 text-sm text-gray-500 italic flex items-center gap-1.5">
-								<InformationCircleIcon class="h-4 w-4 shrink-0" />
-								L'image #1 étiquettée "Couverture" sera l'image principale de votre fiche.
-							</p>
-						{/if}
-					</div>
+					</section>
 
 					<!-- Photography Tips -->
-					<div class="bg-[#FFF8F0] border border-[#FFE8D6] rounded-2xl p-6 sm:p-8">
-						<h3 class="text-lg font-bold text-gray-900 mb-6 flex items-center gap-2">
-							<span>💡</span> Conseils pour de belles photos
-						</h3>
+					<section class="tips-card">
+						<div class="card-title">
+							<span class="emoji">💡</span>
+							<h2>Conseils de pro</h2>
+						</div>
 
-						<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-							<div class="flex items-start gap-4 bg-white/60 p-4 rounded-xl">
-								<div class="bg-orange-100 text-orange-500 p-2.5 rounded-lg shrink-0">
-									<SunnyIcon class="h-5 w-5" />
-								</div>
-								<div>
-									<h4 class="font-bold text-gray-900 text-sm mb-1">
-										Privilégiez la lumière du jour
-									</h4>
-									<p class="text-sm text-gray-600">
-										Évitez les photos de nuit ou les intérieurs trop sombres et flous.
-									</p>
+						<div class="tips-grid">
+							<div class="tip-item">
+								<div class="tip-icon light"><SunnyIcon /></div>
+								<div class="tip-body">
+									<h4>Lumière du jour</h4>
+									<p>Évitez le flash ou les intérieurs trop sombres.</p>
 								</div>
 							</div>
-
-							<div class="flex items-start gap-4 bg-white/60 p-4 rounded-xl">
-								<div class="bg-blue-100 text-blue-500 p-2.5 rounded-lg shrink-0">
-									<ResizeIcon class="h-5 w-5" />
-								</div>
-								<div>
-									<h4 class="font-bold text-gray-900 text-sm mb-1">Cadrez en format Paysage</h4>
-									<p class="text-sm text-gray-600">
-										Prenez votre téléphone à l'horizontale (format rectangle large).
-									</p>
+							<div class="tip-item">
+								<div class="tip-icon landscape"><ResizeIcon /></div>
+								<div class="tip-body">
+									<h4>Format Paysage</h4>
+									<p>Prenez vos photos à l'horizontale pour un meilleur rendu.</p>
 								</div>
 							</div>
-
-							<div class="flex items-start gap-4 bg-white/60 p-4 rounded-xl">
-								<div class="bg-green-100 text-green-500 p-2.5 rounded-lg shrink-0">
-									<EyeIcon class="h-5 w-5" />
-								</div>
-								<div>
-									<h4 class="font-bold text-gray-900 text-sm mb-1">Montrez votre établissement</h4>
-									<p class="text-sm text-gray-600">
-										Mettez en valeur votre devanture ou la décoration de la salle.
-									</p>
+							<div class="tip-item">
+								<div class="tip-icon storefront"><EyeIcon /></div>
+								<div class="tip-body">
+									<h4>Votre devanture</h4>
+									<p>C'est ce qui aide les clients à vous repérer.</p>
 								</div>
 							</div>
-
-							<div class="flex items-start gap-4 bg-white/60 p-4 rounded-xl">
-								<div class="bg-purple-100 text-purple-500 p-2.5 rounded-lg shrink-0">
-									<AlbumsIcon class="h-5 w-5" />
-								</div>
-								<div>
-									<h4 class="font-bold text-gray-900 text-sm mb-1">Variez les vues</h4>
-									<p class="text-sm text-gray-600">
-										Proposez des photos de vos plats, de la boutique et de vos équipes.
-									</p>
+							<div class="tip-item">
+								<div class="tip-icon variety"><AlbumsIcon /></div>
+								<div class="tip-body">
+									<h4>Variez les plaisirs</h4>
+									<p>Cadre de vie, produits phares, ambiance...</p>
 								</div>
 							</div>
 						</div>
-					</div>
+					</section>
 				{/if}
 			</div>
 		{/if}
@@ -451,8 +396,163 @@
 </div>
 
 <style>
-	/* Add smooth transitions to the grid elements */
-	.aspect-\[4\/3\] {
-		aspect-ratio: 4 / 3;
+	.edit-page-container {
+		min-height: 100vh;
+		background: #f9fafb;
+		padding: 2rem 0 5rem;
+		font-family: 'Poppins', sans-serif;
+	}
+
+	.edit-main-content {
+		max-width: 900px;
+		margin: 0 auto;
+		padding: 0 1.25rem;
+	}
+
+	/* Navigation */
+	.back-link {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.5rem;
+		text-decoration: none;
+		color: var(--secondary);
+		font-size: 0.9rem;
+		font-weight: 600;
+		margin-bottom: 2rem;
+		transition: color 0.2s;
+	}
+
+	.back-link:hover { color: var(--cta); }
+	.icon-back { transform: rotate(180deg); display: flex; width: 1rem; height: 1rem; }
+
+	/* Header */
+	.edit-header { margin-bottom: 2.5rem; }
+	.edit-header h1 { font-size: 2.25rem; font-weight: 900; color: var(--text); margin: 0 0 0.5rem; }
+	.edit-header p { color: var(--secondary); font-size: 1.1rem; }
+
+	/* Form State */
+	.loading-state { display: flex; flex-direction: column; align-items: center; padding: 4rem 0; color: var(--secondary); }
+	.spinner { border: 3px solid #f3f3f3; border-top: 3px solid var(--cta); border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin-bottom: 1rem; }
+	@keyframes spin { 100% { transform: rotate(360deg); } }
+
+	.edit-form-wrapper { display: flex; flex-direction: column; gap: 2rem; }
+	.hidden-input { display: none; }
+
+	/* Premium Lock Card */
+	.premium-lock-card {
+		background: white;
+		border-radius: 32px;
+		padding: 4rem 2rem;
+		text-align: center;
+		border: 1px solid #edf2f7;
+		box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05);
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		position: relative;
+		overflow: hidden;
+	}
+
+	.lock-visual { position: relative; margin-bottom: 2.5rem; }
+	.lock-icon-bg { width: 100px; height: 100px; background: #f8fafc; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #94a3b8; }
+	:global(.lock-icon-bg svg) { width: 3rem; height: 3rem; }
+	.pulse-ring { position: absolute; top: 0; left: 0; right: 0; bottom: 0; border: 2px solid var(--cta); border-radius: 50%; animation: pulse 2s infinite; opacity: 0; }
+	@keyframes pulse { 0% { transform: scale(1); opacity: 0.5; } 100% { transform: scale(1.5); opacity: 0; } }
+
+	.lock-badge { background: #fef9c3; color: #854d0e; font-size: 0.75rem; font-weight: 800; padding: 0.4rem 1rem; border-radius: 50px; margin-bottom: 1.5rem; display: inline-block; }
+	.lock-content h2 { font-size: 1.75rem; font-weight: 900; color: var(--text); margin: 0 0 1rem; }
+	.lock-content p { color: var(--secondary); max-width: 500px; margin: 0 auto 2.5rem; line-height: 1.6; }
+	.lock-content .highlight { color: var(--cta); }
+
+	.pro-benefits { display: flex; flex-wrap: wrap; justify-content: center; gap: 1.5rem; margin-bottom: 3rem; }
+	.benefit-tag { display: flex; align-items: center; gap: 0.5rem; font-weight: 700; color: #475569; font-size: 0.95rem; }
+	:global(.benefit-tag svg) { color: #10b981; width: 1.25rem; height: 1.25rem; }
+
+	.btn-upgrade {
+		background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+		color: white;
+		text-decoration: none;
+		padding: 1rem 2.5rem;
+		border-radius: 50px;
+		font-weight: 800;
+		display: inline-flex;
+		align-items: center;
+		gap: 0.75rem;
+		box-shadow: 0 10px 15px rgba(245, 158, 11, 0.3);
+		transition: transform 0.2s;
+	}
+	.btn-upgrade:hover { transform: scale(1.05); }
+
+	/* Gallery Card */
+	.gallery-card { background: white; border-radius: 24px; padding: 2rem; border: 1px solid #edf2f7; }
+	.gallery-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
+	.gallery-header .card-title { margin-bottom: 0; }
+	.card-title { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.5rem; }
+	.card-title .emoji { font-size: 1.5rem; }
+	.card-title h2 { font-size: 1.25rem; font-weight: 800; color: var(--text); margin: 0; }
+
+	.photo-counter { background: #f1f5f9; padding: 0.4rem 1rem; border-radius: 50px; font-size: 0.85rem; font-weight: 800; color: #64748b; }
+	.photo-counter span { color: var(--text); }
+
+	.photos-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 1rem; }
+
+	.photo-item { aspect-ratio: 1; border-radius: 16px; overflow: hidden; position: relative; border: 1px solid #e2e8f0; }
+	.photo-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s; }
+	.photo-item:hover img { transform: scale(1.1); }
+
+	.photo-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.2s; }
+	.photo-item:hover .photo-overlay { opacity: 1; }
+
+	.btn-delete-photo { background: #ef4444; color: white; border: none; padding: 10px; border-radius: 50%; cursor: pointer; transform: translateY(10px); transition: transform 0.2s; }
+	.photo-item:hover .btn-delete-photo { transform: translateY(0); }
+	:global(.btn-delete-photo svg) { width: 1.25rem; height: 1.25rem; }
+
+	.cover-badge { position: absolute; top: 10px; left: 10px; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); color: #fbbf24; font-size: 0.65rem; font-weight: 900; padding: 4px 8px; border-radius: 6px; display: flex; align-items: center; gap: 4px; border: 1px solid rgba(251, 191, 36, 0.3); }
+
+	.btn-add-photo { aspect-ratio: 1; border-radius: 16px; border: 2px dashed #cbd5e1; background: #f8fafc; color: #64748b; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.75rem; transition: all 0.2s; }
+	.btn-add-photo:hover { border-color: var(--cta); background: #fff5f2; color: var(--cta); }
+	.btn-add-photo.is-uploading { cursor: not-allowed; border-color: var(--cta); }
+
+	.add-icon-bg { width: 50px; height: 50px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+	:global(.add-icon-bg svg) { width: 1.75rem; height: 1.75rem; }
+	.add-label { font-size: 0.85rem; font-weight: 800; }
+
+	/* Upload Progress Circle */
+	.upload-progress-circle { position: relative; width: 60px; height: 60px; }
+	.circle-bg { fill: none; stroke: #e2e8f0; stroke-width: 3; }
+	.circle { fill: none; stroke: var(--cta); stroke-width: 3; stroke-linecap: round; transition: stroke-dasharray 0.3s; transform: rotate(-90deg); transform-origin: 50% 50%; }
+	.progress-text { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 0.75rem; font-weight: 800; color: var(--cta); }
+
+	/* Tips Card */
+	.tips-card { background: #fff8f5; border-radius: 24px; padding: 2rem; border: 1px solid #ffe8d6; }
+	.tips-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
+	.tip-item { display: flex; gap: 1rem; background: rgba(255, 255, 255, 0.5); padding: 1.25rem; border-radius: 20px; }
+	.tip-icon { width: 44px; height: 44px; border-radius: 12px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+	:global(.tip-icon svg) { width: 1.5rem; height: 1.5rem; }
+
+	.tip-icon.light { background: #fee2e2; color: #ef4444; }
+	.tip-icon.landscape { background: #e0f2fe; color: #0284c7; }
+	.tip-icon.storefront { background: #f0fdf4; color: #16a34a; }
+	.tip-icon.variety { background: #fef9c3; color: #854d0e; }
+
+	.tip-body h4 { font-size: 0.95rem; font-weight: 800; color: var(--text); margin: 0 0 0.25rem; }
+	.tip-body p { font-size: 0.85rem; color: var(--secondary); margin: 0; line-height: 1.5; }
+
+	/* Info Note Pro (shared logic) */
+	.info-note-pro { background: #eff6ff; padding: 1.25rem 1.5rem; border-radius: 20px; display: flex; gap: 1rem; border: 1px solid #dbeafe; }
+	.note-icon-pro { color: #3b82f6; width: 1.5rem; flex-shrink: 0; margin-top: 2px; }
+	:global(.note-icon-pro svg) { width: 1.5rem; height: 1.5rem; }
+	.info-note-pro p { font-size: 0.9rem; color: #1e40af; line-height: 1.6; margin: 0; }
+
+	/* Alerts */
+	.alert { padding: 1.25rem; border-radius: 16px; display: flex; align-items: center; gap: 1rem; margin-bottom: 2rem; font-weight: 600; }
+	.alert.error { background: #fee2e2; color: #991b1b; }
+	.alert.success { background: #f0fdf4; color: #166534; }
+	:global(.alert svg) { width: 1.5rem; height: 1.5rem; }
+
+	@media (max-width: 600px) {
+		.photos-grid { grid-template-columns: repeat(2, 1fr); }
+		.edit-header h1 { font-size: 1.75rem; }
+		.premium-lock-card { padding: 3rem 1.5rem; }
 	}
 </style>

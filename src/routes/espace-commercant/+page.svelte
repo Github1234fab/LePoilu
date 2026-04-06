@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte';
 	import { fade } from 'svelte/transition';
 	import { auth, db } from '$lib/firebase';
-	import { collection, query, where, getDocs } from 'firebase/firestore';
+	import { collection, query, where, getDocs, orderBy } from 'firebase/firestore';
 	import { onAuthStateChanged } from 'firebase/auth';
 
 	// Icons
@@ -20,25 +20,43 @@
 	import ImageIcon from '$lib/Components/icons/ImageIcon.svelte';
 	import MailIcon from '$lib/Components/icons/MailIcon.svelte';
 	import ChevronRightIcon from '$lib/Components/icons/ChevronRightIcon.svelte';
+	import StatsChartIcon from '$lib/Components/icons/StatsChartIcon.svelte';
+	import PricetagIcon from '$lib/Components/icons/PricetagIcon.svelte';
+	import ArrowForwardIcon from '$lib/Components/icons/ArrowForwardIcon.svelte';
+	import ShieldCheckmarkIcon from '$lib/Components/icons/ShieldCheckmarkIcon.svelte';
+	import LockClosedIcon from '$lib/Components/icons/LockClosedIcon.svelte';
+	import ReceiptIcon from '$lib/Components/icons/ReceiptIcon.svelte';
 
 	let user = null;
 	let sponsor = null;
 	let loading = true;
+	let loadingPlans = false;
 	let errorMsg = '';
+	let plans = [];
 
 	onMount(() => {
-		const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-			user = currentUser;
-			if (user) {
-				fetchSponsorData(user.uid);
-			} else {
-				loading = false;
-				window.location.href = '/compte?redirect=/espace-commercant';
-			}
-		});
-
-		return () => unsubscribe();
+		// New integrated UX: redirect to My Account for all things merchant
+		window.location.href = '/compte';
+		return;
 	});
+
+	async function fetchPlans() {
+		try {
+			loadingPlans = true;
+			const q = query(collection(db, 'SponsorPlans'), orderBy('order', 'asc'));
+			const snapshot = await getDocs(q);
+
+			plans = snapshot.docs.map((doc) => ({
+				id: doc.id,
+				...doc.data()
+			}));
+		} catch (error) {
+			console.error('Error fetching plans:', error);
+		} finally {
+			loadingPlans = false;
+			loading = false;
+		}
+	}
 
 	async function fetchSponsorData(uid) {
 		try {
@@ -49,6 +67,8 @@
 
 			if (snapshot.empty) {
 				sponsor = null;
+				// Si connecté mais pas de sponsor : redirection vers la landing
+				window.location.href = '/carnet/rejoindre';
 			} else {
 				sponsor = {
 					id: snapshot.docs[0].id,
@@ -93,7 +113,7 @@
 <div class="espace-layout">
 	<header class="espace-header">
 		<div class="header-content">
-			<h1>Espace Commerçant</h1>
+			<h1>Commerçant</h1>
 			{#if user}
 				<div class="user-email">{user.email}</div>
 			{/if}
@@ -117,24 +137,145 @@
 				</div>
 			</div>
 		{:else if !sponsor}
-			<div class="empty-state" in:fade>
-				<div class="empty-icon-wrapper">
-					<StorefrontIcon class="store-icon" />
+			<!-- MARKETING LANDING (VANILLA CSS ONLY - NO TAILWIND) -->
+			<div class="marketing-container" in:fade>
+				<!-- Hero Section -->
+				<header class="marketing-hero-card">
+					<div class="hero-glow"></div>
+					<h2 class="marketing-title">Boostez votre CA avec Le Poilu</h2>
+					<p class="marketing-subtitle">
+						Ne soyez pas juste "présent". Soyez <span class="highlight">attractif</span> avec le concept 
+						<strong>Gagnant-Gagnant</strong> des Bons Plans.
+					</p>
+				</header>
+
+				<!-- Benefits Grid -->
+				<section class="benefits-section">
+					<div class="benefits-grid">
+						<div class="benefit-item">
+							<div class="benefit-icon-box">
+								<GiftIcon />
+							</div>
+							<div class="benefit-content">
+								<h3>Le concept "Gagnant-Gagnant"</h3>
+								<p>Le client cherche un bon plan, vous cherchez des clients. Une offre exclusive crée le déclic immédiat.</p>
+							</div>
+						</div>
+
+						<div class="benefit-item">
+							<div class="benefit-icon-box">
+								<EyeIcon />
+							</div>
+							<div class="benefit-content">
+								<h3>Visibilité Premium</h3>
+								<p>Apparaissez en tête de liste et gérez vos propres photos pour séduire les habitants.</p>
+							</div>
+						</div>
+
+						<div class="benefit-item">
+							<div class="benefit-icon-box">
+								<StatsChartIcon />
+							</div>
+							<div class="benefit-content">
+								<h3>Mesurez votre succès</h3>
+								<p>Suivez en temps réel les vues et les clics générés par votre vitrine et vos offres.</p>
+							</div>
+						</div>
+
+						<div class="benefit-item">
+							<div class="benefit-icon-box">
+								<PricetagIcon />
+							</div>
+							<div class="benefit-content">
+								<h3>Le Badge "Bon Plan"</h3>
+								<p>Les commerces avec une offre active reçoivent un badge spécial qui capte l'attention.</p>
+							</div>
+						</div>
+					</div>
+				</section>
+
+				<!-- Pricing Plans -->
+				<section class="pricing-section">
+					<h2 class="section-title">Choisissez votre impact</h2>
+
+					<div class="plans-container">
+						<!-- Basic Plan -->
+						<div class="plan-card basic">
+							<div class="plan-header">
+								<h3>Visibilité Simple</h3>
+								<p class="plan-tagline">Pour être présent dans l'annuaire local.</p>
+								<div class="plan-price-box">
+									<span class="currency">29.90€</span>
+									<span class="period">/mois</span>
+								</div>
+							</div>
+							<ul class="plan-features-list">
+								<li><CheckCircleIcon class="icon-v" /> Présence garantie sur le site</li>
+								<li><CheckCircleIcon class="icon-v" /> Coordonnées & Horaires</li>
+								<li class="disabled">❌ Pas de photos</li>
+								<li class="disabled">❌ Pas d'offres "Bon Plan"</li>
+							</ul>
+							<a href="/espace-commercant/rejoindre" class="btn-plan-select">Choisir Visibilité</a>
+						</div>
+
+						<!-- Premium Plan -->
+						<div class="plan-card premium">
+							<div class="recommended-badge">RECOMMANDÉ</div>
+							<div class="plan-header">
+								<h3 class="text-primary">Boost & Bons Plans</h3>
+								<p class="plan-tagline">L'atout majeur pour attirer du monde en boutique.</p>
+								<div class="plan-price-box text-primary">
+									<span class="currency">49.90€</span>
+									<span class="period">/mois</span>
+								</div>
+							</div>
+							<ul class="plan-features-list">
+								<li class="feature-highlight"><CheckCircleIcon class="icon-p" /> <strong>Gestion des OFFRES (Bons Plans)</strong></li>
+								<li><CheckCircleIcon class="icon-p" /> Jusqu'à 5 photos</li>
+								<li><CheckCircleIcon class="icon-p" /> Statistiques détaillées</li>
+								<li><CheckCircleIcon class="icon-p" /> Kit vitrine offert</li>
+							</ul>
+							<a href="/espace-commercant/rejoindre" class="btn-plan-select btn-premium">Choisir Boost & Bons Plans</a>
+						</div>
+					</div>
+				</section>
+
+				<!-- Trust Bars -->
+				<div class="trust-bar">
+					<div class="trust-item">
+						<LockClosedIcon /> <span>Paiement Stripe</span>
+					</div>
+					<div class="trust-item">
+						<ShieldCheckmarkIcon /> <span>Sans engagement</span>
+					</div>
+					<div class="trust-item">
+						<ReceiptIcon /> <span>Facturation auto</span>
+					</div>
 				</div>
-				<h2>Aucune fiche commerçant</h2>
-				<p>
-					Vous n'avez pas encore de vitrine dans Le Carnet du Poilu. Gagnez en visibilité auprès des
-					clients locaux de l'Ouest Lyonnais.
-				</p>
-				<a href="/espace-commercant/rejoindre" class="btn-primary">Créer ma vitrine</a>
+
+				<!-- Footer Contact -->
+				<footer class="marketing-footer">
+					<h4>Une question avant de vous lancer ?</h4>
+					<p>Notre équipe est là pour vous accompagner.</p>
+					<a href="/contact" class="btn-contact-outline">Nous contacter</a>
+				</footer>
 			</div>
 		{:else}
 			<div class="dashboard-content" in:fade>
+				<header class="dashboard-hero">
+					<div class="hero-glow"></div>
+					<div class="hero-text">
+						<h1>Ravi de vous revoir,</h1>
+						<h2 class="business-name-big">{sponsor.businessName}</h2>
+						<p class="category-tag">{sponsor.category}</p>
+					</div>
+				</header>
+
 				<section class="card profile-card">
 					<div class="profile-header">
 						<div class="profile-info">
-							<h2>{sponsor.businessName}</h2>
-							<p>{sponsor.category}</p>
+							<h3>Statut de votre vitrine</h3>
+							<p>Gérez la visibilité de votre commerce</p>
 						</div>
 						{#if isPremium}
 							<div class="premium-badge">
@@ -145,19 +286,6 @@
 					</div>
 
 					<div class="status-banner {sponsor.status}">
-						<div class="status-icon">
-							{#if sponsor.status === 'approved'}
-								<CheckCircleIcon class="icon-approved" />
-							{:else if sponsor.status === 'pending'}
-								<TimeIcon class="icon-pending" />
-							{:else if sponsor.status === 'rejected'}
-								<CloseCircleIcon class="icon-rejected" />
-							{:else if sponsor.status === 'expired'}
-								<AlertCircleIcon class="icon-expired" />
-							{:else}
-								<PauseCircleIcon class="icon-suspended" />
-							{/if}
-						</div>
 						<span class="status-label">{statusInfo.label}</span>
 					</div>
 
@@ -309,39 +437,25 @@
 
 <style>
 	.espace-layout {
-		--color-primary: #e65100;
-		--color-primary-dark: #cc4800;
-		--color-bg: #f9fafb;
-		--color-surface: #ffffff;
-		--color-text: #111827;
-		--color-text-muted: #6b7280;
-		--color-border: #f3f4f6;
-		--color-orange-light: #fff8f0;
-		--color-orange-border: #ffe8d6;
-		--color-green: #10b981;
-		--color-green-light: #ecfdf5;
-		--color-blue: #3b82f6;
-		--color-blue-light: #eff6ff;
-		--color-red: #ef4444;
-		--color-red-light: #fef2f2;
-		--color-yellow: #f59e0b;
-		--color-yellow-light: #fffbeb;
-
-		--radius-lg: 16px;
-		--radius-md: 12px;
-		--radius-sm: 8px;
-
-		--shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-		--shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+		/* Harmonization with global styles.css */
+		--primary: #ffb79e;
+		--accent: #af340c;
+		--text: #073B4C;
+		--bg: #f9fafb;
+		--surface: #ffffff;
+		--border: #e6d3bd;
+		--shadow-premium: 0 10px 30px rgba(7, 59, 76, 0.1);
+		--shadow-hover: 0 20px 40px rgba(7, 59, 76, 0.15);
+		
+		--radius-lg: 24px;
+		--radius-md: 16px;
+		--radius-sm: 10px;
 
 		min-height: 100vh;
-		background-color: var(--color-bg);
-		padding-bottom: 3rem;
-		font-family:
-			'Inter',
-			system-ui,
-			-apple-system,
-			sans-serif;
+		background-color: var(--bg);
+		padding-bottom: 5rem;
+		font-family: 'Poppins', system-ui, sans-serif;
+		color: var(--text);
 	}
 
 	h1,
@@ -358,33 +472,34 @@
 	}
 
 	.espace-header {
-		background-color: var(--color-surface);
-		border-bottom: 1px solid var(--color-border);
+		background-color: var(--surface);
+		border-bottom: 1px solid var(--border);
 		position: sticky;
 		top: 0;
-		z-index: 10;
-		box-shadow: var(--shadow-sm);
+		z-index: 100;
+		box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
 	}
 	.header-content {
-		max-width: 800px;
+		max-width: 1000px;
 		margin: 0 auto;
-		padding: 1rem 1.5rem;
+		padding: 1.25rem 2rem;
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
 	}
 	.espace-header h1 {
-		font-size: 1.25rem;
-		font-weight: 700;
+		font-size: 1.5rem;
+		font-weight: 800;
+		letter-spacing: -0.02em;
 	}
 	.user-email {
-		font-size: 0.875rem;
-		color: var(--color-text-muted);
-	}
-	@media (max-width: 600px) {
-		.user-email {
-			display: none;
-		}
+		font-size: 0.9rem;
+		color: var(--textColor);
+		opacity: 0.7;
+		font-weight: 600;
+		background: var(--lightBg);
+		padding: 0.4rem 1rem;
+		border-radius: 9999px;
 	}
 
 	.espace-main {
@@ -393,8 +508,311 @@
 		padding: 0 1.5rem;
 	}
 
-	.loading-state,
-	.empty-state {
+	.marketing-container {
+		display: flex;
+		flex-direction: column;
+		gap: 3rem;
+		padding-bottom: 3rem;
+		max-width: 1000px;
+		margin: 0 auto;
+	}
+
+	.marketing-hero-card {
+		text-align: center;
+		padding: 4rem 2rem;
+		background: #fff8f0;
+		border-radius: var(--radius-lg);
+		border: 1px solid #ffe8d6;
+		position: relative;
+		overflow: hidden;
+		box-shadow: var(--shadow-sm);
+	}
+
+	.hero-glow {
+		position: absolute;
+		top: -50%;
+		left: -50%;
+		width: 200%;
+		height: 200%;
+		background: radial-gradient(circle, rgba(255,183,158,0.1) 0%, rgba(255,255,255,0) 70%);
+		pointer-events: none;
+	}
+
+	.marketing-title {
+		font-size: clamp(2rem, 5vw, 2.75rem);
+		font-weight: 900;
+		color: var(--text);
+		margin-bottom: 1.5rem;
+		line-height: 1.1;
+		position: relative;
+	}
+
+	.marketing-subtitle {
+		font-size: 1.125rem;
+		color: #4b5563;
+		max-width: 600px;
+		margin: 0 auto;
+		line-height: 1.6;
+		position: relative;
+	}
+
+	.highlight {
+		color: var(--accent);
+		font-weight: 800;
+	}
+
+	/* Benefits Grid */
+	.benefits-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+		gap: 1.5rem;
+	}
+
+	.benefit-item {
+		background: white;
+		padding: 1.5rem;
+		border-radius: var(--radius-md);
+		border: 1px solid var(--border);
+		display: flex;
+		align-items: flex-start;
+		gap: 1rem;
+		transition: all 0.2s ease;
+	}
+
+	.benefit-item:hover {
+		transform: translateY(-4px);
+		box-shadow: var(--shadow3);
+		border-color: var(--primary);
+	}
+
+	.benefit-icon-box {
+		width: 3rem;
+		height: 3rem;
+		background: #fff8f0;
+		color: var(--accent);
+		border-radius: 50%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex-shrink: 0;
+	}
+
+	:global(.benefit-icon-box svg) {
+		width: 1.5rem;
+		height: 1.5rem;
+	}
+
+	.benefit-content h3 {
+		font-size: 1.05rem;
+		font-weight: 700;
+		margin-bottom: 0.4rem;
+		color: var(--text);
+	}
+
+	.benefit-content p {
+		font-size: 0.9rem;
+		color: #6b7280;
+		line-height: 1.5;
+	}
+
+	/* Pricing */
+	.section-title {
+		text-align: center;
+		font-size: 1.75rem;
+		font-weight: 800;
+		margin-bottom: 2rem;
+		color: var(--text);
+	}
+
+	.plans-container {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+		gap: 2rem;
+		max-width: 900px;
+		margin: 0 auto;
+	}
+
+	.plan-card {
+		background: white;
+		border-radius: var(--radius-lg);
+		padding: 2.5rem;
+		border: 2px solid #e5e7eb;
+		display: flex;
+		flex-direction: column;
+		position: relative;
+		transition: all 0.3s ease;
+	}
+
+	.plan-card.premium {
+		border-color: var(--accent);
+		box-shadow: 0 20px 25px -5px rgba(175, 52, 12, 0.1);
+	}
+
+	.recommended-badge {
+		position: absolute;
+		top: -0.75rem;
+		right: 2rem;
+		background: var(--text);
+		color: #facc15;
+		font-size: 0.75rem;
+		font-weight: 900;
+		padding: 0.4rem 1rem;
+		border-radius: 9999px;
+		letter-spacing: 0.05em;
+	}
+
+	.plan-header h3 {
+		font-size: 1.5rem;
+		font-weight: 800;
+		margin-bottom: 0.5rem;
+	}
+
+	.text-primary {
+		color: var(--accent) !important;
+	}
+
+	.plan-tagline {
+		font-size: 0.9rem;
+		color: #6b7280;
+		margin-bottom: 1.5rem;
+	}
+
+	.plan-price-box {
+		margin-bottom: 2rem;
+		display: flex;
+		align-items: baseline;
+		gap: 0.2rem;
+	}
+
+	.currency {
+		font-size: 2.75rem;
+		font-weight: 900;
+	}
+
+	.period {
+		font-size: 1rem;
+		opacity: 0.7;
+	}
+
+	.plan-features-list {
+		list-style: none;
+		padding: 0;
+		margin: 0 0 2.5rem 0;
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+		flex-grow: 1;
+	}
+
+	.plan-features-list li {
+		display: flex;
+		align-items: flex-start;
+		gap: 0.75rem;
+		font-size: 0.95rem;
+		color: #374151;
+		line-height: 1.4;
+	}
+
+	.plan-features-list li.disabled {
+		color: #9ca3af;
+		font-style: italic;
+	}
+
+	.feature-highlight {
+		color: var(--text) !important;
+		font-weight: 600;
+	}
+
+	:global(.icon-v) { width: 1.25rem; height: 1.25rem; color: #10b981; flex-shrink: 0; }
+	:global(.icon-p) { width: 1.25rem; height: 1.25rem; color: var(--accent); flex-shrink: 0; }
+
+	.btn-plan-select {
+		display: block;
+		text-align: center;
+		padding: 1.25rem;
+		border-radius: var(--radius-md);
+		background: #f3f4f6;
+		color: var(--text);
+		font-weight: 800;
+		text-decoration: none;
+		transition: all 0.2s;
+	}
+
+	.btn-premium {
+		background: var(--accent);
+		color: white;
+		box-shadow: 0 4px 12px rgba(175, 52, 12, 0.3);
+	}
+
+	.btn-plan-select:hover {
+		transform: translateY(-2px);
+		filter: brightness(1.05);
+	}
+
+	/* Trust Bar */
+	.trust-bar {
+		display: flex;
+		justify-content: center;
+		gap: 3rem;
+		flex-wrap: wrap;
+		padding: 2rem;
+		background: #f9fafb;
+		border-radius: var(--radius-lg);
+		border: 1px solid #f3f4f6;
+	}
+
+	.trust-item {
+		display: flex;
+		align-items: center;
+		gap: 0.6rem;
+		color: #6b7280;
+		font-size: 0.85rem;
+		font-weight: 700;
+	}
+
+	:global(.trust-item svg) {
+		width: 1.25rem;
+		height: 1.25rem;
+	}
+
+	.marketing-footer {
+		text-align: center;
+		padding: 2rem 0;
+	}
+
+	.marketing-footer h4 {
+		font-size: 1.25rem;
+		margin-bottom: 0.5rem;
+	}
+
+	.marketing-footer p {
+		color: #6b7280;
+		margin-bottom: 2rem;
+	}
+
+	.btn-contact-outline {
+		display: inline-block;
+		padding: 0.8rem 2.5rem;
+		border: 2px solid var(--border);
+		border-radius: 9999px;
+		color: var(--text);
+		text-decoration: none;
+		font-weight: 700;
+		transition: all 0.2s;
+	}
+
+	.btn-contact-outline:hover {
+		background: #f3f4f6;
+		border-color: var(--text);
+	}
+
+	@media (max-width: 768px) {
+		.marketing-container { padding: 0 1rem; }
+		.plans-container { grid-template-columns: 1fr; }
+		.trust-bar { gap: 1.5rem; justify-content: flex-start; }
+	}
+
+	.loading-state {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
@@ -405,468 +823,374 @@
 	.spinner {
 		width: 3rem;
 		height: 3rem;
-		border: 3px solid var(--color-border);
-		border-bottom-color: var(--color-primary);
+		border: 3px solid var(--border);
+		border-bottom-color: var(--accent);
 		border-radius: 50%;
 		animation: spin 1s linear infinite;
 		margin-bottom: 1rem;
 	}
 	@keyframes spin {
-		to {
-			transform: rotate(360deg);
-		}
+		to { transform: rotate(360deg); }
 	}
-	.loading-state p {
-		color: var(--color-text-muted);
-		font-weight: 500;
-	}
+	.loading-state p { color: #6b7280; font-weight: 500; }
 
 	.error-state {
-		display: flex;
-		background-color: var(--color-red-light);
-		border-left: 4px solid var(--color-red);
-		padding: 1rem;
+		background: #fef2f2;
+		border-left: 4px solid #ef4444;
+		padding: 1.5rem;
 		border-radius: var(--radius-sm);
-		margin-bottom: 1.5rem;
+		margin-bottom: 2rem;
 	}
-	.error-icon-wrapper {
-		flex-shrink: 0;
-		margin-right: 0.75rem;
-	}
-	:global(.alert-icon) {
-		width: 1.25rem;
-		height: 1.25rem;
-		color: var(--color-red);
-	}
-	.error-content p {
-		color: #b91c1c;
-		font-weight: 500;
-		font-size: 0.875rem;
-	}
+	.error-content p { color: #b91c1c; font-weight: 600; }
 	.btn-retry {
 		background: none;
 		border: none;
 		color: #dc2626;
 		text-decoration: underline;
-		font-size: 0.875rem;
 		cursor: pointer;
-		padding: 0;
 		margin-top: 0.5rem;
-	}
-
-	.empty-state {
-		background: var(--color-surface);
-		border-radius: var(--radius-lg);
-		box-shadow: var(--shadow-sm);
-		border: 1px solid var(--color-border);
-		padding: 4rem 2rem;
-	}
-	.empty-icon-wrapper {
-		width: 5rem;
-		height: 5rem;
-		background: var(--color-bg);
-		border-radius: 50%;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		margin-bottom: 1.5rem;
-	}
-	:global(.store-icon) {
-		width: 2.5rem;
-		height: 2.5rem;
-		color: #9ca3af;
-	}
-	.empty-state h2 {
-		font-size: 1.5rem;
-		margin-bottom: 0.5rem;
-	}
-	.empty-state p {
-		color: var(--color-text-muted);
-		max-width: 28rem;
-		margin-bottom: 2rem;
-	}
-	.btn-primary {
-		display: inline-block;
-		background-color: var(--color-primary);
-		color: white;
-		font-weight: 600;
-		padding: 0.75rem 2rem;
-		border-radius: 9999px;
-		text-decoration: none;
-		box-shadow: var(--shadow-sm);
-		transition: all 0.2s ease;
-	}
-	.btn-primary:hover {
-		background-color: var(--color-primary-dark);
-		transform: translateY(-1px);
-		box-shadow: var(--shadow-md);
 	}
 
 	.dashboard-content {
 		display: flex;
 		flex-direction: column;
-		gap: 1.5rem;
+		gap: 2.5rem;
+		max-width: 900px;
+		margin: 0 auto;
+		padding-top: 2rem;
+	}
+
+	.dashboard-hero {
+		background: var(--text);
+		color: white;
+		padding: 4rem 3rem;
+		border-radius: var(--radius-lg);
+		position: relative;
+		overflow: hidden;
+		box-shadow: var(--shadow-premium);
+	}
+
+	.dashboard-hero h1 {
+		color: white;
+		font-size: 1.25rem;
+		opacity: 0.8;
+		font-weight: 500;
+		margin-bottom: 0.5rem;
+	}
+
+	.business-name-big {
+		color: white;
+		font-size: 3rem;
+		font-weight: 900;
+		letter-spacing: -0.03em;
+		line-height: 1.1;
+		margin-bottom: 1rem;
+	}
+
+	.category-tag {
+		display: inline-block;
+		background: rgba(255, 255, 255, 0.1);
+		padding: 0.5rem 1.25rem;
+		border-radius: 9999px;
+		font-size: 0.85rem;
+		font-weight: 700;
+		letter-spacing: 0.05em;
+		text-transform: uppercase;
+		border: 1px solid rgba(255, 255, 255, 0.2);
 	}
 
 	.card {
-		background: var(--color-surface);
+		background: var(--surface);
 		border-radius: var(--radius-lg);
-		box-shadow: var(--shadow-sm);
-		border: 1px solid var(--color-border);
+		box-shadow: var(--shadow-premium);
+		border: 1px solid var(--border);
 		overflow: hidden;
+		transition: transform 0.3s ease, box-shadow 0.3s ease;
 	}
 
 	.profile-card {
-		border-color: var(--color-orange-border);
+		border-color: var(--primary);
 	}
 	.profile-header {
-		background-color: var(--color-orange-light);
-		padding: 1.5rem;
+		background: linear-gradient(135deg, #fffcf9 0%, #fff8f0 100%);
+		padding: 2rem;
 		display: flex;
 		justify-content: space-between;
 		align-items: flex-start;
-		border-bottom: 1px solid var(--color-orange-border);
+		border-bottom: 1px solid var(--border);
 	}
-	.profile-info h2 {
-		font-size: 1.5rem;
-		margin-bottom: 0.25rem;
+	.profile-info h3 {
+		font-size: 1.75rem;
+		font-weight: 900;
+		color: var(--text);
+		margin-bottom: 0.4rem;
 	}
 	.profile-info p {
-		color: var(--color-text-muted);
+		color: var(--accent);
+		font-weight: 700;
+		text-transform: uppercase;
+		font-size: 0.8rem;
+		letter-spacing: 0.05em;
 	}
 	.premium-badge {
 		display: flex;
 		align-items: center;
-		gap: 0.375rem;
-		background: #111827;
+		gap: 0.5rem;
+		background: var(--text);
 		color: #facc15;
-		padding: 0.375rem 0.75rem;
+		padding: 0.5rem 1.25rem;
 		border-radius: 9999px;
 		font-size: 0.75rem;
-		font-weight: 700;
-		letter-spacing: 0.025em;
-	}
-	:global(.star-icon) {
-		width: 0.875rem;
-		height: 0.875rem;
+		font-weight: 900;
+		letter-spacing: 0.05em;
+		box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 	}
 
 	.status-banner {
 		display: flex;
 		align-items: center;
 		gap: 0.75rem;
-		padding: 0.75rem;
+		padding: 1rem 1.5rem;
 		border-radius: var(--radius-md);
-		margin: 1.5rem 1.5rem 0 1.5rem;
-		background: #f3f4f6;
+		margin: 2rem 2rem 0 2rem;
+		background: var(--lightBg);
+		font-weight: 700;
 	}
 	.status-banner.approved {
-		background: var(--color-green-light);
-		color: #047857;
+		background: #ecfdf5;
+		color: #065f46;
 		border: 1px solid #d1fae5;
 	}
 	.status-banner.pending {
-		background: var(--color-yellow-light);
-		color: #b45309;
+		background: #fffbeb;
+		color: #92400e;
 		border: 1px solid #fef3c7;
 	}
-	.status-banner.rejected {
-		background: var(--color-red-light);
-		color: #b91c1c;
+	.status-banner.rejected, .status-banner.expired {
+		background: #fef2f2;
+		color: #991b1b;
 		border: 1px solid #fee2e2;
-	}
-	.status-banner.expired {
-		background: var(--color-red-light);
-		color: #b91c1c;
-		border: 1px solid #fee2e2;
-	}
-
-	.status-icon {
-		display: flex;
-		align-items: center;
-	}
-	:global(.icon-approved) {
-		width: 1.25rem;
-		height: 1.25rem;
-		color: var(--color-green);
-	}
-	:global(.icon-pending) {
-		width: 1.25rem;
-		height: 1.25rem;
-		color: var(--color-yellow);
-	}
-	:global(.icon-rejected),
-	:global(.icon-expired) {
-		width: 1.25rem;
-		height: 1.25rem;
-		color: var(--color-red);
-	}
-	:global(.icon-suspended) {
-		width: 1.25rem;
-		height: 1.25rem;
-		color: var(--color-text-muted);
-	}
-	.status-label {
-		font-weight: 600;
-		font-size: 0.9375rem;
 	}
 
 	.status-message {
-		margin: 0.75rem 1.5rem 1.5rem 1.5rem;
-		padding: 1rem;
+		margin: 1rem 2rem 2rem 2rem;
+		padding: 1.25rem;
 		border-radius: var(--radius-md);
+		font-size: 0.95rem;
+		line-height: 1.5;
 	}
 	.message-info {
-		background: var(--color-blue-light);
+		background: #eff6ff;
 		border: 1px solid #dbeafe;
-		color: #1d4ed8;
-		font-size: 0.875rem;
+		color: #1e40af;
 	}
 	.message-error {
-		background: var(--color-red-light);
-		border: 1px solid #fee2e2;
-		color: #b91c1c;
-	}
-	.message-error h4 {
-		color: #991b1b;
-		font-size: 0.875rem;
-		margin-bottom: 0.25rem;
-	}
-	.message-error p {
-		font-size: 0.875rem;
-		margin-bottom: 0.75rem;
+		background: #fff1f2;
+		border: 1px solid #ffe4e6;
+		color: #9f1239;
 	}
 	.btn-error {
 		display: inline-block;
-		background: #b91c1c;
+		margin-top: 1rem;
+		background: #be123c;
 		color: white;
-		padding: 0.5rem 1rem;
-		border-radius: var(--radius-sm);
+		padding: 0.75rem 1.5rem;
+		border-radius: 9999px;
 		text-decoration: none;
-		font-size: 0.875rem;
-		font-weight: 600;
-		transition: background 0.2s;
+		font-weight: 800;
+		transition: all 0.2s;
 	}
 	.btn-error:hover {
-		background: #991b1b;
+		transform: translateY(-2px);
+		box-shadow: 0 4px 12px rgba(190, 18, 60, 0.3);
 	}
 
 	.stats-section {
-		padding: 1.5rem;
-		margin-top: 1.5rem;
-		border-top: 1px solid var(--color-orange-border);
+		padding: 2.5rem 2rem;
+		border-top: 1px solid var(--border);
 	}
-	.stats-section h3,
-	.actions-card h3,
-	.support-card h3 {
-		display: flex;
-		align-items: center;
-		gap: 0.5rem;
-		font-size: 1.125rem;
-		margin-bottom: 1rem;
-	}
-	.emoji-icon {
-		font-size: 1.25rem;
-	}
-
 	.stats-grid {
 		display: grid;
 		grid-template-columns: repeat(3, 1fr);
-		gap: 1rem;
+		gap: 1.5rem;
+		margin-top: 1.5rem;
 	}
 	.stat-card {
-		background: var(--color-bg);
-		border: 1px solid var(--color-border);
+		background: var(--lightBg);
+		border: 1px solid var(--border);
 		border-radius: var(--radius-md);
-		padding: 1rem;
+		padding: 1.5rem;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		text-align: center;
-		transition:
-			transform 0.2s ease,
-			box-shadow 0.2s ease;
+		transition: all 0.2s ease;
 	}
 	.stat-card:hover {
-		transform: translateY(-2px);
-		box-shadow: var(--shadow-sm);
-		border-color: #e5e7eb;
+		transform: translateY(-4px);
+		box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+		background: white;
+		border-color: var(--primary);
 	}
 	.stat-icon-wrapper {
-		margin-bottom: 0.5rem;
+		width: 3.5rem;
+		height: 3.5rem;
+		background: white;
+		border-radius: 50%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		margin-bottom: 1rem;
+		box-shadow: var(--shadow-premium);
 	}
-	.text-primary {
-		color: var(--color-primary);
-	}
-	.text-green {
-		color: var(--color-green);
-	}
-	.text-orange {
-		color: #f97316;
-	}
+	.text-primary :global(.stat-icon) { color: var(--accent); }
+	.text-green :global(.stat-icon) { color: #10b981; }
+	.text-orange :global(.stat-icon) { color: var(--ctaSecondary); }
+	
 	:global(.stat-icon) {
 		width: 1.75rem;
 		height: 1.75rem;
 	}
 
 	.stat-value {
-		font-size: 1.5rem;
-		font-weight: 700;
-		color: var(--color-text);
-		margin-bottom: 0.25rem;
+		font-size: 2rem;
+		font-weight: 900;
+		color: var(--text);
+		margin-bottom: 0.2rem;
 	}
 	.stat-label {
 		font-size: 0.75rem;
 		text-transform: uppercase;
-		letter-spacing: 0.05em;
-		color: var(--color-text-muted);
-		font-weight: 600;
+		letter-spacing: 0.1em;
+		color: var(--textColor);
+		opacity: 0.6;
+		font-weight: 800;
 	}
 	.stat-footer {
 		text-align: center;
-		margin-top: 1rem;
-		font-size: 0.75rem;
-		color: #9ca3af;
+		margin-top: 2rem;
+		font-size: 0.85rem;
+		color: var(--textColor);
+		opacity: 0.5;
+		font-style: italic;
 	}
 
-	@media (max-width: 480px) {
+	@media (max-width: 600px) {
 		.stats-grid {
 			grid-template-columns: 1fr;
-			gap: 0.75rem;
 		}
 	}
 
 	.actions-card {
-		padding: 1.5rem;
+		padding: 2.5rem 2rem;
 	}
 	.actions-list {
-		display: flex;
-		flex-direction: column;
-		gap: 0.75rem;
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+		gap: 1.25rem;
+		margin-top: 1.5rem;
 	}
 	.action-item {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		padding: 1rem;
-		background: var(--color-surface);
-		border: 1px solid var(--color-border);
+		padding: 1.5rem;
+		background: white;
+		border: 1px solid var(--border);
 		border-radius: var(--radius-md);
 		text-decoration: none;
-		transition: all 0.2s ease;
+		transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 	}
 	.action-item:hover {
-		background: #f9fafb;
-		border-color: #d1d5db;
-		box-shadow: var(--shadow-sm);
+		transform: translateY(-4px) scale(1.02);
+		border-color: var(--primary);
+		box-shadow: var(--shadow-hover);
 	}
 	.action-content {
 		display: flex;
 		align-items: center;
-		gap: 1rem;
+		gap: 1.25rem;
 	}
 	.action-icon-wrapper {
-		background: var(--color-surface);
-		padding: 0.5rem;
-		border-radius: var(--radius-sm);
-		box-shadow: var(--shadow-sm);
-		border: 1px solid var(--color-border);
-		transition: box-shadow 0.2s ease;
+		width: 3rem;
+		height: 3rem;
+		background: var(--lightBg);
+		border-radius: 12px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		transition: all 0.3s;
 	}
 	.action-item:hover .action-icon-wrapper {
-		box-shadow: var(--shadow-md);
+		background: var(--text);
+		color: white;
 	}
 
-	.icon-edit {
-		color: var(--color-primary);
-	}
-	.icon-offer {
-		color: var(--color-green);
-	}
-	.icon-photo {
-		color: var(--color-blue);
-	}
-	.icon-preview {
-		color: #2563eb;
-	}
+	.icon-edit { color: var(--accent); }
+	.icon-offer { color: #10b981; }
+	.icon-photo { color: #3b82f6; }
+	.icon-preview { color: var(--cta); }
+	
 	:global(.action-icon) {
 		width: 1.5rem;
 		height: 1.5rem;
 	}
 
 	.action-text h4 {
-		font-size: 1rem;
-		font-weight: 600;
-		color: var(--color-text);
-		margin-bottom: 0.125rem;
+		font-size: 1.1rem;
+		font-weight: 800;
+		color: var(--text);
+		margin-bottom: 0.1rem;
 	}
 	.action-text p {
-		font-size: 0.875rem;
-		color: var(--color-text-muted);
+		font-size: 0.85rem;
+		color: var(--textColor);
+		opacity: 0.6;
 	}
 	.offer-active {
-		color: #16a34a;
-		font-weight: 500;
+		color: #10b981;
+		font-weight: 800;
 	}
-	.text-warning {
-		color: #ca8a04;
-	}
-	:global(.chevron-icon) {
-		width: 1.25rem;
-		height: 1.25rem;
-		color: #9ca3af;
-	}
-
+	
 	.preview-item {
-		background: var(--color-blue-light);
-		border-color: #bfdbfe;
-	}
-	.preview-item:hover {
-		background: #dbeafe;
-		border-color: #93c5fd;
-	}
-	.preview-item .action-icon-wrapper {
-		border-color: #bfdbfe;
-	}
-	.preview-item .action-text h4 {
-		color: #1e3a8a;
-	}
-	.preview-item .action-text p {
-		color: #1d4ed8;
-	}
-	.preview-item :global(.chevron-icon) {
-		color: #60a5fa;
+		background: linear-gradient(135deg, #fffcf9 0%, #fff8f0 100%);
+		border-color: var(--primary);
 	}
 
 	.support-card {
-		padding: 1.5rem;
+		padding: 2.5rem 2rem;
+		text-align: center;
+		background: var(--text);
+		color: white;
+		border: none;
 	}
+	.support-card h3 { color: white; justify-content: center; }
 	.support-card p {
-		font-size: 0.875rem;
-		color: var(--color-text-muted);
-		margin-bottom: 1rem;
+		font-size: 1rem;
+		opacity: 0.8;
+		margin-bottom: 2rem;
+		max-width: 500px;
+		margin-left: auto;
+		margin-right: auto;
 	}
 	.btn-support {
-		display: flex;
+		display: inline-flex;
 		align-items: center;
 		justify-content: center;
-		gap: 0.5rem;
-		width: 100%;
-		padding: 0.75rem;
-		border: 2px solid var(--color-primary);
-		color: var(--color-primary);
-		border-radius: var(--radius-md);
-		font-weight: 600;
+		gap: 0.75rem;
+		padding: 1rem 2.5rem;
+		background: var(--primary);
+		color: var(--text);
+		border-radius: 9999px;
+		font-weight: 900;
 		text-decoration: none;
-		transition: all 0.2s ease;
-		box-sizing: border-box;
+		transition: all 0.2s;
+		border: none;
+		width: auto;
 	}
 	.btn-support:hover {
-		background: var(--color-primary);
-		color: white;
-	}
-	:global(.support-icon) {
-		width: 1.25rem;
-		height: 1.25rem;
+		transform: scale(1.05);
+		box-shadow: 0 10px 20px rgba(255, 183, 158, 0.4);
+		background: white;
 	}
 </style>

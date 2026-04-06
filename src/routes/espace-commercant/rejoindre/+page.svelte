@@ -118,11 +118,13 @@
 
 	const getCategorySection = (cat) => {
 		const foodCategories = [
-			'Restaurant',
-			'Café & Bar',
 			'Boulangerie-Pâtisserie',
 			'Traiteur',
 			'Épicerie fine'
+		];
+		const restaurantCategories = [
+			'Restaurant',
+			'Café & Bar'
 		];
 		const servicesCategories = ['Plombier', 'Électricien', 'Peintre', 'Menuisier', 'Jardinier'];
 		const retailCategories = [
@@ -137,6 +139,7 @@
 		const professionalCategories = ['Avocat', 'Comptable', 'Agence immobilière'];
 
 		if (foodCategories.includes(cat)) return 'food';
+		if (restaurantCategories.includes(cat)) return 'restaurant';
 		if (servicesCategories.includes(cat)) return 'services';
 		if (retailCategories.includes(cat)) return 'retail';
 		if (wellnessCategories.includes(cat)) return 'wellness';

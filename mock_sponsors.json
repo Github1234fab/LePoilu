@@ -1,0 +1,232 @@
+[
+  {
+    "id": "mock_food_1",
+    "address": "12, rue de la commanderie",
+    "businessName": "L'Épicerie Gourmande",
+    "category": "Épicerie fine",
+    "sector": "food",
+    "isModel": true,
+    "city": "Craponne",
+    "currentPlan": {
+      "isActive": true,
+      "type": "premium"
+    },
+    "description": "Produits de qualité, en direct du producteur. Fromages, charcuterie, plats cuisinés, confitures, miel, céréales, etc.",
+    "email": "gralypho@gmail.com",
+    "images": [
+      "https://images.pexels.com/photos/8422706/pexels-photo-8422706.jpeg",
+      "https://images.pexels.com/photos/7473276/pexels-photo-7473276.jpeg",
+      "https://images.pexels.com/photos/8360213/pexels-photo-8360213.jpeg",
+      "https://images.pexels.com/photos/16147362/pexels-photo-16147362.jpeg",
+      "https://images.pexels.com/photos/1352243/pexels-photo-1352243.jpeg"
+    ],
+    "postalCode": "0678564747",
+    "siret": "18296330000212",
+    "specialOffer": {
+      "conditions": "Sur présentation de l'app",
+      "description": "Profitez d'un produit local offert pour toute commande supérieure à 20€.",
+      "isActive": true,
+      "title": "1 produit local OFFERT (dès 20€)",
+      "validUntil": null
+    },
+    "stats": {
+      "clicks": 6,
+      "lastViewDate": "2026-03-13T23:33:17Z",
+      "offersShown": 4,
+      "views": 41
+    },
+    "status": "approved",
+    "updatedAt": "2026-02-11T15:42:16Z",
+    "userId": "Myek9VjVIUQSTq9FtuVQUIHVGOC2"
+  },
+  {
+    "id": "mock_restaurant_1",
+    "address": "5 Place du Marché",
+    "businessName": "Le Bistrot du Marché",
+    "category": "Restaurant traditionnel",
+    "sector": "restaurant",
+    "isModel": true,
+    "city": "Vaugneray",
+    "currentPlan": {
+      "isActive": true,
+      "type": "premium"
+    },
+    "description": "Une cuisine authentique et généreuse au cœur du village. Menu du jour avec produits frais de saison et terrasse ensoleillée.",
+    "email": "bistrot-vaugneray@example.com",
+    "images": [
+      "https://images.pexels.com/photos/1015568/pexels-photo-1015568.jpeg",
+      "https://images.pexels.com/photos/262978/pexels-photo-262978.jpeg",
+      "https://images.pexels.com/photos/67468/pexels-photo-67468.jpeg"
+    ],
+    "postalCode": "0478451236",
+    "siret": "45236987100012",
+    "specialOffer": {
+      "conditions": "Menu complet uniquement",
+      "description": "Le café ou le digestif de la maison vous est offert en fin de repas.",
+      "isActive": true,
+      "title": "Café ou Digestif OFFERT",
+      "validUntil": null
+    },
+    "stats": {
+      "clicks": 12,
+      "lastViewDate": "2026-04-01T12:00:00Z",
+      "offersShown": 8,
+      "views": 85
+    },
+    "status": "approved",
+    "updatedAt": "2026-03-20T10:00:00Z",
+    "userId": "user_mock_2"
+  },
+  {
+    "id": "mock_crafts_1",
+    "address": "Zone Artisanale des Platanes",
+    "businessName": "L'Atelier des Rêves",
+    "category": "Ébénisterie & Restauration",
+    "sector": "crafts",
+    "isModel": true,
+    "city": "Saint-Martin-en-Haut",
+    "currentPlan": {
+      "isActive": true,
+      "type": "premium"
+    },
+    "description": "Spécialiste du bois et de la restauration de meubles anciens. Créations sur mesure pour un intérieur qui vous ressemble.",
+    "email": "atelier-reves@example.com",
+    "images": [
+      "https://images.pexels.com/photos/175707/pexels-photo-175707.jpeg",
+      "https://images.pexels.com/photos/1249611/pexels-photo-1249611.jpeg",
+      "https://images.pexels.com/photos/3952034/pexels-photo-3952034.jpeg"
+    ],
+    "postalCode": "0612345678",
+    "siret": "98745632100045",
+    "specialOffer": {
+      "conditions": "Sur devis > 500€",
+      "description": "Bénéficiez d'une remise de 5% sur votre premier projet de restauration.",
+      "isActive": true,
+      "title": "-5% sur votre premier projet",
+      "validUntil": null
+    },
+    "stats": {
+      "clicks": 3,
+      "lastViewDate": "2026-03-28T15:20:00Z",
+      "offersShown": 2,
+      "views": 25
+    },
+    "status": "approved",
+    "updatedAt": "2026-03-15T09:30:00Z",
+    "userId": "user_mock_3"
+  },
+  {
+    "id": "mock_beauty_1",
+    "address": "22 Rue de la République",
+    "businessName": "Belles de Jour",
+    "category": "Institut de beauté",
+    "sector": "beauty",
+    "isModel": true,
+    "city": "Brindas",
+    "currentPlan": {
+      "isActive": true,
+      "type": "premium"
+    },
+    "description": "Votre parenthèse bien-être à Brindas. Soins du visage, épilation, onglerie et massages relaxants dans un cadre apaisant.",
+    "email": "contact@bellesdejour.com",
+    "images": [
+      "https://images.pexels.com/photos/3985330/pexels-photo-3985330.jpeg",
+      "https://images.pexels.com/photos/3985331/pexels-photo-3985331.jpeg",
+      "https://images.pexels.com/photos/3757942/pexels-photo-3757942.jpeg"
+    ],
+    "postalCode": "0472314569",
+    "siret": "32165498700032",
+    "specialOffer": {
+      "conditions": "Valable sur le premier soin",
+      "description": "Profitez de -15% sur votre première prestation découverte à l'institut.",
+      "isActive": true,
+      "title": "-15% sur votre PREMIER soin",
+      "validUntil": null
+    },
+    "stats": {
+      "clicks": 15,
+      "lastViewDate": "2026-04-05T18:45:00Z",
+      "offersShown": 10,
+      "views": 120
+    },
+    "status": "approved",
+    "updatedAt": "2026-03-25T14:15:00Z",
+    "userId": "user_mock_4"
+  },
+  {
+    "id": "mock_auto_1",
+    "address": "Route de Lyon",
+    "businessName": "Garage Charli",
+    "category": "Mécanique & Entretien",
+    "sector": "auto",
+    "isModel": true,
+    "city": "Messimy",
+    "currentPlan": {
+      "isActive": true,
+      "type": "premium"
+    },
+    "description": "Entretien et réparation toutes marques. Pneumatiques, freinage, révision constructeur et diagnostic électronique.",
+    "email": "garage-charli@example.com",
+    "images": [
+      "https://images.pexels.com/photos/4489749/pexels-photo-4489749.jpeg",
+      "https://images.pexels.com/photos/2244743/pexels-photo-2244743.jpeg",
+      "https://images.pexels.com/photos/190574/pexels-photo-190574.jpeg"
+    ],
+    "postalCode": "0478123456",
+    "siret": "15975345600078",
+    "specialOffer": {
+      "conditions": "Pour toute révision",
+      "description": "Le niveau de liquide lave-glace et la pression des pneus offerts lors de votre révision.",
+      "isActive": true,
+      "title": "Niveaux & Pression OFFERTS",
+      "validUntil": null
+    },
+    "stats": {
+      "clicks": 5,
+      "lastViewDate": "2026-03-20T08:10:00Z",
+      "offersShown": 3,
+      "views": 38
+    },
+    "status": "approved",
+    "updatedAt": "2026-03-01T11:00:00Z",
+    "userId": "user_mock_5"
+  },
+  {
+    "id": "mock_realestate_1",
+    "address": "15 Avenue Jean Jaurès",
+    "businessName": "Imm'Ouest",
+    "category": "Agence immobilière",
+    "sector": "realestate",
+    "isModel": true,
+    "city": "Chaponost",
+    "currentPlan": {
+      "isActive": true,
+      "type": "premium"
+    },
+    "description": "Votre expert immobilier dans l'Ouest Lyonnais. Transaction, location et gestion locative. Estimation gratuite de votre bien.",
+    "email": "chaponost@immouest.fr",
+    "images": [
+      "https://images.pexels.com/photos/280221/pexels-photo-280221.jpeg",
+      "https://images.pexels.com/photos/106399/pexels-photo-106399.jpeg",
+      "https://images.pexels.com/photos/323780/pexels-photo-323780.jpeg"
+    ],
+    "postalCode": "0478523698",
+    "siret": "75315985200065",
+    "specialOffer": {
+      "conditions": "Pour tout mandat exclusif",
+      "description": "Estimation offerte et remboursement de vos diagnostics techniques en cas de vente par nos soins.",
+      "isActive": true,
+      "title": "Estimation & Diagnostics OFFERTS",
+      "validUntil": null
+    },
+    "stats": {
+      "clicks": 20,
+      "lastViewDate": "2026-04-06T09:00:00Z",
+      "offersShown": 15,
+      "views": 250
+    },
+    "status": "approved",
+    "updatedAt": "2026-04-01T16:30:00Z",
+    "userId": "user_mock_6"
+  }
+]

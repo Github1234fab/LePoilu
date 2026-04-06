@@ -21,6 +21,7 @@
 	import LogoFacebookIcon from '$lib/Components/icons/LogoFacebookIcon.svelte';
 	import LogoInstagramIcon from '$lib/Components/icons/LogoInstagramIcon.svelte';
 	import AppsIcon from '$lib/Components/icons/AppsIcon.svelte';
+	import InformationCircleIcon from '$lib/Components/icons/InformationCircleIcon.svelte';
 
 	let sponsorId = $page.params.id;
 	let sponsor = null;
@@ -85,1202 +86,726 @@
 	<title>{sponsor ? sponsor.businessName : 'Chargement...'} - Le Poilu</title>
 </svelte:head>
 
-<div class="sponsor-page pb-safe">
+<div class="vitrine-container">
 	{#if loading}
-		<div class="loading-state h-60vh">
-			<div class="spinner"></div>
-			<p>Chargement de la fiche...</p>
+		<div class="loading-full">
+			<div class="spinner-large"></div>
+			<p>Chargement de l'univers de {sponsor?.businessName || 'votre commerce'}...</p>
 		</div>
 	{:else if sponsor}
-		<!-- Floating Back Button -->
-		<a href="/carnet" class="floating-back-btn" aria-label="Retour au carnet">
-			<div class="icon-rotate"><ChevronRightIcon /></div>
-		</a>
+		<!-- Floating Back & Share -->
+		<nav class="vitrine-nav">
+			<a href="/carnet" class="nav-round-btn" aria-label="Retour au carnet">
+				<ChevronRightIcon />
+			</a>
+			<!-- Future: Share button could go here -->
+		</nav>
 
-		<!-- Hero Banner Premium -->
-		<div class="hero-banner">
+		<!-- Hero Section -->
+		<section class="vitrine-hero">
 			{#if sponsor.images && sponsor.images.length > 0}
-				<button
-					class="hero-img-btn group"
-					on:click={() => (lightboxImage = sponsor.images[0])}
-					aria-label="Agrandir l'image"
-				>
+				<div class="hero-image-wrapper">
 					<img
 						src={sponsor.images[0]}
-						alt={`Couverture de ${sponsor.businessName}`}
-						class="hero-img"
+						alt={sponsor.businessName}
+						class="hero-parallax"
 					/>
-					<div class="hero-gradient-overlay"></div>
-				</button>
+					<div class="hero-overlay-gradient"></div>
+				</div>
 			{:else}
-				<div class="hero-no-img">
-					<div class="icon-xl mb-4"><ImageOutlineIcon /></div>
-					<span>Aucune photo couverture</span>
+				<div class="hero-placeholder">
+					<ImageOutlineIcon />
 				</div>
 			{/if}
 
-			<!-- Decorative shape divider -->
-			<div class="hero-divider"></div>
-		</div>
-
-		<main class="sponsor-main">
-			<!-- Floating Main Info Card -->
-			<div class="main-info-card group">
-				<!-- Decorative bg elements -->
-				<div class="card-glow"></div>
-
-				<div class="main-info-header z-10">
-					<div class="main-info-title-box">
-						<span class="category-badge">
-							{sponsor.category || 'Non classé'}
-						</span>
-						<h1 class="main-title">
-							{sponsor.businessName}
-						</h1>
-					</div>
-					{#if isPremium}
-						<div class="premium-badge">
-							<div class="icon-small"><StarIcon /></div>
-							Premium
+			<!-- Floating Brand Card -->
+			<div class="brand-card-container">
+				<div class="brand-card" in:fade={{ delay: 200 }}>
+					<span class="brand-category">{sponsor.category || 'Commerce Local'}</span>
+					<h1 class="brand-name">{sponsor.businessName}</h1>
+					<div class="brand-meta">
+						<div class="meta-item">
+							<LocationIcon />
+							<span>{sponsor.city}</span>
 						</div>
-					{/if}
-				</div>
-
-				<div class="meta-info-box z-10">
-					<div class="meta-pill">
-						<div class="icon-small text-primary"><LocationOutlineIcon /></div>
-						<span>{sponsor.city} <span class="dot">•</span> {sponsor.postalCode}</span>
+						{#if isPremium}
+							<div class="premium-shield" title="Membre vérifié">
+								<StarIcon />
+								<span>PRO VÉRIFIÉ</span>
+							</div>
+						{/if}
 					</div>
-					{#if sponsor.sector}
-						<div class="meta-pill">
-							<div class="icon-small text-gray"><AppsIcon /></div>
-							<span class="capitalize">{sponsor.sector}</span>
-						</div>
-					{/if}
 				</div>
 			</div>
+		</section>
 
-			<div class="sponsor-sections">
-				<!-- Special Offer Banner -->
-				{#if hasOffer}
-					<div class="offer-banner">
-						<!-- Decorative bg -->
-						<div class="offer-glow-1"></div>
-						<div class="offer-glow-2"></div>
+		<main class="vitrine-content">
+			{#if sponsor.isModel}
+				<div class="demo-banner" in:slide>
+					<InformationCircleIcon />
+					<p>Ceci est un modèle de démonstration pour votre futur espace.</p>
+				</div>
+			{/if}
 
-						<div class="offer-content z-10">
-							<div class="offer-label">
-								<span>OFFRE LE POILU</span>
+			<!-- Special Offer Spotlight -->
+			{#if hasOffer}
+				<section class="offer-spotlight" in:fade={{ delay: 400 }}>
+					<div class="offer-card-premium {offerShown ? 'is-active' : ''}">
+						<div class="offer-card-inner">
+							<div class="offer-badge-ribbon">BON PLAN</div>
+							<div class="offer-main">
+								<div class="gift-icon-container">
+									<GiftIcon />
+								</div>
+								<div class="offer-text">
+									<h2 class="offer-title">{sponsor.specialOffer.title}</h2>
+									<p class="offer-description">{sponsor.specialOffer.description}</p>
+								</div>
 							</div>
+							
+							{#if sponsor.specialOffer.conditions}
+								<p class="offer-footer-terms">*{sponsor.specialOffer.conditions}</p>
+							{/if}
 
-							<h2 class="offer-title">{sponsor.specialOffer.title}</h2>
-							<p class="offer-desc">
-								{sponsor.specialOffer.description}
-							</p>
-
-							<button on:click={showOffer} class="offer-btn {offerShown ? 'offer-btn-active' : ''}">
+							<button 
+								on:click={showOffer} 
+								class="btn-activate-offer"
+								disabled={offerShown}
+							>
 								{#if offerShown}
-									<div class="icon-medium"><CheckCircleIcon /></div>
-									<span>Offre activée, montrez cet écran !</span>
+									<CheckCircleIcon />
+									<span>OFFRE ACTIVÉE</span>
 								{:else}
-									<div class="icon-medium"><GiftIcon /></div>
-									<span>Profiter de l'offre</span>
+									<span>DÉCOUVRIR L'OFFRE</span>
 								{/if}
 							</button>
-							{#if !offerShown}
-								<p class="offer-hint">À présenter en caisse ou lors de la commande</p>
+
+							{#if offerShown}
+								<p class="activation-hint">Montrez cet écran au commerçant pour valider l'offre.</p>
 							{/if}
 						</div>
 					</div>
-				{/if}
+				</section>
+			{/if}
 
-				<!-- About Description -->
-				{#if sponsor.description}
-					<section class="content-section">
-						<!-- Quote watermark decorative -->
-						<div class="quote-watermark">"</div>
+			<!-- Story Section -->
+			{#if sponsor.description}
+				<section class="story-section">
+					<div class="section-header-pro">
+						<span class="section-subtitle">À propos</span>
+						<h2 class="section-title-pro">Notre Histoire</h2>
+					</div>
+					<div class="story-text-container">
+						<p class="story-text">{sponsor.description}</p>
+					</div>
+				</section>
+			{/if}
 
-						<h3 class="section-title z-10">
-							<div class="title-line"></div>
-							Le mot du commerçant
-						</h3>
-						<p class="description-text z-10">{sponsor.description}</p>
-					</section>
-				{/if}
+			<!-- Visual Portfolio -->
+			{#if sponsor.images && sponsor.images.length > 1}
+				<section class="portfolio-section">
+					<div class="section-header-pro">
+						<span class="section-subtitle">Galerie</span>
+						<h2 class="section-title-pro">En images</h2>
+					</div>
+					<div class="portfolio-grid">
+						{#each sponsor.images.slice(1) as img, index}
+							<button 
+								class="portfolio-item-btn" 
+								on:click={() => (lightboxImage = img)}
+							>
+								<img src={img} alt="Galerie" loading="lazy" />
+								<div class="item-overlay">
+									<div class="zoom-icon"><ImageOutlineIcon /></div>
+								</div>
+							</button>
+						{/each}
+					</div>
+				</section>
+			{/if}
 
-				<!-- Additional Photos Gallery -->
-				{#if sponsor.images && sponsor.images.length > 1}
-					<section>
-						<h3 class="gallery-title">Photos</h3>
-						<div class="gallery-scroll no-scrollbar">
-							{#each sponsor.images.slice(1) as img, index}
-								<button
-									class="gallery-item-btn"
-									on:click={() => (lightboxImage = img)}
-									aria-label={`Agrandir la photo ${index + 2}`}
-								>
-									<img src={img} alt="Visuel du commerce" class="gallery-img" loading="lazy" />
-								</button>
-							{/each}
-						</div>
-					</section>
-				{/if}
-
-				<div class="info-grid">
-					<!-- Practical Info -->
-					<section class="content-section flex-col">
-						<h3 class="section-title">
-							<div class="title-icon-box">
-								<MapOutlineIcon />
+			<!-- Info & Access -->
+			<div class="access-grid">
+				<!-- Practical Info -->
+				<section class="info-card-pro">
+					<div class="info-card-icon map"><LocationOutlineIcon /></div>
+					<h3>Coordonnées</h3>
+					<div class="info-card-links">
+						<a
+							href={`https://maps.google.com/?q=${encodeURIComponent(sponsor.address + ', ' + sponsor.postalCode + ' ' + sponsor.city)}`}
+							target="_blank"
+							on:click={trackClick}
+							class="access-row"
+						>
+							<div class="access-details">
+								<p class="access-label">Adresse</p>
+								<p class="access-value">{sponsor.address}, {sponsor.postalCode} {sponsor.city}</p>
 							</div>
-							Coordonnées
-						</h3>
+							<ChevronRightIcon class="row-arrow" />
+						</a>
 
-						<div class="contact-links">
-							<!-- Address -->
+						{#if sponsor.website}
 							<a
-								href={`https://maps.google.com/?q=${encodeURIComponent(sponsor.address + ', ' + sponsor.postalCode + ' ' + sponsor.city)}`}
+								href={sponsor.website.startsWith('http') ? sponsor.website : `https://${sponsor.website}`}
 								target="_blank"
 								on:click={trackClick}
-								class="contact-link-row group"
+								class="access-row"
 							>
-								<div class="contact-icon bg-gray">
-									<LocationIcon />
+								<div class="access-details">
+									<p class="access-label">Site Web</p>
+									<p class="access-value truncate">{sponsor.website.replace(/^https?:\/\//, '')}</p>
 								</div>
-								<div class="contact-text">
-									<p class="contact-label">Adresse</p>
-									<p class="contact-val">
-										{sponsor.address}<br />{sponsor.postalCode}
-										{sponsor.city}
-									</p>
-								</div>
-								<div class="arrow-right"><ChevronRightIcon /></div>
+								<GlobeOutlineIcon class="row-icon-social" />
 							</a>
-
-							<!-- Website -->
-							{#if sponsor.website && typeof sponsor.website === 'string'}
-								<a
-									href={sponsor.website.startsWith('http')
-										? sponsor.website
-										: `https://${sponsor.website}`}
-									target="_blank"
-									on:click={trackClick}
-									class="contact-link-row group"
-								>
-									<div class="contact-icon bg-blue">
-										<GlobeOutlineIcon />
-									</div>
-									<div class="contact-text">
-										<p class="contact-label">Site Web</p>
-										<p class="contact-val truncate">
-											{sponsor.website.replace(/^https?:\/\//, '')}
-										</p>
-									</div>
-									<div class="arrow-right"><ChevronRightIcon /></div>
-								</a>
-							{/if}
-
-							<!-- Email -->
-							{#if sponsor.email}
-								<a
-									href={`mailto:${sponsor.email}`}
-									on:click={trackClick}
-									class="contact-link-row group"
-								>
-									<div class="contact-icon bg-pink">
-										<MailIcon />
-									</div>
-									<div class="contact-text">
-										<p class="contact-label">Email</p>
-										<p class="contact-val truncate">{sponsor.email}</p>
-									</div>
-									<div class="arrow-right"><ChevronRightIcon /></div>
-								</a>
-							{/if}
-						</div>
-					</section>
-
-					<div class="info-col">
-						<!-- Opening Hours -->
-						{#if sponsor.openingHours}
-							<section class="content-section flex-col flex-1">
-								<h3 class="section-title">
-									<div class="title-icon-box">
-										<TimeOutlineIcon />
-									</div>
-									Horaires d'ouverture
-								</h3>
-								<div class="hours-box">
-									<p class="hours-text">
-										{sponsor.openingHours}
-									</p>
-								</div>
-							</section>
 						{/if}
 
-						<!-- Social Media -->
-						{#if sponsor.socialMedia && (sponsor.socialMedia.facebook || sponsor.socialMedia.instagram)}
-							<section class="social-links">
-								{#if sponsor.socialMedia.facebook}
-									<a
-										href={sponsor.socialMedia.facebook}
-										target="_blank"
-										on:click={trackClick}
-										class="social-btn facebook"
-										aria-label="Facebook (Nouvel onglet)"
-									>
-										<LogoFacebookIcon />
-									</a>
-								{/if}
-								{#if sponsor.socialMedia.instagram}
-									<a
-										href={sponsor.socialMedia.instagram}
-										target="_blank"
-										on:click={trackClick}
-										class="social-btn instagram"
-										aria-label="Instagram (Nouvel onglet)"
-									>
-										<LogoInstagramIcon />
-									</a>
-								{/if}
-							</section>
+						{#if sponsor.email}
+							<a href={`mailto:${sponsor.email}`} class="access-row">
+								<div class="access-details">
+									<p class="access-label">Email</p>
+									<p class="access-value">{sponsor.email}</p>
+								</div>
+								<MailIcon class="row-icon-social" />
+							</a>
 						{/if}
 					</div>
+				</section>
+
+				<!-- Hours & Social -->
+				<div class="secondary-info-stack">
+					{#if sponsor.openingHours}
+						<section class="info-card-pro">
+							<div class="info-card-icon time"><TimeOutlineIcon /></div>
+							<h3>Horaires</h3>
+							<div class="hours-display">
+								<p class="hours-content">{sponsor.openingHours}</p>
+							</div>
+						</section>
+					{/if}
+
+					{#if sponsor.socialMedia && (sponsor.socialMedia.facebook || sponsor.socialMedia.instagram)}
+						<section class="social-connect">
+							{#if sponsor.socialMedia.facebook}
+								<a href={sponsor.socialMedia.facebook} target="_blank" class="social-pill fb">
+									<LogoFacebookIcon />
+									<span>Facebook</span>
+								</a>
+							{/if}
+							{#if sponsor.socialMedia.instagram}
+								<a href={sponsor.socialMedia.instagram} target="_blank" class="social-pill ig">
+									<LogoInstagramIcon />
+									<span>Instagram</span>
+								</a>
+							{/if}
+						</section>
+					{/if}
 				</div>
 			</div>
 		</main>
 
-		<!-- Bottom Fixed Actions (Go / Call) -->
-		<div class="action-bar-bottom pb-safe">
-			<div class="action-bar-container">
-				{#if sponsor.phone && typeof sponsor.phone === 'string'}
-					<a
-						href={`tel:${sponsor.phone.replace(/\s/g, '')}`}
-						on:click={trackClick}
-						class="btn-call"
-					>
-						<div class="icon-medium fill-white"><CallIcon /></div>
-						Appeler
+		<!-- Sticky Conversion Bar -->
+		<div class="sticky-cta-bar">
+			<div class="cta-inner">
+				{#if sponsor.phone}
+					<a href={`tel:${sponsor.phone}`} on:click={trackClick} class="btn-cta-primary">
+						<CallIcon />
+						<span>Appeler</span>
 					</a>
 				{/if}
-				{#if sponsor.address && sponsor.city}
-					<a
-						href={`https://maps.google.com/?q=${encodeURIComponent(sponsor.address + ', ' + sponsor.postalCode + ' ' + sponsor.city)}`}
-						target="_blank"
-						on:click={trackClick}
-						class={sponsor.phone ? 'btn-go' : 'btn-call'}
-					>
-						<div class={`icon-medium ${!sponsor.phone ? 'fill-white' : ''}`}><NavigateIcon /></div>
-						Y aller
-					</a>
-				{/if}
+				<a
+					href={`https://maps.google.com/?q=${encodeURIComponent(sponsor.address + ', ' + sponsor.postalCode + ' ' + sponsor.city)}`}
+					target="_blank"
+					on:click={trackClick}
+					class="btn-cta-secondary"
+				>
+					<NavigateIcon />
+					<span>Y aller</span>
+				</a>
 			</div>
 		</div>
 
-		<!-- Fullscreen Image Lightbox -->
+		<!-- Lightbox -->
 		{#if lightboxImage}
-			<div class="lightbox" in:fade out:fade>
-				<button
-					class="lightbox-close"
-					on:click={() => (lightboxImage = null)}
-					aria-label="Fermer la vue plein écran"
-				>
-					<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"
-						><path
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							stroke-width="2"
-							d="M6 18L18 6M6 6l12 12"
-						></path></svg
-					>
+			<div class="vitrine-lightbox" in:fade out:fade>
+				<button class="lightbox-close-btn" on:click={() => (lightboxImage = null)}>
+					<ChevronRightIcon class="close-icon" />
 				</button>
-				<img src={lightboxImage} alt="Agrandissement" class="lightbox-img" />
+				<div class="lightbox-content">
+					<img src={lightboxImage} alt="Fullscreen" />
+				</div>
 			</div>
 		{/if}
 	{/if}
 </div>
 
 <style>
-	/* Utilities */
-	.pb-safe {
-		padding-bottom: calc(1rem + env(safe-area-inset-bottom));
-	}
-	.z-10 {
-		position: relative;
-		z-index: 10;
-	}
-	.truncate {
-		white-space: nowrap;
-		overflow: hidden;
-		text-overflow: ellipsis;
-	}
-	.capitalize {
-		text-transform: capitalize;
-	}
-	.dot {
-		color: #d1d5db;
-		margin: 0 4px;
-	}
-
-	.icon-small {
-		width: 14px;
-		height: 14px;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-	}
-	.icon-small :global(svg) {
-		width: 14px;
-		height: 14px;
-	}
-	.icon-medium {
-		width: 20px;
-		height: 20px;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-	}
-	.icon-medium :global(svg) {
-		width: 20px;
-		height: 20px;
-	}
-	.icon-xl {
-		width: 80px;
-		height: 80px;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		color: white;
-		border: 1px solid rgba(255, 255, 255, 0.2);
-		border-radius: 50%;
-		padding: 20px;
-	}
-	.icon-xl :global(svg) {
-		width: 40px;
-		height: 40px;
-	}
-
-	.text-primary {
-		color: var(--primary);
-	}
-	.text-gray {
-		color: #9ca3af;
-	}
-	.fill-white :global(svg) {
-		fill: white;
-		border: none;
-	}
-
-	.no-scrollbar::-webkit-scrollbar {
-		display: none;
-	}
-	.no-scrollbar {
-		-ms-overflow-style: none;
-		scrollbar-width: none;
-	}
-
-	/* Base Layout */
-	.sponsor-page {
+	.vitrine-container {
 		min-height: 100vh;
-		background-color: var(--lightBg);
-		padding-bottom: 112px;
-		position: relative;
+		background: #fdfcfb;
+		color: var(--text);
+		font-family: 'Poppins', sans-serif;
+		padding-bottom: 100px;
 	}
 
-	.h-60vh {
-		min-height: 60vh;
-	}
-
-	.loading-state {
+	/* Loading & State */
+	.loading-full {
+		position: fixed;
+		inset: 0;
+		background: white;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
+		z-index: 1000;
 	}
 
-	.spinner {
-		border: 3px solid #f3f3f3;
-		border-top: 3px solid var(--primary);
+	.spinner-large {
+		width: 50px;
+		height: 50px;
+		border: 4px solid #f3f3f3;
+		border-top: 4px solid var(--cta);
 		border-radius: 50%;
-		width: 40px;
-		height: 40px;
 		animation: spin 1s linear infinite;
-		margin-bottom: 16px;
+		margin-bottom: 1.5rem;
 	}
+	@keyframes spin { 100% { transform: rotate(360deg); } }
 
-	@keyframes spin {
-		0% {
-			transform: rotate(0deg);
-		}
-		100% {
-			transform: rotate(360deg);
-		}
-	}
-
-	.floating-back-btn {
+	/* Navigation */
+	.vitrine-nav {
 		position: absolute;
-		top: 24px;
-		left: 16px;
-		z-index: 30;
-		background-color: rgba(0, 0, 0, 0.4);
-		backdrop-filter: blur(8px);
-		padding: 12px;
+		top: 1.5rem;
+		left: 1.5rem;
+		right: 1.5rem;
+		z-index: 100;
+		display: flex;
+		justify-content: space-between;
+		pointer-events: none;
+	}
+
+	.nav-round-btn {
+		width: 48px;
+		height: 48px;
+		background: rgba(0, 0, 0, 0.3);
+		backdrop-filter: blur(10px);
 		border-radius: 50%;
-		color: white;
-		box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		transition: background-color 0.2s;
+		color: white;
+		text-decoration: none;
+		pointer-events: auto;
+		transition: all 0.2s;
 	}
 
-	.floating-back-btn:hover {
-		background-color: rgba(0, 0, 0, 0.6);
-	}
+	.nav-round-btn:hover { background: rgba(0, 0, 0, 0.5); transform: scale(1.1); }
+	:global(.nav-round-btn svg) { transform: rotate(180deg); width: 24px; height: 24px; }
 
-	.icon-rotate {
-		transform: rotate(180deg);
-		display: flex;
-	}
-	.icon-rotate :global(svg) {
-		width: 24px;
-		height: 24px;
-	}
-
-	@media (min-width: 640px) {
-		.floating-back-btn {
-			left: 24px;
-		}
-	}
-	@media (min-width: 1024px) {
-		.floating-back-btn {
-			left: 32px;
-		}
-	}
-
-	/* Hero Banner */
-	.hero-banner {
-		height: 288px;
-		background-color: #111827;
-		position: relative;
-		width: 100%;
-		overflow: hidden;
-	}
-
-	@media (min-width: 640px) {
-		.hero-banner {
-			height: 384px;
-		}
-	}
-	@media (min-width: 768px) {
-		.hero-banner {
-			height: 450px;
-		}
-	}
-
-	.hero-img-btn {
-		width: 100%;
-		height: 100%;
-		cursor: zoom-in;
-		border: none;
-		padding: 0;
-		background: none;
+	/* Hero */
+	.vitrine-hero {
+		height: 60vh;
 		position: relative;
 		overflow: hidden;
+		background: #1a1a1a;
 	}
 
-	.hero-img {
-		width: 100%;
-		height: 100%;
-		object-fit: cover;
-		transition: transform 0.7s ease;
-	}
-
-	.hero-img-btn:hover .hero-img {
-		transform: scale(1.05);
-	}
-
-	.hero-gradient-overlay {
+	.hero-image-wrapper { width: 100%; height: 100%; position: relative; }
+	.hero-parallax { width: 100%; height: 100%; object-fit: cover; }
+	.hero-overlay-gradient {
 		position: absolute;
 		inset: 0;
-		background: linear-gradient(to top, #111827, rgba(17, 24, 39, 0.4), transparent);
-		opacity: 0.8;
+		background: linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0) 50%, rgba(0,0,0,0.6) 100%);
 	}
 
-	.hero-no-img {
+	.hero-placeholder {
 		width: 100%;
 		height: 100%;
 		display: flex;
-		flex-direction: column;
 		align-items: center;
 		justify-content: center;
-		background: linear-gradient(to bottom, #1f2937, #111827);
-		opacity: 0.4;
-		color: rgba(255, 255, 255, 0.6);
-		font-weight: 500;
+		color: rgba(255,255,255,0.2);
 	}
+	:global(.hero-placeholder svg) { width: 4rem; height: 4rem; }
 
-	.hero-divider {
+	/* Brand Card */
+	.brand-card-container {
 		position: absolute;
 		bottom: 0;
 		left: 0;
 		right: 0;
-		height: 64px;
-		background-color: var(--lightBg);
-		clip-path: polygon(0 100%, 100% 100%, 100% 0, 0 100%);
-	}
-
-	/* Main Content Area */
-	.sponsor-main {
-		max-width: var(--desktop);
-		width: 100%;
-		margin: -128px auto 0;
-		padding: 0 var(--spacing-sm) var(--spacing-sm);
-		position: relative;
+		padding: 0 1.5rem;
+		transform: translateY(30%);
 		z-index: 10;
 	}
 
-	/* Info Card */
-	.main-info-card {
-		background-color: var(--background);
-		border-radius: var(--radius-lg);
-		box-shadow:
-			0 20px 25px -5px rgba(0, 0, 0, 0.1),
-			0 10px 10px -5px rgba(0, 0, 0, 0.04);
-		padding: 24px;
-		margin-bottom: 32px;
-		border: 1px solid white;
-		position: relative;
-		overflow: hidden;
-		transition: border-color var(--transition-normal);
+	.brand-card {
+		max-width: 800px;
+		margin: 0 auto;
+		background: white;
+		padding: 2.5rem;
+		border-radius: 32px;
+		box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+		text-align: center;
+		border: 1px solid rgba(255,255,255,0.8);
 	}
 
-	.main-info-card:hover {
-		border-color: rgba(255, 183, 158, 0.2);
-	}
-
-	@media (min-width: 640px) {
-		.main-info-card {
-			padding: 40px;
-		}
-	}
-
-	.card-glow {
-		position: absolute;
-		top: -96px;
-		right: -96px;
-		width: 192px;
-		height: 192px;
-		background-color: rgba(255, 183, 158, 0.1);
-		border-radius: 50%;
-		filter: blur(40px);
-		padding: 40px;
-	}
-	.main-info-title-box {
-		flex: 1;
-		width: 100%;
-	}
-
-	.category-badge {
+	.brand-category {
 		display: inline-block;
-		padding: 4px 12px;
-		background-color: rgba(255, 183, 158, 0.1);
 		font-size: 0.75rem;
-		font-weight: 700;
-		color: var(--primary);
-		border-radius: 50px;
+		font-weight: 900;
+		color: var(--cta);
 		text-transform: uppercase;
-		letter-spacing: 0.1em;
-		margin-bottom: 12px;
+		letter-spacing: 0.15em;
+		background: #fff5f2;
+		padding: 0.5rem 1.25rem;
+		border-radius: 50px;
+		margin-bottom: 1rem;
 	}
 
-	.main-title {
-		font-size: clamp(2.25rem, 5vw, 3rem);
-		font-weight: 800;
-		color: var(--textDark);
-		font-family: var(--FFTitle);
+	.brand-name {
+		font-size: 2.75rem;
+		font-weight: 900;
+		color: var(--text);
+		margin: 0 0 1rem;
 		line-height: 1.1;
-		margin-bottom: 8px;
-		letter-spacing: -0.025em;
 	}
 
-	.premium-badge {
-		background: linear-gradient(to top right, #facc15, #fde047);
-		color: #713f12;
+	.brand-meta {
 		display: flex;
+		justify-content: center;
 		align-items: center;
-		padding: 6px 12px;
-		border-radius: 12px;
-		font-size: 0.7rem;
-		font-weight: 700;
-		text-transform: uppercase;
-		letter-spacing: 0.05em;
-		gap: 6px;
-		box-shadow: 0 4px 6px -1px rgba(250, 204, 21, 0.2);
-		cursor: default;
-		transition: transform var(--transition-normal);
-		flex-shrink: 0;
-		height: fit-content;
-		width: fit-content;
-	}
-
-	.premium-badge:hover {
-		transform: scale(1.05);
-	}
-
-	.premium-badge :global(svg) {
-		fill: #713f12;
-		border: none;
-	}
-
-	.meta-info-box {
-		display: flex;
+		gap: 1.5rem;
 		flex-wrap: wrap;
-		align-items: center;
-		gap: 12px;
-		margin-top: 8px;
 	}
 
-	.meta-pill {
+	.meta-item {
 		display: flex;
 		align-items: center;
-		gap: 6px;
-		background-color: var(--lightBg);
-		padding: 6px 12px;
-		border-radius: 8px;
-		border: 1px solid var(--borderColor);
-		font-size: 0.875rem;
+		gap: 0.5rem;
+		color: var(--secondary);
 		font-weight: 600;
-		color: #6b7280;
+		font-size: 0.95rem;
 	}
+	:global(.meta-item svg) { width: 1.1rem; height: 1.1rem; color: var(--cta); }
 
-	.meta-pill .text-primary {
-		color: var(--primary);
-	}
-	.meta-pill .text-gray {
-		color: #9ca3af;
-	}
-
-	/* Content Sections */
-	.sponsor-sections {
-		display: flex;
-		flex-direction: column;
-		gap: 32px;
-	}
-
-	.content-section {
-		background-color: var(--background);
-		border-radius: var(--radius-lg);
-		padding: 24px;
-		box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-		border: 1px solid var(--borderColor);
-		position: relative;
-		overflow: hidden;
-	}
-
-	@media (min-width: 640px) {
-		.content-section {
-			padding: 40px;
-		}
-	}
-
-	.flex-col {
-		display: flex;
-		flex-direction: column;
-	}
-	.flex-1 {
-		flex: 1;
-	}
-
-	/* Quote section */
-	.quote-watermark {
-		position: absolute;
-		top: -16px;
-		left: -8px;
-		font-size: 120px;
-		font-family: serif;
-		color: var(--lightBg);
-		line-height: 1;
-		user-select: none;
-		pointer-events: none;
-	}
-
-	.section-title {
-		font-size: 1.25rem;
-		font-weight: 700;
-		color: var(--textDark);
-		margin-bottom: 24px;
-		font-family: var(--FFTitle);
+	.premium-shield {
 		display: flex;
 		align-items: center;
-		gap: 12px;
+		gap: 0.4rem;
+		background: #fdf2f2;
+		color: #be123c;
+		padding: 0.4rem 0.8rem;
+		border-radius: 12px;
+		font-size: 0.75rem;
+		font-weight: 800;
+	}
+	:global(.premium-shield svg) { width: 0.9rem; height: 0.9rem; }
+
+	/* Main Content */
+	.vitrine-content {
+		max-width: 1000px;
+		margin: 8rem auto 0;
+		padding: 0 1.5rem;
+		display: flex;
+		flex-direction: column;
+		gap: 5rem;
 	}
 
-	.title-line {
-		width: 6px;
-		height: 24px;
-		background-color: var(--primary);
-		border-radius: 50px;
+	.demo-banner {
+		background: #eff6ff;
+		color: #1e40af;
+		padding: 1rem 1.5rem;
+		border-radius: 16px;
+		display: flex;
+		align-items: center;
+		gap: 1rem;
+		font-weight: 600;
+		font-size: 0.9rem;
+	}
+	:global(.demo-banner svg) { width: 1.5rem; height: 1.5rem; flex-shrink: 0; }
+
+	/* Offer Spotlight */
+	.offer-spotlight { width: 100%; }
+
+	.offer-card-premium {
+		background: linear-gradient(135deg, #db2777 0%, #9d174d 100%);
+		padding: 4px;
+		border-radius: 32px;
+		box-shadow: 0 25px 50px -12px rgba(219, 39, 119, 0.4);
+		transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+		position: relative;
 	}
 
-	.description-text {
-		color: #4b5563;
-		line-height: 1.625;
-		white-space: pre-line;
-		font-size: 1.125rem;
-		font-weight: 500;
+	.offer-card-premium::before {
+		content: '';
+		position: absolute;
+		inset: 0;
+		background: radial-gradient(circle at top right, rgba(255,255,255,0.2), transparent);
+		pointer-events: none;
 	}
 
-	/* Offer Banner */
-	.offer-banner {
-		background: linear-gradient(to bottom right, #fefce8, #fef9c3);
-		border: 1px solid #fef08a;
-		border-radius: var(--radius-lg);
-		padding: 24px;
-		box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+	.offer-card-inner {
+		background: #fff1f2;
+		border-radius: 28px;
+		padding: 2.5rem;
 		position: relative;
 		overflow: hidden;
-	}
-
-	@media (min-width: 640px) {
-		.offer-banner {
-			padding: 32px;
-		}
-	}
-
-	.offer-glow-1 {
-		position: absolute;
-		top: -40px;
-		right: -40px;
-		width: 160px;
-		height: 160px;
-		background-color: rgba(255, 255, 255, 0.4);
-		border-radius: 50%;
-		filter: blur(24px);
-		pointer-events: none;
-	}
-
-	.offer-glow-2 {
-		position: absolute;
-		bottom: -40px;
-		left: -40px;
-		width: 128px;
-		height: 128px;
-		background-color: rgba(254, 215, 170, 0.3);
-		border-radius: 50%;
-		filter: blur(20px);
-		pointer-events: none;
-	}
-
-	.offer-content {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
 		text-align: center;
 	}
 
-	.offer-label {
-		display: inline-flex;
-		background-color: #111827;
-		padding: 6px 16px;
-		border-radius: 8px;
-		margin-bottom: 24px;
-		box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-	}
-
-	.offer-label span {
-		color: #facc15;
-		font-weight: 700;
-		font-size: 0.75rem;
-		letter-spacing: 0.15em;
-	}
-
-	.offer-title {
-		font-size: 1.5rem;
-		font-weight: 700;
-		color: #111827;
-		margin-bottom: 8px;
-	}
-
-	.offer-desc {
-		color: #374151;
-		line-height: 1.625;
-		margin-bottom: 32px;
-		max-width: 36rem;
-		margin-left: auto;
-		margin-right: auto;
-	}
-
-	.offer-btn {
-		display: inline-flex;
-		align-items: center;
-		gap: 8px;
-		padding: 16px 32px;
-		border-radius: 50px;
-		font-weight: 700;
-		font-size: 1.125rem;
-		box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-		transition: all var(--transition-normal);
-		border: none;
-		background-color: #111827;
+	.offer-badge-ribbon {
+		position: absolute;
+		top: 1.5rem;
+		right: -2rem;
+		background: #db2777;
 		color: white;
-		cursor: pointer;
-	}
-
-	.offer-btn:not(.offer-btn-active):hover {
-		background-color: #000;
-		transform: scale(1.05);
-	}
-
-	.offer-btn:not(.offer-btn-active):active {
-		transform: scale(0.95);
-	}
-
-	.offer-btn-active {
-		background-color: #d1fae5;
-		color: #065f46;
-		border: 2px solid #a7f3d0;
-		cursor: default;
-	}
-
-	.offer-hint {
+		padding: 0.5rem 3rem;
+		font-weight: 900;
 		font-size: 0.75rem;
-		color: #6b7280;
-		margin-top: 16px;
-		font-style: italic;
+		transform: rotate(45deg);
+		letter-spacing: 0.1em;
 	}
 
-	/* Gallery */
-	.gallery-title {
-		font-size: 1.125rem;
-		font-weight: 700;
-		color: var(--textDark);
-		margin-bottom: 16px;
-		margin-left: 8px;
-		font-family: var(--FFTitle);
-	}
-
-	.gallery-scroll {
+	.offer-main {
 		display: flex;
-		overflow-x: auto;
-		gap: 16px;
-		padding: 0 8px 16px;
-		scroll-snap-type: x mandatory;
+		gap: 2rem;
+		align-items: center;
+		margin-bottom: 2rem;
+		width: 100%;
+		text-align: left;
 	}
 
-	.gallery-item-btn {
-		width: 192px;
-		height: 192px;
+	.gift-icon-container {
+		width: 80px;
+		height: 80px;
+		background: white;
+		border-radius: 24px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		color: #db2777;
+		box-shadow: 0 10px 20px rgba(0,0,0,0.05);
 		flex-shrink: 0;
-		border-radius: 16px;
+	}
+	:global(.gift-icon-container svg) { width: 2.5rem; height: 2.5rem; }
+
+	.offer-text { flex: 1; }
+	.offer-title { font-size: 1.75rem; font-weight: 900; color: #831843; margin: 0 0 0.5rem; }
+	.offer-description { font-size: 1.1rem; color: #9d174d; line-height: 1.5; margin: 0; }
+
+	.offer-footer-terms { font-size: 0.8rem; color: #9d174d; opacity: 0.6; font-style: italic; margin-bottom: 2rem; width: 100%; text-align: left; }
+
+	.btn-activate-offer {
+		width: 100%;
+		background: #db2777;
+		color: white;
+		border: none;
+		padding: 1.25rem;
+		border-radius: 18px;
+		font-size: 1.1rem;
+		font-weight: 800;
+		cursor: pointer;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 0.75rem;
+		transition: all 0.2s;
+	}
+	.btn-activate-offer:hover:not(:disabled) { background: #be123c; transform: scale(1.02); }
+	.btn-activate-offer:disabled { background: #10b981; cursor: default; }
+
+	.activation-hint { margin-top: 1rem; color: #10b981; font-weight: 700; font-size: 0.9rem; }
+
+	/* Section Commons */
+	.section-header-pro { margin-bottom: 2.5rem; }
+	.section-subtitle { font-size: 0.75rem; font-weight: 900; color: var(--cta); text-transform: uppercase; letter-spacing: 0.2em; display: block; margin-bottom: 0.5rem; }
+	.section-title-pro { font-size: 2.25rem; font-weight: 900; color: var(--text); margin: 0; font-family: 'Poppins', sans-serif; }
+
+	/* Story */
+	.story-text { font-size: 1.25rem; line-height: 1.8; color: #4b5563; font-weight: 400; white-space: pre-line; }
+
+	/* Portfolio */
+	.portfolio-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+		gap: 1.5rem;
+	}
+
+	.portfolio-item-btn {
+		aspect-ratio: 4/3;
+		border-radius: 24px;
 		overflow: hidden;
-		scroll-snap-align: center;
 		border: none;
 		padding: 0;
-		background: none;
 		cursor: pointer;
+		position: relative;
 	}
 
-	.gallery-img {
-		width: 100%;
-		height: 100%;
-		object-fit: cover;
-		transition: transform 0.5s ease;
-	}
+	.portfolio-item-btn img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
+	.item-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s; }
+	.portfolio-item-btn:hover img { transform: scale(1.1); }
+	.portfolio-item-btn:hover .item-overlay { opacity: 1; }
+	.zoom-icon { background: white; color: var(--cta); width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
 
-	.gallery-item-btn:hover .gallery-img {
-		transform: scale(1.05);
-	}
-
-	/* Grid For Info */
-	.info-grid {
+	/* Access Grid */
+	.access-grid {
 		display: grid;
-		grid-template-columns: 1fr;
-		gap: 32px;
+		grid-template-columns: 1.2fr 0.8fr;
+		gap: 2.5rem;
+		margin-bottom: 3rem;
 	}
 
-	@media (min-width: 1024px) {
-		.info-grid {
-			grid-template-columns: repeat(2, 1fr);
-		}
+	.info-card-pro {
+		background: white;
+		border-radius: 32px;
+		padding: 2.5rem;
+		border: 1px solid #f1f5f9;
+		box-shadow: 0 4px 6px rgba(0,0,0,0.02);
 	}
 
-	.title-icon-box {
-		padding: 8px;
-		background-color: rgba(255, 183, 158, 0.1);
-		border-radius: 12px;
-		color: var(--primary);
-	}
-
-	.title-icon-box :global(svg) {
-		width: 20px;
-		height: 20px;
-	}
-
-	.contact-links {
+	.info-card-icon {
+		width: 56px;
+		height: 56px;
+		border-radius: 16px;
 		display: flex;
-		flex-direction: column;
-		gap: 16px;
+		align-items: center;
+		justify-content: center;
+		margin-bottom: 1.5rem;
 	}
+	:global(.info-card-icon svg) { width: 1.75rem; height: 1.75rem; }
 
-	.contact-link-row {
+	.info-card-icon.map { background: #f0fdf4; color: #16a34a; }
+	.info-card-icon.time { background: #fff7ed; color: #ea580c; }
+
+	.info-card-pro h3 { font-size: 1.25rem; font-weight: 800; margin: 0 0 1.5rem; color: var(--text); }
+
+	.info-card-links { display: flex; flex-direction: column; gap: 1rem; }
+
+	.access-row {
 		display: flex;
-		align-items: flex-start;
-		gap: 16px;
-		padding: 12px;
-		margin: 0 -12px;
-		border-radius: 12px;
-		transition: background-color var(--transition-fast);
+		align-items: center;
+		gap: 1.25rem;
+		padding: 1.25rem;
+		background: #f8fafc;
+		border-radius: 20px;
 		text-decoration: none;
+		color: var(--text);
+		transition: all 0.2s;
+		border: 1px solid transparent;
 	}
+	.access-row:hover { background: white; border-color: #e2e8f0; transform: translateX(5px); }
 
-	.contact-link-row:hover {
-		background-color: var(--lightBg);
-	}
+	.access-label { font-size: 0.75rem; font-weight: 800; color: #94a3b8; text-transform: uppercase; margin-bottom: 0.25rem; }
+	.access-value { font-size: 0.95rem; font-weight: 700; color: #334155; }
+	:global(.row-arrow) { color: #cbd5e1; width: 1.25rem; height: 1.25rem; margin-left: auto; }
+	:global(.row-icon-social) { color: #3b82f6; width: 1.25rem; height: 1.25rem; margin-left: auto; }
 
-	.contact-icon {
-		width: 44px;
-		height: 44px;
-		border-radius: 50%;
+	.hours-display { background: #fffcf0; padding: 1.5rem; border-radius: 20px; border: 1px solid #fef3c7; }
+	.hours-content { font-size: 1rem; line-height: 1.9; color: #92400e; font-weight: 600; white-space: pre-line; text-align: center; }
+
+	.secondary-info-stack { display: flex; flex-direction: column; gap: 1.5rem; }
+
+	.social-connect { display: flex; flex-direction: column; gap: 1rem; }
+	.social-pill {
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		flex-shrink: 0;
-		transition: background-color var(--transition-fast);
+		gap: 0.75rem;
+		padding: 1.25rem;
+		border-radius: 20px;
+		text-decoration: none;
+		font-weight: 800;
+		color: white;
+		transition: transform 0.2s;
 	}
+	.social-pill:hover { transform: scale(1.02); }
+	.social-pill.fb { background: #1877f2; }
+	.social-pill.ig { background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); }
+	:global(.social-pill svg) { width: 1.5rem; height: 1.5rem; }
 
-	.contact-icon :global(svg) {
-		width: 20px;
-		height: 20px;
-	}
-
-	.bg-gray {
-		background-color: #f3f4f6;
-		color: var(--primary);
-	}
-	.contact-link-row:hover .bg-gray {
-		background-color: rgba(255, 183, 158, 0.1);
-	}
-
-	.bg-blue {
-		background-color: #eff6ff;
-		color: #3b82f6;
-	}
-	.contact-link-row:hover .bg-blue {
-		background-color: #dbeafe;
-	}
-
-	.bg-pink {
-		background-color: #fdf2f8;
-		color: #ec4899;
-	}
-	.contact-link-row:hover .bg-pink {
-		background-color: #fce7f3;
-	}
-
-	.contact-text {
-		flex: 1;
-		margin-top: 2px;
-	}
-
-	.contact-label {
-		font-size: 0.75rem;
-		font-weight: 700;
-		color: #6b7280;
-		text-transform: uppercase;
-		letter-spacing: 0.1em;
-		margin-bottom: 4px;
-	}
-
-	.contact-val {
-		color: var(--textDark);
-		font-weight: 600;
-	}
-
-	.arrow-right {
-		margin-top: 8px;
-		color: #d1d5db;
-		transition: color var(--transition-fast);
-	}
-
-	.arrow-right :global(svg) {
-		width: 20px;
-		height: 20px;
-	}
-
-	.contact-link-row:hover .arrow-right {
-		color: var(--primary);
-	}
-
-	/* Info Col */
-	.info-col {
-		display: flex;
-		flex-direction: column;
-		gap: 24px;
-	}
-
-	.hours-box {
-		background-color: var(--lightBg);
-		border-radius: 16px;
-		padding: 20px;
-		border: 1px solid var(--borderColor);
-		flex: 1;
-		min-height: 100px;
-		display: flex;
-		align-items: center;
-	}
-
-	@media (min-width: 640px) {
-		.hours-box {
-			padding: 24px;
-		}
-	}
-
-	.hours-text {
-		color: #4b5563;
-		line-height: 2;
-		font-weight: 500;
-		white-space: pre-line;
-		text-align: center;
-		width: 100%;
-	}
-
-	/* Social Links */
-	.social-links {
-		display: flex;
-		padding: 8px 4px;
-		gap: 16px;
-		justify-content: center;
-	}
-
-	@media (min-width: 768px) {
-		.social-links {
-			justify-content: flex-start;
-		}
-	}
-
-	.social-btn {
-		background-color: white;
-		padding: 16px;
-		border-radius: 16px;
-		box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-		border: 1px solid var(--borderColor);
-		transition: all var(--transition-fast);
-		display: flex;
-		align-items: center;
-		justify-content: center;
-	}
-
-	.social-btn :global(svg) {
-		width: 28px;
-		height: 28px;
-	}
-
-	.social-btn:hover {
-		box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-		transform: translateY(-4px);
-	}
-
-	.facebook {
-		color: #1877f2;
-	}
-	.instagram {
-		color: #e4405f;
-	}
-
-	/* Action Bar Bottom */
-	.action-bar-bottom {
+	/* Sticky Bar */
+	.sticky-cta-bar {
 		position: fixed;
 		bottom: 0;
 		left: 0;
 		right: 0;
-		z-index: 20;
-		background-color: rgba(255, 255, 255, 0.9);
-		backdrop-filter: blur(12px);
-		border-top: 1px solid #e5e7eb;
-		padding: 16px 16px;
-		box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.05);
+		background: rgba(255, 255, 255, 0.8);
+		backdrop-filter: blur(20px);
+		padding: 1.25rem 1.5rem calc(1.25rem + env(safe-area-inset-bottom));
+		border-top: 1px solid #f1f5f9;
+		z-index: 100;
+		box-shadow: 0 -10px 25px rgba(0,0,0,0.05);
 	}
 
-	.action-bar-container {
+	.cta-inner {
 		max-width: var(--desktop);
 		margin: 0 auto;
 		display: flex;
-		gap: 16px;
+		gap: 1rem;
 	}
 
-	.btn-call,
-	.btn-go {
+	.btn-cta-primary, .btn-cta-secondary {
 		flex: 1;
-		border-radius: 16px;
-		padding: 16px 0;
+		height: 60px;
+		border-radius: 18px;
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		gap: 8px;
-		font-weight: 700;
+		gap: 0.75rem;
+		font-weight: 800;
+		font-size: 1rem;
 		text-decoration: none;
-		transition: background-color var(--transition-fast);
+		transition: all 0.2s;
 	}
 
-	.btn-call {
-		background-color: var(--primary);
-		color: white;
-		box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-	}
-
-	.btn-call:hover {
-		background-color: var(--accent);
-	}
-
-	.btn-go {
-		background-color: #f3f4f6;
-		color: #111827;
-	}
-
-	.btn-go:hover {
-		background-color: #e5e7eb;
-	}
+	.btn-cta-primary { background: var(--cta); color: white; box-shadow: 0 10px 15px rgba(217, 70, 122, 0.25); }
+	.btn-cta-primary:hover { border-radius: 30px; filter: brightness(1.1); }
+	
+	.btn-cta-secondary { background: #f1f5f9; color: #334155; }
+	.btn-cta-secondary:hover { background: #e2e8f0; border-radius: 30px; }
 
 	/* Lightbox */
-	.lightbox {
+	.vitrine-lightbox {
 		position: fixed;
 		inset: 0;
-		z-index: 50;
-		background-color: rgba(0, 0, 0, 0.95);
+		background: rgba(0,0,0,0.95);
+		backdrop-filter: blur(10px);
+		z-index: 2000;
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		backdrop-filter: blur(4px);
 	}
 
-	.lightbox-close {
+	.lightbox-close-btn {
 		position: absolute;
-		top: 24px;
-		right: 24px;
-		padding: 12px;
-		background-color: rgba(255, 255, 255, 0.1);
+		top: 2rem;
+		right: 2rem;
+		width: 48px;
+		height: 48px;
+		background: rgba(255,255,255,0.1);
 		border-radius: 50%;
 		border: none;
 		color: white;
 		cursor: pointer;
-		transition: background-color var(--transition-fast);
-		z-index: 10;
 		display: flex;
 		align-items: center;
 		justify-content: center;
 	}
+	:global(.close-icon) { width: 24px; height: 24px; }
 
-	.lightbox-close:hover {
-		background-color: rgba(255, 255, 255, 0.2);
-	}
-	.lightbox-close svg {
-		width: 24px;
-		height: 24px;
-	}
+	.lightbox-content { max-width: 90vw; max-height: 80vh; }
+	.lightbox-content img { width: 100%; height: 100%; object-fit: contain; }
 
-	.lightbox-img {
-		max-width: 100%;
-		max-height: 100%;
-		object-fit: contain;
-		padding: 16px;
-		user-select: none;
+	@media (max-width: 800px) {
+		.access-grid { grid-template-columns: 1fr; }
+		.brand-name { font-size: 2rem; }
+		.brand-card { padding: 1.5rem; }
+		.vitrine-hero { height: 45vh; }
+		.section-title-pro { font-size: 1.75rem; }
+		.offer-main { flex-direction: column; text-align: center; }
+		.offer-text { text-align: center; }
+		.offer-footer-terms { text-align: center; }
 	}
 </style>
