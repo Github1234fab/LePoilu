@@ -88,7 +88,7 @@
 </script>
 
 <svelte:head>
-	<title>Le Carnet (Offres locales) - Le Poilu</title>
+	<title>Les Bons Plans (Offres locales) - Le Poilu</title>
 </svelte:head>
 
 <div class="carnet-page">
@@ -107,7 +107,7 @@
 
 					<div>
 						<h1 class="header-title">
-							La Grotte du Poilu
+							Les Bons Plans
 							<span class="badge-annuaire">Annuaire</span>
 						</h1>
 						<p class="header-subtitle">DÉCOUVREZ VOS COMMERCES & OFFRES LOCALES</p>

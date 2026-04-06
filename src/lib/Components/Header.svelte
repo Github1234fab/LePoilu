@@ -33,7 +33,7 @@
 		<nav class="nav-desktop">
 			<a href="/Fonctionnalités" class="nav-link">Fonctionnalités</a>
 			<a href="/Tarifs" class="nav-link">Tarifs</a>
-			<a href="/carnet" class="nav-link">Le Carnet</a>
+			<a href="/carnet" class="nav-link">Les Bons Plans</a>
 			<a href="/espace-commercant" class="nav-link">Espace Commerçant</a>
 			<a href="/Apropos" class="nav-link">À propos</a>
 			<a href="/Contact" class="nav-link">Contact</a>
@@ -75,7 +75,7 @@
 			</a>
 			<a href="/Fonctionnalités" class="nav-link-mobile" on:click={closeMenu}>Fonctionnalités</a>
 			<a href="/Tarifs" class="nav-link-mobile" on:click={closeMenu}>Tarifs</a>
-			<a href="/carnet" class="nav-link-mobile" on:click={closeMenu}>Le Carnet</a>
+			<a href="/carnet" class="nav-link-mobile" on:click={closeMenu}>Les Bons Plans</a>
 			<a href="/Apropos" class="nav-link-mobile" on:click={closeMenu}>À propos</a>
 			<a href="/Contact" class="nav-link-mobile" on:click={closeMenu}>Contact</a>
 			<a href="/espace-commercant" class="nav-link-mobile" on:click={closeMenu}>Espace Commerçant</a
