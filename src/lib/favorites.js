@@ -1,5 +1,12 @@
 import { db } from './firebase';
-import { doc, updateDoc, arrayUnion, arrayRemove, getDoc } from 'firebase/firestore';
+import { 
+    doc, 
+    updateDoc, 
+    setDoc as firestoreSetDoc, 
+    arrayUnion, 
+    arrayRemove, 
+    getDoc 
+} from 'firebase/firestore';
 
 /**
  * Toggles a sponsor ID in the user's favoriteSponsors list in Firestore.
@@ -13,14 +20,13 @@ export async function toggleSponsorFavorite(userId, sponsorId, isCurrentlyFavori
     const userRef = doc(db, 'Users', userId);
     
     try {
-        const userRef = doc(db, 'Users', userId);
         if (isCurrentlyFavorite) {
             await updateDoc(userRef, {
                 favoriteSponsors: arrayRemove(sponsorId)
             });
         } else {
             // Utiliser setDoc avec merge: true pour créer le document s'il n'existe pas
-            await setDoc(userRef, {
+            await firestoreSetDoc(userRef, {
                 favoriteSponsors: arrayUnion(sponsorId)
             }, { merge: true });
         }
