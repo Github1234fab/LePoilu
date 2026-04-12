@@ -6,7 +6,7 @@
 	import Filters from '../assets/screenShots/FiltreLieux.png';
 	import Favoris from '../assets/favoris.jpg';
 	import Creation from '../assets/creation.jpg';
-	import Paiements from '../assets/screenShots/widgets.png';
+	import Paiements from '../assets/screenShots/Widgets.png';
 
 	const features = [
 		{
