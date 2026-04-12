@@ -13,14 +13,16 @@ export async function toggleSponsorFavorite(userId, sponsorId, isCurrentlyFavori
     const userRef = doc(db, 'Users', userId);
     
     try {
+        const userRef = doc(db, 'Users', userId);
         if (isCurrentlyFavorite) {
             await updateDoc(userRef, {
                 favoriteSponsors: arrayRemove(sponsorId)
             });
         } else {
-            await updateDoc(userRef, {
+            // Utiliser setDoc avec merge: true pour créer le document s'il n'existe pas
+            await setDoc(userRef, {
                 favoriteSponsors: arrayUnion(sponsorId)
-            });
+            }, { merge: true });
         }
         return true;
     } catch (error) {

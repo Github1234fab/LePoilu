@@ -159,7 +159,7 @@
 					displayName: name,
 					createdAt: new Date(),
 					role: 'user'
-				});
+				}, { merge: true });
 			} else {
 				// LOGIN
 				await signInWithEmailAndPassword(auth, email, password);
