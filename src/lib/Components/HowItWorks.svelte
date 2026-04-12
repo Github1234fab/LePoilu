@@ -4,31 +4,33 @@
 		{
 			number: '1',
 			title: "Télécharge l'app",
-			 description: 'Disponible sur iOS et Android en un clic.<br><br>L\'appli va s\'installer toute seule sur ton smartphone !'
+			description:
+				"Disponible sur iOS et Android en un clic.<br><br>L'appli va s'installer toute seule sur ton smartphone !"
 		},
 		{
 			number: '2',
-			title: 'Scrolle. ',
-			description: 'Consulte les évènements en faisant défiler la liste des évènements et en utilisant les filtres.'
+			title: 'Consulte les évènements ou créer ton propre évènement.<br><br> Consulte les bons plans ou créer ta vitrine en ligne.',
+			description:
+				'Accède facilement aux évènement et aux bons plans des commerçants. Tu peux aussi créer tes propres évènements ou ta vitrine en ligne.'
 		},
 		{
 			number: '3',
-			title: 'Créer un compte',
-			description: 'Créer un compte si tu veux marquer tes favoris et les retrouver plus tard!'
+			title: '',
+			description: 'Ajoute en favoris, partage les évènements et les bons plans autour de toi. Utilise les widgets et les filtres intelligent.'
 		}
 	];
 </script>
 
 <section class="how-it-works">
 	<div class="how-it-works-container">
-		<h2 class="section-title">Comment ça marche ?</h2>
+		<h2 class="section-title">Le Poilu, l'appli pratico-pratique</h2>
 		<p class="section-subtitle">Trois étapes simples pour commencer</p>
 		<img class="poilu-face" src={PoiluFace} alt="Personnage le poilu de face" />
 		<div class="steps-container">
 			{#each steps as step, index}
 				<div class="step">
 					<div class="step-number">{step.number}</div>
-					<h3 class="step-title">{step.title}</h3>
+					<h3 class="step-title">{@html step.title}</h3>
 					<p class="step-description">{@html step.description}</p>
 				</div>
 				{#if index < steps.length - 1}

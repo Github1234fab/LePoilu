@@ -24,9 +24,9 @@
 	<!-- Hero Section -->
 	<section class="hero">
 		<div class="hero-content">
-			<h1 class="hero-title">Contactez-nous</h1>
+			<h1 class="hero-title">Contacte-nous</h1>
 			<p class="hero-subtitle">
-				Une question, un partenariat, une suggestion ? <br> Nous sommes à votre écoute
+				Une question, un partenariat, une suggestion ? <br> Nous sommes à ton écoute
 			</p>
 			<img class="poilu-mobile" src={PoiluMobile} alt="Le Poilu personnage mascotte" />
 		</div>
@@ -35,9 +35,9 @@
 	<!-- Contact Form Section -->
 	<section class="contact-section">
 		<div class="contact-header">
-			<h2 class="section-title">Envoyez-nous un message</h2>
+			<h2 class="section-title">Envoie-nous un message</h2>
 			<p class="section-description">
-				Remplissez le formulaire ci-dessous et nous vous répondrons dans les plus brefs délais
+				Rempli le formulaire ci-dessous, on te répond dans les plus brefs délais
 			</p>
 		</div>
 

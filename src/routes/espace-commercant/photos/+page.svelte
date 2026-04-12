@@ -72,7 +72,7 @@
 			images = sponsor.images || [];
 		} catch (error) {
 			console.error('Error fetching sponsor:', error);
-			errorMsg = 'Impossible de charger vos données.';
+			errorMsg = 'Impossible de charger tes données.';
 		} finally {
 			loading = false;
 		}
@@ -156,7 +156,7 @@
 						}, 4000);
 					} catch (dbError) {
 						console.error('Firestore update error:', dbError);
-						errorMsg = "L'image a été envoyée mais n'a pas pu être enregistrée sur votre profil.";
+						errorMsg = "L'image a été envoyée mais n'a pas pu être enregistrée sur ton profil.";
 					} finally {
 						isUploading = false;
 						uploadProgress = 0;
@@ -172,7 +172,7 @@
 	}
 
 	async function deleteImage(imageUrl, index) {
-		if (!confirm('Êtes-vous sûr de vouloir supprimer cette photo ? Cette action est irréversible.'))
+		if (!confirm('Es-tu sûr de vouloir supprimer cette photo ? Cette action est irréversible.'))
 			return;
 
 		errorMsg = '';
@@ -180,7 +180,6 @@
 
 		try {
 			// Extract storage path from URL
-			// Firebase Storage URLs are like: https://firebasestorage.googleapis.com/.../o/sponsors%2F...%2Fimage.jpg?...
 			const imagePath = decodeURIComponent(imageUrl.split('/o/')[1].split('?')[0]);
 			const imageRef = ref(storage, imagePath);
 
@@ -205,6 +204,35 @@
 			errorMsg = 'Impossible de supprimer la photo. Elle a peut-être déjà été supprimée.';
 		}
 	}
+
+	async function setAsCover(index) {
+		if (index === 0) return;
+
+		errorMsg = '';
+		successMsg = '';
+
+		try {
+			// Reorder images: move selected index to position 0
+			const newImages = [...images];
+			const [selected] = newImages.splice(index, 1);
+			newImages.unshift(selected);
+			images = newImages;
+
+			// Update Firestore
+			await updateDoc(doc(db, 'Sponsors', sponsor.id), {
+				images: images,
+				updatedAt: Timestamp.now()
+			});
+
+			successMsg = 'Photo de couverture mise à jour !';
+			setTimeout(() => {
+				successMsg = '';
+			}, 3000);
+		} catch (error) {
+			console.error('Error setting cover:', error);
+			errorMsg = 'Impossible de mettre à jour la photo de couverture.';
+		}
+	}
 </script>
 
 <div class="edit-page-container">
@@ -218,7 +246,7 @@
 		<header class="edit-header">
 			<h1>Ma Galerie Pro</h1>
 			<p>
-				Gérez les photos qui apparaissent sur votre fiche vitrine Le Carnet. 
+				Gère les photos qui apparaissent sur ta fiche vitrine Le Carnet. 
 				Les visuels de qualité attirent plus de clients !
 			</p>
 		</header>
@@ -226,7 +254,7 @@
 		{#if loading}
 			<div class="loading-state">
 				<div class="spinner"></div>
-				<p>Chargement de vos visuels...</p>
+				<p>Chargement de tes visuels...</p>
 			</div>
 		{:else if sponsor}
 			<div class="edit-form-wrapper" in:fade>
@@ -266,9 +294,9 @@
 						
 						<div class="lock-content">
 							<span class="lock-badge">EXCLUSIF PREMIUM</span>
-							<h2>Sublimez votre fiche avec des photos</h2>
+							<h2>Sublime ta fiche avec des photos</h2>
 							<p>
-								L'ajout de visuels pour mettre en valeur votre commerce est réservé aux abonnés de la
+								L'ajout de visuels pour mettre en valeur ton commerce est réservé aux abonnés de la
 								formule <strong class="highlight">Visibilité Maximale</strong>.
 							</p>
 
@@ -289,7 +317,7 @@
 					<div class="info-note-pro">
 						<div class="note-icon-pro"><InformationCircleIcon /></div>
 						<p>
-							Ajoutez jusqu'à {MAX_PHOTOS} photos. La première photo est votre <strong>image de couverture</strong> 
+							Ajoute jusqu'à {MAX_PHOTOS} photos. La première photo est ton <strong>image de couverture</strong> 
 							et apparaîtra sur les résultats de recherche.
 						</p>
 					</div>
@@ -311,15 +339,26 @@
 									<img src={imageUrl} alt={`Commerce ${index + 1}`} loading="lazy" />
 									
 									<div class="photo-overlay">
-										<button class="btn-delete-photo" on:click={() => deleteImage(imageUrl, index)} title="Supprimer">
-											<TrashIcon />
-										</button>
+										<div class="overlay-actions">
+											{#if index > 0}
+												<button 
+													class="btn-set-cover" 
+													on:click={() => setAsCover(index)} 
+													title="Mettre en photo de couverture"
+												>
+													<SunnyIcon />
+												</button>
+											{/if}
+											<button class="btn-delete-photo" on:click={() => deleteImage(imageUrl, index)} title="Supprimer">
+												<TrashIcon />
+											</button>
+										</div>
 									</div>
 
 									{#if index === 0}
-										<div class="cover-badge">
-											<i class="fa-solid fa-star"></i>
-											COUVERTURE
+										<div class="cover-badge-premium">
+											<div class="badge-icon"><StarIcon /></div>
+											<span>COUVERTURE</span>
 										</div>
 									{/if}
 								</div>
@@ -370,14 +409,14 @@
 								<div class="tip-icon landscape"><ResizeIcon /></div>
 								<div class="tip-body">
 									<h4>Format Paysage</h4>
-									<p>Prenez vos photos à l'horizontale pour un meilleur rendu.</p>
+									<p>Prends tes photos à l'horizontale pour un meilleur rendu.</p>
 								</div>
 							</div>
 							<div class="tip-item">
 								<div class="tip-icon storefront"><EyeIcon /></div>
 								<div class="tip-body">
 									<h4>Votre devanture</h4>
-									<p>C'est ce qui aide les clients à vous repérer.</p>
+									<p>C'est ce qui aide les clients à te repérer.</p>
 								</div>
 							</div>
 							<div class="tip-item">
@@ -500,14 +539,53 @@
 	.photo-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s; }
 	.photo-item:hover img { transform: scale(1.1); }
 
-	.photo-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.2s; }
+	.photo-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.2s; backdrop-filter: blur(2px); }
 	.photo-item:hover .photo-overlay { opacity: 1; }
 
-	.btn-delete-photo { background: #ef4444; color: white; border: none; padding: 10px; border-radius: 50%; cursor: pointer; transform: translateY(10px); transition: transform 0.2s; }
-	.photo-item:hover .btn-delete-photo { transform: translateY(0); }
-	:global(.btn-delete-photo svg) { width: 1.25rem; height: 1.25rem; }
+	.overlay-actions { display: flex; gap: 0.75rem; }
 
-	.cover-badge { position: absolute; top: 10px; left: 10px; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); color: #fbbf24; font-size: 0.65rem; font-weight: 900; padding: 4px 8px; border-radius: 6px; display: flex; align-items: center; gap: 4px; border: 1px solid rgba(251, 191, 36, 0.3); }
+	.btn-delete-photo, .btn-set-cover { 
+		background: rgba(255, 255, 255, 0.9); 
+		border: none; 
+		padding: 10px; 
+		border-radius: 50%; 
+		cursor: pointer; 
+		transform: translateY(10px); 
+		transition: all 0.2s; 
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+	
+	.btn-delete-photo { color: #ef4444; }
+	.btn-delete-photo:hover { background: #ef4444; color: white; transform: scale(1.1) !important; }
+	
+	.btn-set-cover { color: #f59e0b; }
+	.btn-set-cover:hover { background: #f59e0b; color: white; transform: scale(1.1) !important; }
+
+	.photo-item:hover .btn-delete-photo,
+	.photo-item:hover .btn-set-cover { transform: translateY(0); }
+	
+	:global(.btn-delete-photo svg, .btn-set-cover svg) { width: 1.25rem; height: 1.25rem; }
+
+	.cover-badge-premium { 
+		position: absolute; 
+		top: 12px; 
+		left: 12px; 
+		background: white; 
+		color: #b45309; 
+		font-size: 0.7rem; 
+		font-weight: 800; 
+		padding: 4px 10px; 
+		border-radius: 50px; 
+		display: flex; 
+		align-items: center; 
+		gap: 6px; 
+		box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+		border: 1px solid #fde68a;
+	}
+	.badge-icon { color: #f59e0b; display: flex; }
+	:global(.badge-icon svg) { width: 0.85rem; height: 0.85rem; }
 
 	.btn-add-photo { aspect-ratio: 1; border-radius: 16px; border: 2px dashed #cbd5e1; background: #f8fafc; color: #64748b; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.75rem; transition: all 0.2s; }
 	.btn-add-photo:hover { border-color: var(--cta); background: #fff5f2; color: var(--cta); }

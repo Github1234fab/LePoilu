@@ -7,7 +7,10 @@
 		updateProfile,
 		sendPasswordResetEmail
 	} from 'firebase/auth';
-	import { doc, getDoc, collection, query, where, getDocs, setDoc } from 'firebase/firestore';
+	import { doc, getDoc, collection, query, where, getDocs, setDoc, documentId } from 'firebase/firestore';
+	import { getFavoriteSponsors } from '$lib/favorites';
+	import HeartIcon from '$lib/Components/icons/HeartIcon.svelte';
+	import FavoriteHeart from '$lib/Components/FavoriteHeart.svelte';
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 	import { fade, slide } from 'svelte/transition';
@@ -28,6 +31,9 @@
 	let userData = null;
 	let sponsorData = null;
 	let loading = true;
+	let favoriteSponsorsData = [];
+	let loadingFavorites = false;
+	let activeTab = 'merchant'; // 'merchant' or 'favorites'
 
 	// Form State
 	let email = '';
@@ -77,8 +83,36 @@
 				// Take the first one found (assuming one business per user for now)
 				sponsorData = { id: querySnapshot.docs[0].id, ...querySnapshot.docs[0].data() };
 			}
+
+			// 3. Fetch Favorites
+			await fetchFavoriteSponsorsData(uid);
 		} catch (error) {
-			console.error('Erreur chargement données:', error);
+		}
+	}
+
+	async function fetchFavoriteSponsorsData(uid) {
+		loadingFavorites = true;
+		try {
+			const ids = await getFavoriteSponsors(uid);
+			if (ids.length > 0) {
+				const chunks = [];
+				for (let i = 0; i < ids.length; i += 30) {
+					chunks.push(ids.slice(i, i + 30));
+				}
+				let allSponsors = [];
+				for (const chunk of chunks) {
+					const q = query(collection(db, 'Sponsors'), where(documentId(), 'in', chunk));
+					const snap = await getDocs(q);
+					allSponsors = [...allSponsors, ...snap.docs.map((doc) => ({ id: doc.id, ...doc.data() }))];
+				}
+				favoriteSponsorsData = allSponsors;
+			} else {
+				favoriteSponsorsData = [];
+			}
+		} catch (error) {
+			console.error('Error fetching favorite sponsors:', error);
+		} finally {
+			loadingFavorites = false;
 		}
 	}
 
@@ -203,7 +237,7 @@
 			<!-- Not Logged In State -->
 			<div class="login-card" in:fade>
 				<h1>Bienvenue sur Le Poilu</h1>
-				<p class="subtitle">Connectez-vous pour gérer vos annonces et votre espace.</p>
+				<p class="subtitle">Connecte-toi pour gérer tes annonces et ton espace.</p>
 
 				{#if errorMessage}
 					<div class="error-message">
@@ -223,8 +257,8 @@
 					<div class="auth-form">
 						<h3>Réinitialiser le mot de passe</h3>
 						<p class="small-text">
-							Entrez votre email pour recevoir un lien de réinitialisation. (Pensez à vérifier les
-							spams de votre boîte mail)
+							Entre ton email pour recevoir un lien de réinitialisation. (Pense à vérifier les
+							spams de ta boîte mail)
 						</p>
 
 						<div class="input-group">
@@ -252,7 +286,7 @@
 						{#if isRegistering}
 							<div class="input-group">
 								<i class="fa-solid fa-user input-icon"></i>
-								<input type="text" placeholder="Votre Nom" bind:value={name} required />
+								<input type="text" placeholder="Ton Nom" bind:value={name} required />
 							</div>
 						{/if}
 
@@ -379,8 +413,26 @@
 					{/if}
 				</div>
 
-				<!-- MERCHANT DASHBOARD INTEGRATION -->
-				{#if sponsorData}
+				<!-- Tabs Navigation -->
+				<nav class="account-tabs">
+					<button
+						class="tab-btn {activeTab === 'merchant' ? 'active' : ''}"
+						on:click={() => (activeTab = 'merchant')}
+					>
+						{userData?.isMerchant ? 'Mon Espace Pro' : 'Devenir Pro'}
+					</button>
+					<button
+						class="tab-btn {activeTab === 'favorites' ? 'active' : ''}"
+						on:click={() => (activeTab = 'favorites')}
+					>
+						Mes Favoris
+					</button>
+				</nav>
+
+				{#if activeTab === 'merchant'}
+					<div class="tab-content" in:fade>
+						<!-- MERCHANT DASHBOARD INTEGRATION -->
+						{#if sponsorData}
 					<div class="merchant-dashboard-section" in:fade>
 						<div class="section-divider">
 							<span>MA VITRINE PROFESSIONNELLE</span>
@@ -482,8 +534,8 @@
 							<div class="pro-badge">ESPACE PRO</div>
 							<div class="cta-inner">
 								<div class="cta-text">
-									<h3>Boostez votre commerce local</h3>
-									<p>Rejoignez Le Carnet et proposez des offres exclusives à la tribu du Poilu.</p>
+									<h3>Booste ton commerce local</h3>
+									<p>Rejoins Le Carnet et propose des offres exclusives à la tribu du Poilu.</p>
 								</div>
 								<a href="/carnet/rejoindre" class="btn-cta-pro">
 									En savoir plus <i class="fa-solid fa-arrow-right"></i>
@@ -493,24 +545,87 @@
 					</div>
 				{/if}
 
-				<!-- Standard Actions -->
-				<div class="menu-list">
-					<div class="section-divider">
-						<span>MES ÉVÉNEMENTS</span>
+						<div class="menu-list">
+							<div class="section-divider">
+								<span>MES ÉVÉNEMENTS</span>
+							</div>
+							<a
+								href={userData?.subscription?.credits > 0 ? '/publier?plan=credit' : '/Tarifs'}
+								class="menu-item"
+							>
+								<i class="fa-solid fa-plus"></i>
+								<span>
+									{userData?.subscription?.credits > 0
+										? 'Publier une annonce (utiliser un crédit)'
+										: 'Publier une annonce'}
+								</span>
+								<i class="fa-solid fa-chevron-right arrow"></i>
+							</a>
+						</div>
 					</div>
-					<a
-						href={userData?.subscription?.credits > 0 ? '/publier?plan=credit' : '/Tarifs'}
-						class="menu-item"
-					>
-						<i class="fa-solid fa-plus"></i>
-						<span>
-							{userData?.subscription?.credits > 0
-								? 'Publier une annonce (utiliser un crédit)'
-								: 'Publier une annonce'}
-						</span>
-						<i class="fa-solid fa-chevron-right arrow"></i>
-					</a>
-				</div>
+				{:else if activeTab === 'favorites'}
+					<div class="tab-content favorites-view" in:fade>
+						<div class="favorites-header">
+							<h3>Mes Bons Plans locaux</h3>
+							<p>Retrouve ici les commerces que tu as ajoutés en favoris sur le site.</p>
+						</div>
+
+						{#if loadingFavorites}
+							<div class="loading-mini">
+								<div class="spinner"></div>
+							</div>
+						{:else if favoriteSponsorsData.length === 0}
+							<div class="empty-favorites">
+								<div class="empty-icon-box">
+									<HeartIcon size={48} />
+								</div>
+								<h4>Aucun favori pour le moment</h4>
+								<p>Parcoure le carnet pour découvrir des pépites locales et ajoute-les à tes favoris.</p>
+								<a href="/carnet" class="btn-primary mini">Explorer le Carnet</a>
+							</div>
+						{:else}
+							<div class="favorites-grid">
+								{#each favoriteSponsorsData as fav}
+									<div class="fav-card">
+										<a href="/carnet/{fav.id}" class="fav-img-link">
+											{#if fav.images && fav.images.length > 0}
+												<img src={fav.images[0]} alt={fav.businessName} />
+											{:else}
+												<div class="img-placeholder">
+													<i class="fa-solid fa-store"></i>
+												</div>
+											{/if}
+										</a>
+										<div class="fav-info">
+											<div class="fav-top">
+												<span class="fav-cat">{fav.category || 'Commerce'}</span>
+												<FavoriteHeart 
+													sponsorId={fav.id} 
+													isFavorite={true} 
+													size={16} 
+												/>
+											</div>
+											<h4>{fav.businessName}</h4>
+											<p>{fav.city}</p>
+											<a href="/carnet/{fav.id}" class="view-link">Voir la fiche</a>
+										</div>
+									</div>
+								{/each}
+							</div>
+						{/if}
+						<div class="apps-promo-card">
+							<div class="promo-content">
+								<div class="promo-text">
+									<h4>Tes favoris partout</h4>
+									<p>Retrouve tes Bons Plans et ton Agenda favoris sur l'application mobile Le Poilu.</p>
+								</div>
+								<div class="promo-links">
+									<a href="/Telecharger" class="btn-secondary small">Télécharger l'app</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				{/if}
 			</div>
 		{/if}
 	</div>
@@ -581,6 +696,172 @@
 	}
 
 	/* Form Styles */
+	/* Tabs */
+	.account-tabs {
+		display: flex;
+		gap: 10px;
+		margin-bottom: 2rem;
+		border-bottom: 1px solid var(--border);
+		padding-bottom: 10px;
+	}
+
+	.tab-btn {
+		background: none;
+		border: none;
+		padding: 10px 20px;
+		font-size: 0.9rem;
+		font-weight: 700;
+		color: var(--secondary);
+		cursor: pointer;
+		border-radius: 50px;
+		transition: all 0.2s;
+	}
+
+	.tab-btn.active {
+		background: var(--cta);
+		color: white;
+	}
+
+	.tab-btn:hover:not(.active) {
+		background: #f1f5f9;
+		color: var(--text);
+	}
+
+	/* Favorites Section */
+	.favorites-view {
+		display: flex;
+		flex-direction: column;
+		gap: 2rem;
+	}
+
+	.favorites-header h3 {
+		font-size: 1.5rem;
+		font-weight: 800;
+		color: var(--text);
+		margin-bottom: 5px;
+	}
+
+	.favorites-header p {
+		color: var(--secondary);
+		font-size: 0.9rem;
+	}
+
+	.favorites-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+		gap: 1.5rem;
+	}
+
+	.fav-card {
+		background: white;
+		border-radius: var(--radius-md);
+		overflow: hidden;
+		box-shadow: var(--shadow);
+		border: 1px solid var(--border);
+		transition: transform 0.2s;
+	}
+
+	.fav-card:hover { transform: translateY(-3px); }
+
+	.fav-img-link {
+		display: block;
+		height: 140px;
+		background: #f8fafc;
+	}
+
+	.fav-img-link img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	.img-placeholder {
+		height: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		color: #cbd5e1;
+		font-size: 2rem;
+	}
+
+	.fav-info {
+		padding: 15px;
+	}
+
+	.fav-top {
+		display: flex;
+		justify-content: space-between;
+		align-items: flex-start;
+		margin-bottom: 8px;
+	}
+
+	.fav-cat {
+		font-size: 0.65rem;
+		font-weight: 800;
+		color: var(--cta);
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+	}
+
+	.fav-info h4 {
+		font-size: 1rem;
+		font-weight: 700;
+		margin-bottom: 4px;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+
+	.fav-info p {
+		font-size: 0.8rem;
+		color: var(--secondary);
+		margin-bottom: 12px;
+	}
+
+	.view-link {
+		font-size: 0.8rem;
+		font-weight: 700;
+		color: var(--cta);
+		text-decoration: none;
+	}
+
+	.empty-favorites {
+		text-align: center;
+		padding: 3rem;
+		background: white;
+		border-radius: var(--radius-lg);
+		border: 2px dashed var(--border);
+	}
+
+	.empty-icon-box {
+		color: #e2e8f0;
+		margin-bottom: 1.5rem;
+	}
+
+	.empty-favorites h4 { font-size: 1.25rem; font-weight: 800; margin-bottom: 10px; }
+	.empty-favorites p { color: var(--secondary); margin-bottom: 2rem; }
+
+	.btn-primary.mini { display: inline-block; width: auto; padding: 10px 25px; }
+
+	.apps-promo-card {
+		background: #fdf2f8;
+		border-radius: var(--radius-md);
+		padding: 1.5rem;
+		border: 1px solid #fbcfe8;
+	}
+
+	.promo-content {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		gap: 1.5rem;
+	}
+
+	.promo-text h4 { color: #be123c; font-weight: 800; margin-bottom: 5px; }
+	.promo-text p { color: #9d174d; font-size: 0.85rem; }
+
+	.loading-mini { padding: 2rem; text-align: center; }
+
 	.auth-form {
 		display: flex;
 		flex-direction: column;
@@ -1104,8 +1385,247 @@
 	.stat-number.pending { color: #f97316; }
 	.stat-number.error { color: #ef4444; }
 
-	@media (max-width: 768px) {
-		.stats-mini-grid { grid-template-columns: 1fr; }
-		.merchant-hero { flex-direction: column; text-align: center; gap: 1rem; }
+	/* --- New Account Tabs & Favorites Styles --- */
+	.account-tabs {
+		display: flex;
+		gap: 10px;
+		margin-bottom: 2rem;
+		border-bottom: 1px solid var(--border);
+		padding-bottom: 15px;
+		margin-top: 2rem;
+	}
+
+	.tab-btn {
+		background: #f1f5f9;
+		border: none;
+		padding: 10px 25px;
+		font-size: 0.9rem;
+		font-weight: 700;
+		color: var(--secondary);
+		cursor: pointer;
+		border-radius: 50px;
+		transition: all 0.2s;
+	}
+
+	.tab-btn.active {
+		background: var(--cta);
+		color: white;
+		box-shadow: 0 4px 12px rgba(230, 57, 70, 0.2);
+	}
+
+	.tab-btn:hover:not(.active) {
+		background: #e2e8f0;
+		color: var(--text);
+	}
+
+	/* Favorites Section */
+	.favorites-view {
+		display: flex;
+		flex-direction: column;
+		gap: 2rem;
+	}
+
+	.favorites-header h3 {
+		font-size: 1.5rem;
+		font-weight: 800;
+		color: var(--text);
+		margin-bottom: 5px;
+	}
+
+	.favorites-header p {
+		color: var(--secondary);
+		font-size: 0.9rem;
+	}
+
+	.favorites-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+		gap: 1.5rem;
+	}
+
+	.fav-card {
+		background: white;
+		border-radius: var(--radius-md);
+		overflow: hidden;
+		box-shadow: var(--shadow3);
+		border: 1px solid var(--border);
+		transition: transform 0.2s;
+		display: flex;
+		flex-direction: column;
+	}
+
+	.fav-card:hover { 
+		transform: translateY(-5px);
+		box-shadow: var(--shadow);
+	}
+
+	.fav-img-link {
+		display: block;
+		height: 140px;
+		background: #f8fafc;
+		overflow: hidden;
+	}
+
+	.fav-img-link img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		transition: transform 0.3s;
+	}
+
+	.fav-card:hover .fav-img-link img {
+		transform: scale(1.05);
+	}
+
+	.img-placeholder {
+		height: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		color: #cbd5e1;
+		font-size: 2rem;
+		background: #f1f5f9;
+	}
+
+	.fav-info {
+		padding: 15px;
+		display: flex;
+		flex-direction: column;
+		flex: 1;
+	}
+
+	.fav-top {
+		display: flex;
+		justify-content: space-between;
+		align-items: flex-start;
+		margin-bottom: 8px;
+	}
+
+	.fav-cat {
+		font-size: 0.65rem;
+		font-weight: 800;
+		color: var(--cta);
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+	}
+
+	.fav-info h4 {
+		font-size: 1rem;
+		font-weight: 700;
+		margin-bottom: 4px;
+		color: var(--text);
+		overflow: hidden;
+		text-overflow: ellipsis;
+		display: -webkit-box;
+		-webkit-line-clamp: 1;
+		line-clamp: 1; 
+		-webkit-box-orient: vertical;
+	}
+
+	.fav-info p {
+		font-size: 0.8rem;
+		color: var(--secondary);
+		margin-bottom: 12px;
+	}
+
+	.view-link {
+		font-size: 0.8rem;
+		font-weight: 700;
+		color: var(--cta);
+		text-decoration: none;
+		margin-top: auto;
+		display: inline-block;
+	}
+
+	.view-link:hover {
+		text-decoration: underline;
+	}
+
+	.empty-favorites {
+		text-align: center;
+		padding: 4rem 2rem;
+		background: white;
+		border-radius: var(--radius-lg);
+		border: 2px dashed var(--border);
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+
+	.empty-icon-box {
+		color: #e2e8f0;
+		margin-bottom: 1.5rem;
+		background: #f8fafc;
+		width: 100px;
+		height: 100px;
+		border-radius: 50%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.empty-favorites h4 { font-size: 1.25rem; font-weight: 800; margin-bottom: 10px; }
+	.empty-favorites p { color: var(--secondary); margin-bottom: 2rem; max-width: 300px; }
+
+	.btn-primary.mini-btn { 
+		display: inline-block; 
+		width: auto; 
+		padding: 12px 30px; 
+		background: var(--cta);
+		color: white;
+		border-radius: 50px;
+		text-decoration: none;
+		font-weight: 700;
+	}
+
+	.apps-promo-card {
+		background: linear-gradient(135deg, #fdf2f8 0%, #fce7f3 100%);
+		border-radius: var(--radius-md);
+		padding: 2rem;
+		border: 1px solid #fbcfe8;
+		margin-top: 1rem;
+	}
+
+	.promo-content {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		gap: 2rem;
+	}
+
+	.promo-text h4 { color: #be123c; font-weight: 800; margin-bottom: 8px; font-size: 1.1rem; }
+	.promo-text p { color: #9d174d; font-size: 0.9rem; line-height: 1.5; }
+
+	.btn-secondary.small {
+		background: white;
+		color: #be123c;
+		padding: 10px 20px;
+		border-radius: 50px;
+		font-weight: 700;
+		border: 1px solid #f9a8d4;
+		text-decoration: none;
+		font-size: 0.85rem;
+		white-space: nowrap;
+	}
+
+	.loading-mini { 
+		padding: 4rem; 
+		display: flex; 
+		justify-content: center; 
+		align-items: center; 
+	}
+
+	.spinner {
+		width: 30px;
+		height: 30px;
+		border: 3px solid #f3f3f3;
+		border-top: 3px solid var(--cta);
+		border-radius: 50%;
+		animation: spin 1s linear infinite;
+	}
+
+	@media (max-width: 600px) {
+		.promo-content { flex-direction: column; text-align: center; }
+		.favorites-grid { grid-template-columns: 1fr; }
 	}
 </style>

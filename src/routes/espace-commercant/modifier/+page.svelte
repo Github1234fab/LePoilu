@@ -100,7 +100,7 @@
 			}
 		} catch (error) {
 			console.error('Error fetching sponsor:', error);
-			errorMsg = 'Impossible de charger vos données.';
+			errorMsg = 'Impossible de charger tes données.';
 		} finally {
 			loading = false;
 		}
@@ -193,14 +193,14 @@
 		<header class="edit-header">
 			<h1>Modifier ma fiche</h1>
 			<p>
-				Mettez à jour les informations de votre vitrine visible par les utilisateurs du Poilu.
+				Mets à jour les informations de ta vitrine visible par les utilisateurs du Poilu.
 			</p>
 		</header>
 
 		{#if loading}
 			<div class="loading-state">
 				<div class="spinner"></div>
-				<p>Chargement de vos données...</p>
+				<p>Chargement de tes données...</p>
 			</div>
 		{:else if sponsor}
 			<div class="edit-form-wrapper" in:fade>
@@ -236,15 +236,15 @@
 
 					<div class="fixed-grid">
 						<div class="fixed-item">
-							<label>NOM DU COMMERCE</label>
+							<!-- <label>NOM DU COMMERCE</label> -->
 							<p>{businessName}</p>
 						</div>
 						<div class="fixed-item">
-							<label>CATÉGORIE</label>
+							<!-- <label>CATÉGORIE</label> -->
 							<p>{category}</p>
 						</div>
 						<div class="fixed-item full-width">
-							<label>ADRESSE</label>
+							<!-- <label>ADRESSE</label> -->
 							<p>{address}, {postalCode} {city}</p>
 						</div>
 					</div>
@@ -258,16 +258,16 @@
 					</div>
 
 					<div class="input-field">
-						<label for="description">Décrivez votre activité <span>*</span></label>
+						<label for="description">Décris ton activité <span>*</span></label>
 						<textarea
 							id="description"
 							bind:value={description}
 							maxlength="300"
 							rows="5"
-							placeholder="Vos spécialités, l'aspect unique de votre commerce..."
+							placeholder="Tes spécialités, l'aspect unique de ton commerce..."
 						></textarea>
 						<div class="field-footer">
-							<span class="hint">💡 Soyez concis et percutant</span>
+							<span class="hint">💡 Sois concis et percutant</span>
 							<span class="counter {description.length > 280 ? 'warning' : ''}">{description.length}/300</span>
 						</div>
 					</div>
@@ -287,7 +287,7 @@
 						</div>
 						<div class="input-field">
 							<label for="email">Email public <span>*</span></label>
-							<input type="email" id="email" bind:value={email} placeholder="contact@votre-commerce.fr" />
+							<input type="email" id="email" bind:value={email} placeholder="contact@ton-commerce.fr" />
 						</div>
 						<div class="input-field full-width">
 							<label for="website">
@@ -299,7 +299,7 @@
 								id="website"
 								bind:value={website}
 								disabled={!isPremium}
-								placeholder="https://votre-site.fr"
+								placeholder="https://ton-site.fr"
 							/>
 							{#if !isPremium}
 								<p class="field-info">L'ajout d'un site web est réservé aux abonnés Premium.</p>
@@ -322,7 +322,7 @@
 
 					{#if hasHours}
 						<div class="hours-container" in:slide>
-							<p class="hours-hint">Indiquez vos tranches horaires (ex: 9h-12h / 14h-18h).</p>
+							<p class="hours-hint">Indique tes tranches horaires (ex: 9h-12h / 14h-18h).</p>
 							
 							<div class="hours-grid">
 								<div class="day-row">
@@ -523,14 +523,14 @@
 
 	.fixed-item.full-width { grid-column: span 2; }
 
-	.fixed-item label {
+	/* .fixed-item label {
 		font-size: 0.7rem;
 		font-weight: 800;
 		color: #94a3b8;
 		letter-spacing: 0.1em;
 		display: block;
 		margin-bottom: 0.25rem;
-	}
+	} */
 
 	.fixed-item p { font-weight: 600; color: #334155; font-size: 1rem; }
 

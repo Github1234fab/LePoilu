@@ -5,8 +5,8 @@
 	import PoiluMobile from '../../lib/assets/Poilu_mobile.png';
 
 	const downloadLinks = {
-		ios: 'https://apps.apple.com/fr/app/le-poilu/id6757426596',
-		android: 'https://play.google.com/store/games?hl=fr'
+		ios: 'https://apps.apple.com/fr/app/le-poilu-officiel/id6759300549',
+		android: 'https://play.google.com/store/apps/details?id=com.gralypho.lepoilu'
 	};
 </script>
 
@@ -24,7 +24,7 @@
 		<div class="hero-content">
 			<h1 class="hero-title">Télécharger l'application</h1>
 			<p class="hero-subtitle">
-				Découvrez tous les événements locaux de l'Ouest Lyonnais directement depuis votre smartphone
+				Découvre tous les événements locaux de l'Ouest Lyonnais directement depuis ton smartphone
 			</p>
 
 			<div class="download-section">
@@ -51,7 +51,7 @@
 		<div class="features-header">
 			<h2 class="section-title">Pourquoi télécharger l'app ?</h2>
 			<p class="section-description">
-				Profitez d'une expérience optimisée pour découvrir les événements près de chez vous
+				Profite d'une expérience optimisée pour découvrir les événements près de chez toi
 			</p>
 		</div>
 
@@ -62,7 +62,7 @@
 				</div>
 				<h3 class="feature-title">Accès rapide</h3>
 				<p class="feature-description">
-					Consultez instantanément les événements sans ouvrir votre navigateur
+					Consulte instantanément les événements sans ouvrir ton navigateur
 				</p>
 			</div>
 
@@ -72,7 +72,7 @@
 				</div>
 				<h3 class="feature-title">Notifications</h3>
 				<p class="feature-description">
-					Recevez des alertes pour les nouveaux événements qui vous intéressent
+					Reçois des alertes pour les nouveaux événements qui t'intéressent
 				</p>
 			</div>
 
@@ -82,7 +82,7 @@
 				</div>
 				<h3 class="feature-title">Géolocalisation</h3>
 				<p class="feature-description">
-					Trouvez automatiquement les événements les plus proches de vous
+					Trouve automatiquement les événements les plus proches de toi
 				</p>
 			</div>
 
@@ -92,7 +92,7 @@
 				</div>
 				<h3 class="feature-title">Favoris</h3>
 				<p class="feature-description">
-					Enregistrez vos événements préférés et ne ratez plus rien
+					Enregistre tes événements préférés et ne rate plus rien
 				</p>
 			</div>
 		</div>

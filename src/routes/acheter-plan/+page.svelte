@@ -107,8 +107,8 @@
 <div class="page-container">
 	<div class="checkout-wrapper">
 		<div class="header-section" in:fly={{ y: -20, duration: 800 }}>
-			<h1>Finaliser votre commande</h1>
-			<p>Connectez-vous et payez en toute sécurité.</p>
+			<h1>Finalise ta commande</h1>
+			<p>Connecte-toi et paye en toute sécurité.</p>
 		</div>
 
 		<div class="checkout-grid centered-grid">

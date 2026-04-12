@@ -7,7 +7,7 @@
 	<title>À propos — Le Poilu</title>
 	<meta
 		name="description"
-		content="Le Poilu est une application locale pour découvrir et publier des événements près de chez vous."
+		content="Le Poilu est une application locale pour découvrir et publier des événements près de chez toi."
 	/>
 </svelte:head>
 
@@ -17,7 +17,7 @@
 		<div class="hero-content">
 			<h1 class="hero-title">À propos du Poilu</h1>
 			<p class="hero-subtitle">
-				L'application qui connecte les habitants de l'Ouest Lyonnais avec les événements locaux
+				L'application qui connecte les habitants de l'Ouest Lyonnais aux événements et aux commerçants locaux.
 			</p>
 			<img class="poilu-face" src={PoiluFace} alt="Personnage le poilu de face" />
 		</div>

@@ -32,7 +32,7 @@
 			<div class="footer-links">
 				<h4 class="footer-heading">Application</h4>
 				<ul class="footer-list">
-					<li><a href="/Fonctionnalités" class="footer-link">Fonctionnalités</a></li>
+					<li><a href="/Concept" class="footer-link">Le Concept</a></li>
 					<li><a href="/Telecharger" class="footer-link">Télécharger</a></li>
 					<li><a href="/Tarifs" class="footer-link">Tarifs</a></li>
 				</ul>
@@ -43,7 +43,7 @@
 				<ul class="footer-list">
 					<li><a href="/Apropos" class="footer-link">À propos</a></li>
 					<li><a href="/Contact" class="footer-link">Contact</a></li>
-					<li><a href="/carnet/rejoindre" class="footer-link">Commerçant</a></li>
+					<li><a href="/carnet/rejoindre" class="footer-link">Création de vitrine</a></li>
 				</ul>
 			</div>
 

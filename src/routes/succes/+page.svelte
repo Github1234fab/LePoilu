@@ -23,19 +23,19 @@
 
 		{#if type === 'free'}
 			<h1>Annonce créée !</h1>
-			<p class="subtitle">Votre annonce a bien été enregistrée.</p>
+			<p class="subtitle">Ton annonce a bien été enregistrée.</p>
 		{:else}
-			<h1>Merci pour votre commande !</h1>
-			<p class="subtitle">Votre paiement a été validé avec succès.</p>
+			<h1>Merci pour ta commande !</h1>
+			<p class="subtitle">Ton paiement a été validé avec succès.</p>
 		{/if}
 
 		<div class="details">
-			<p>Un email de confirmation vous a été envoyé.</p>
+			<p>Un email de confirmation t'a été envoyé.</p>
 			{#if sessionId}
 				<p class="ref">Référence transaction : <br /><code>{sessionId.slice(0, 20)}...</code></p>
 			{/if}
 			<p class="info">
-				Votre demande est en cours de traitement et sera active dans quelques instants.
+				Ta demande est en cours de traitement et sera active dans quelques instants.
 			</p>
 		</div>
 

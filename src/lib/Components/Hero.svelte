@@ -4,8 +4,8 @@
 	import Map from '../assets/Map.png';
 	import Poilu from '../assets/Poilu.png';
 	export let downloadLinks = {
-		ios: 'https://www.apple.com/fr/app-store/',
-		android: 'https://play.google.com/store/games?hl=fr'
+		ios: 'https://apps.apple.com/fr/app/le-poilu-officiel/id6759300549',
+		android: 'https://play.google.com/store/apps/details?id=com.gralypho.lepoilu'
 	};
 </script>
 
@@ -14,30 +14,31 @@
 		<!-- <h2 class="hero-subtitle">Tous les événements de ta région en un seul endroit</h2> -->
 		<h1 class="hero-title">Le Poilu <br /><span>L'agenda de l'Ouest Lyonnais</span></h1>
 
-		<!-- <h2 class="hero-subtitle">Ne rate plus rien près de chez toi !</h2> -->
 		<p class="hero-description">
-			<!-- Découvre les concerts, les festivals, les marchés, les soirées, et toutes les activités
-			locales. -->
-			Concerts, spectacles, fêtes, randos, etc - découvre tout ce qui se passe autour de chez toi.
+			Retrouve facilement tous les évènements de l'Ouest Lyonnais, <br />ainsi que tous les bons plans de tes commerçants.
 		</p>
 
 		<div class="organizer-chips">
 			<a href="/Tarifs" class="chip chip-event">
 				<span class="chip-icon">📅</span>
-				<span>Publier un événement</span>
+				<span>Publication d'annonce</span>
 			</a>
-			<a href="/carnet/rejoindre" class="chip chip-shop">
+			<!-- <a href="/carnet" class="chip chip-deals">
+				<span class="chip-icon">🏷️</span>
+				<span>Voir les Bons Plans</span>
+			</a> -->
+			<a href="/carnet/rejoindre" class="chip chip-merchant">
 				<span class="chip-icon">🏪</span>
-				<span>Créer mon espace commerçant</span>
+				<span>Création de vitrine</span>
 			</a>
 		</div>
 
 		<div class="hero-cta">
 			<img class="lePoilu" src={Poilu} alt="Le personnage Le Poilu" />
-			<p>Ne rates plus jamais un événement avec le Poilu.</p>
+			<p>Ne rate plus jamais un événement avec le Poilu.</p>
 			<div class="container_app-link">
 				<a
-					href="https://apps.apple.com/fr/app/le-poilu/id6757426596"
+					href="https://apps.apple.com/fr/app/le-poilu-officiel/id6759300549"
 					class="btn-app-link"
 					target="_blank"
 				>
@@ -86,7 +87,8 @@
 		font-weight: 900;
 		/* margin-top: var(--spacing-sm); */
 		text-align: center;
-		line-height: 70px;
+		line-height: 1.1;
+	letter-spacing: -2px;
 	}
 	.hero-title span {
 		font-size: 3rem;
@@ -300,7 +302,7 @@
 
 	.chip-event {
 		background-color: white;
-		color: #ff6101;
+		color: #10b981; /* Matches the new green in header */
 		box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 	}
 
@@ -308,13 +310,20 @@
 		box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
 	}
 
-	.chip-shop {
+	/* .chip-deals {
+		background-color: white;
+		color: var(--cta);
+		box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+	} */
+
+	.chip-merchant {
 		background-color: rgba(255, 255, 255, 0.15);
 		color: white;
 		border: 2px solid white;
+		padding: 10px 22px;
 	}
 
-	.chip-shop:hover {
+	.chip-merchant:hover {
 		background-color: rgba(255, 255, 255, 0.25);
 	}
 

@@ -31,10 +31,10 @@
 
 		<!-- Navigation desktop -->
 		<nav class="nav-desktop">
-			<a href="/Fonctionnalités" class="nav-link">Fonctionnalités</a>
-			<a href="/Tarifs" class="nav-link">Tarifs</a>
-			<a href="/carnet" class="nav-link">Les Bons Plans</a>
-			<a href="/carnet/rejoindre" class="nav-link">Commerçant</a>
+			<a href="/Tarifs" class="nav-link nav-publish">Publication d'annonce</a>
+			<a href="/carnet/rejoindre" class="nav-link nav-merchant">Création de vitrine</a>
+			<a href="/carnet" class="nav-link nav-deals">Les Bons Plans</a>
+			<a href="/Concept" class="nav-link">Le Concept</a>
 			<a href="/Apropos" class="nav-link">À propos</a>
 			<a href="/Contact" class="nav-link">Contact</a>
 		</nav>
@@ -73,12 +73,12 @@
 				<i class="fa-solid fa-circle-user"></i>
 				{user ? 'Mon Compte' : 'Se connecter'}
 			</a>
-			<a href="/Fonctionnalités" class="nav-link-mobile" on:click={closeMenu}>Fonctionnalités</a>
-			<a href="/Tarifs" class="nav-link-mobile" on:click={closeMenu}>Tarifs</a>
-			<a href="/carnet" class="nav-link-mobile" on:click={closeMenu}>Les Bons Plans</a>
+			<a href="/Tarifs" class="nav-link-mobile nav-publish-mobile" on:click={closeMenu}>Publication d'annonce</a>
+			<a href="/carnet/rejoindre" class="nav-link-mobile nav-merchant-mobile" on:click={closeMenu}>Création de vitrine</a>
+			<a href="/carnet" class="nav-link-mobile nav-deals-mobile" on:click={closeMenu}>Les Bons Plans</a>
+			<a href="/Concept" class="nav-link-mobile" on:click={closeMenu}>Le Concept</a>
 			<a href="/Apropos" class="nav-link-mobile" on:click={closeMenu}>À propos</a>
 			<a href="/Contact" class="nav-link-mobile" on:click={closeMenu}>Contact</a>
-			<a href="/carnet/rejoindre" class="nav-link-mobile" on:click={closeMenu}>Commerçant</a>
 			<a href="/Telecharger" class="nav-link-mobile" on:click={closeMenu}>Télécharger l'app</a>
 		</nav>
 	{/if}
@@ -119,16 +119,18 @@
 
 	.nav-desktop {
 		display: flex;
-		gap: 2rem;
+		gap: 1rem;
 		align-items: center;
+		justify-content: center;
 	}
 
 	.nav-link {
 		text-decoration: none;
 		color: var(--textColor);
-		font-weight: 500;
+		font-weight: 400;
 		transition: color var(--transition-normal);
 		position: relative;
+		font-size: 0.9rem;
 	}
 
 	.nav-link::after {
@@ -149,6 +151,21 @@
 	.nav-link:hover {
 		color: var(--primaryColor);
 	}
+
+	/* Special Actions Colors */
+	/* .nav-deals { color: var(--cta); font-weight: 400; }
+	
+	
+	.nav-publish { color: #10b981; font-weight: 400; }
+	
+
+	.nav-merchant { color: #4338ca; font-weight: 400; } */
+
+
+	/* Mobile Actions Colors */
+	.nav-deals-mobile { color: var(--cta) !important; font-weight: 700; }
+	.nav-publish-mobile { color: #10b981 !important; font-weight: 700; }
+	.nav-merchant-mobile { color: #4338ca !important; font-weight: 700; }
 
 	/* Header Actions (User + CTA) */
 	.header-actions {
@@ -181,7 +198,7 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		font-family: var(--FFHead); /* Use header font for style */
+		font-family: var(--FFTitle); /* Use header font for style */
 		font-weight: 700;
 		font-size: 1.5rem;
 		border: 2px solid white;
@@ -317,8 +334,8 @@
 	   MEDIA QUERIES RESPONSIVE
 	   =================================== */
 
-	/* Mobile: 768px et moins */
-	@media (max-width: 768px) {
+	/* Mobile: 1024px et moins (Bascule burger plus tôt pour éviter chevauchement) */
+	@media (max-width: 1024px) {
 		.header-container {
 			padding: var(--spacing-sm);
 		}
@@ -356,19 +373,23 @@
 		}
 	}
 
-	/* Tablet large: 1024px - 900px */
-	@media (max-width: 1024px) and (min-width: 901px) {
+	/* Tablet large & Small Desktop: 1200px - 1025px */
+	@media (max-width: 1200px) and (min-width: 1025px) {
 		.nav-desktop {
-			gap: 1.2rem;
+			gap: 0.8rem;
 		}
 
 		.nav-link {
-			font-size: 0.9rem;
+			font-size: 0.85rem;
 		}
 
 		.btn-header {
-			padding: 0.6rem 1.2rem;
-			font-size: 0.9rem;
+			padding: 0.6rem 1rem;
+			font-size: 0.85rem;
+		}
+		
+		.poilu-img {
+			height: 80px;
 		}
 	}
 

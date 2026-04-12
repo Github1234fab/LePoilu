@@ -77,7 +77,7 @@
 			}
 		} catch (error) {
 			console.error('[Espace Commercant] Erreur:', error);
-			errorMsg = 'Impossible de charger vos données.';
+			errorMsg = 'Impossible de charger tes données.';
 		} finally {
 			loading = false;
 		}
@@ -142,9 +142,9 @@
 				<!-- Hero Section -->
 				<header class="marketing-hero-card">
 					<div class="hero-glow"></div>
-					<h2 class="marketing-title">Boostez votre CA avec Le Poilu</h2>
+					<h2 class="marketing-title">Booste ton CA avec Le Poilu</h2>
 					<p class="marketing-subtitle">
-						Ne soyez pas juste "présent". Soyez <span class="highlight">attractif</span> avec le concept 
+						Ne sois pas juste "présent". Sois <span class="highlight">attractif</span> avec le concept 
 						<strong>Gagnant-Gagnant</strong> des Bons Plans.
 					</p>
 				</header>
@@ -158,7 +158,7 @@
 							</div>
 							<div class="benefit-content">
 								<h3>Le concept "Gagnant-Gagnant"</h3>
-								<p>Le client cherche un bon plan, vous cherchez des clients. Une offre exclusive crée le déclic immédiat.</p>
+								<p>Le client cherche un bon plan, tu cherches des clients. Une offre exclusive crée le déclic immédiat.</p>
 							</div>
 						</div>
 
@@ -168,7 +168,7 @@
 							</div>
 							<div class="benefit-content">
 								<h3>Visibilité Premium</h3>
-								<p>Apparaissez en tête de liste et gérez vos propres photos pour séduire les habitants.</p>
+								<p>Apparais en tête de liste et gère tes propres photos pour séduire les habitants.</p>
 							</div>
 						</div>
 
@@ -177,8 +177,8 @@
 								<StatsChartIcon />
 							</div>
 							<div class="benefit-content">
-								<h3>Mesurez votre succès</h3>
-								<p>Suivez en temps réel les vues et les clics générés par votre vitrine et vos offres.</p>
+								<h3>Mesure ton succès</h3>
+								<p>Suis en temps réel les vues et les clics générés par ta vitrine et tes offres.</p>
 							</div>
 						</div>
 
@@ -255,8 +255,8 @@
 
 				<!-- Footer Contact -->
 				<footer class="marketing-footer">
-					<h4>Une question avant de vous lancer ?</h4>
-					<p>Notre équipe est là pour vous accompagner.</p>
+					<h4>Une question avant de te lancer ?</h4>
+					<p>Notre équipe est là pour t'accompagner.</p>
 					<a href="/contact" class="btn-contact-outline">Nous contacter</a>
 				</footer>
 			</div>
@@ -265,7 +265,7 @@
 				<header class="dashboard-hero">
 					<div class="hero-glow"></div>
 					<div class="hero-text">
-						<h1>Ravi de vous revoir,</h1>
+						<h1>Ravi de te revoir,</h1>
 						<h2 class="business-name-big">{sponsor.businessName}</h2>
 						<p class="category-tag">{sponsor.category}</p>
 					</div>
@@ -274,8 +274,8 @@
 				<section class="card profile-card">
 					<div class="profile-header">
 						<div class="profile-info">
-							<h3>Statut de votre vitrine</h3>
-							<p>Gérez la visibilité de votre commerce</p>
+							<h3>Statut de ta vitrine</h3>
+							<p>Gère la visibilité de ton commerce</p>
 						</div>
 						{#if isPremium}
 							<div class="premium-badge">
@@ -410,7 +410,7 @@
 									</div>
 									<div class="action-text">
 										<h4>Voir ma fiche publique</h4>
-										<p>Découvrez comment les utilisateurs voient votre vitrine</p>
+										<p>Découvre comment les utilisateurs voient ta vitrine</p>
 									</div>
 								</div>
 								<ChevronRightIcon class="chevron-icon" />
@@ -422,8 +422,8 @@
 				<section class="card support-card">
 					<h3><span class="emoji-icon">❓</span> Besoin d'aide ?</h3>
 					<p>
-						Une question sur votre abonnement, vos statistiques ou besoin d'aide pour optimiser
-						votre fiche ? Notre équipe est là pour vous.
+						Une question sur ton abonnement, tes statistiques ou besoin d'aide pour optimiser
+						ta fiche ? Notre équipe est là pour toi.
 					</p>
 					<a href="/contact" class="btn-support">
 						<MailIcon class="support-icon" />

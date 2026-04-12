@@ -16,10 +16,10 @@
 		<div class="hero-content">
 			<div class="badge-pro" in:fade={{ delay: 100 }}><i class="fa-solid fa-store"></i> ESPACE PRO</div>
 			<h1 in:fly={{ y: 20, duration: 600 }}>
-				Créer mon espace <span class="highlight">commerçant</span> sur Le Poilu.
+				Créer ma <span class="highlight">vitrine</span> sur Le Poilu.
 			</h1>
 			<p class="hero-subtitle" in:fade={{ delay: 200 }}>
-				Le principe est simple : Vous proposez une offre exclusive sur l'app. La tribu du Poilu
+				Le principe est simple : Tu proposes une offre exclusive sur l'app. La tribu du Poilu
 				vient en profiter !
 			</p>
 			<a href="/carnet/rejoindre/inscription" class="cta-button big-pulse">
@@ -31,7 +31,7 @@
 			<div class="phone-mockup">
 				<img src={screenF} alt="Exemple d'offre sur mobile" />
 				<div class="floating-card">
-					<i class="fa-solid fa-check-circle text-success"></i> "Bonjour ! J'ai vu votre offre sur Le
+					<i class="fa-solid fa-check-circle text-success"></i> "Bonjour ! J'ai vu ton offre sur Le
 					Poilu."
 				</div>
 			</div>
@@ -40,9 +40,9 @@
 	
 	<!-- QUICK ACTION SECTION (REMOVED FINAL CTA DOWN, MOVED UP) -->
 	<section class="final-cta">
-		<h2>Prêt à booster votre activité ?</h2>
+		<h2>Prêt à booster ton activité ?</h2>
 		<a href="/carnet/rejoindre/inscription" class="cta-button">
-			Créer mon espace commerçant <i class="fa-solid fa-star"></i>
+			Créer ma vitrine <i class="fa-solid fa-star"></i>
 		</a>
 		<p class="sub-cta">Sans engagement. Annulable à tout moment.</p>
 	</section>
@@ -53,13 +53,13 @@
 		<div class="steps-grid">
 			<div class="step-card">
 				<div class="step-number">1</div>
-				<h3>Vous créez votre fiche</h3>
-				<p>Renseignez vos infos et choisissez votre plan Premium.</p>
+				<h3>Tu crées ta fiche</h3>
+				<p>Renseigne tes infos et choisis ton plan Premium.</p>
 			</div>
 			<div class="step-line"></div>
 			<div class="step-card">
 				<div class="step-number">2</div>
-				<h3>Vous définissez une offre</h3>
+				<h3>Tu définis une offre</h3>
 				<p>Ex: "Café offert", "-20% le mardi", "Dessert offert"...</p>
 			</div>
 			<div class="step-line"></div>
@@ -75,7 +75,7 @@
 	<section class="showcase-section">
 		<h2 class="section-title">L'application "All-in-one" de l'ouest Lyonnais</h2>
 		<p class="section-subtitle">
-			Une interface moderne et intuitive qui met votre commerce en valeur.
+			Une interface moderne et intuitive qui met ton commerce en valeur.
 		</p>
 
 		<div class="app-screens">
@@ -85,11 +85,11 @@
 			</div>
 			<div class="screen-item center-screen" in:fly={{ y: 50, duration: 800, delay: 200 }}>
 				<img src={screenB} alt="Fiche commerce détaillée" />
-				<div class="screen-caption">Votre Fiche Complète</div>
+				<div class="screen-caption">Ta Fiche Complète</div>
 			</div>
 			<div class="screen-item" in:fly={{ y: 50, duration: 800, delay: 400 }}>
 				<img src={screenD} alt="Offre promotionalle" />
-				<div class="screen-caption">Vos Offres Exclusives</div>
+				<div class="screen-caption">Tes Offres Exclusives</div>
 			</div>
 		</div>
 	</section>
@@ -97,7 +97,7 @@
 	<!-- EXAMPLES SECTION -->
 	<section class="examples-section">
 		<h2 class="section-title">Des exemples concrets</h2>
-		<p class="section-subtitle">Quel que soit votre métier, vous avez une offre à proposer.</p>
+		<p class="section-subtitle">Quel que soit ton métier, tu as une offre à proposer.</p>
 
 		<div class="examples-grid">
 			<!-- Example 1 -->

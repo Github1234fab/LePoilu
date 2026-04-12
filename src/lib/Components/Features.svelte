@@ -2,11 +2,11 @@
 	import { applyAction } from '$app/forms';
 	import PoiluFace from '../assets/Poilu-outils.png';
 	import Details from '../assets/details.jpg';
-	import Events from '../assets/events-v2.jpg';
-	import Filters from '../assets/filters.jpg';
+	import Events from '../assets/screenShots/eventsPictures.png';
+	import Filters from '../assets/screenShots/FiltreLieux.png';
 	import Favoris from '../assets/favoris.jpg';
 	import Creation from '../assets/creation.jpg';
-	import Paiements from '../assets/paiements.jpg';
+	import Paiements from '../assets/screenShots/widgets.png';
 
 	const features = [
 		{
@@ -24,7 +24,7 @@
 		{
 			icon: 'fa-solid fa-walkie-talkie',
 			title: `Création d'events`,
-			description: `Créer tes évènements depuis l'application, en un clin d'oeil. Envoye, paye, c'est en ligne !`,
+			description: `Crée tes événements depuis l'application, en un clin d'œil. Envoie, c'est en ligne !`,
 			img: Creation
 		},
 		{
@@ -35,8 +35,8 @@
 		},
 		{
 			icon: 'fa-solid fa-credit-card',
-			title: 'Historique des paiements',
-			description: 'Accéde en un clic à tes paiements, télécharge tes factures, etc.',
+			title: 'Widgets',
+			description: 'Accède en un clic à tous les widgets, hyper-pratique !',
 			img: Paiements
 		},
 		{
@@ -51,7 +51,7 @@
 <section class="features">
 	
 		<div class="features-header">
-			<h2 class="section-title">Tout ce dont tu as besoin pour sortir avec Le Poilu</h2>
+			<h2 class="section-title">Tous les évènements de l'Ouest Lyonnais dans ta poche</h2>
 			<p class="section-subtitle">
 				Une application complète avec tous les outils pour ne plus jamais manquer un événement
 				local !

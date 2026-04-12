@@ -4,6 +4,8 @@
 	import { auth, db } from '$lib/firebase';
 	import { collection, query, where, orderBy, onSnapshot, getDocs } from 'firebase/firestore';
 	import { onAuthStateChanged } from 'firebase/auth';
+	import FavoriteHeart from '$lib/Components/FavoriteHeart.svelte';
+	import { getFavoriteSponsors } from '$lib/favorites';
 
 	import AppsIcon from '$lib/Components/icons/AppsIcon.svelte';
 	import RestaurantIcon from '$lib/Components/icons/RestaurantIcon.svelte';
@@ -22,6 +24,7 @@
 	let loading = true;
 	let selectedSector = 'all';
 	let userHasSponsor = false;
+	let favoriteSponsors = [];
 	let authUnsubscribe;
 	let sponsorsUnsubscribe;
 
@@ -67,11 +70,15 @@
 					const sq = query(collection(db, 'Sponsors'), where('userId', '==', user.uid));
 					const snapshot = await getDocs(sq);
 					userHasSponsor = !snapshot.empty;
+
+					// Fetch favorites
+					favoriteSponsors = await getFavoriteSponsors(user.uid);
 				} catch (error) {
 					userHasSponsor = false;
 				}
 			} else {
 				userHasSponsor = false;
+				favoriteSponsors = [];
 			}
 		});
 	});
@@ -204,6 +211,13 @@
 									MODÈLE
 								</div>
 							{/if}
+
+							<div class="favorite-overlay">
+								<FavoriteHeart 
+									sponsorId={sponsor.id} 
+									isFavorite={favoriteSponsors.includes(sponsor.id)} 
+								/>
+							</div>
 
 							{#if sponsor.images && sponsor.images.length > 0}
 								<img
@@ -771,6 +785,13 @@
 
 	.sponsor-card:hover .badge-offer {
 		transform: scale(1.05);
+	}
+
+	.favorite-overlay {
+		position: absolute;
+		top: 12px;
+		right: 12px;
+		z-index: 30;
 	}
 
 	.icon-small {

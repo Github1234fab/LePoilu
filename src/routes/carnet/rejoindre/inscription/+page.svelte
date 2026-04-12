@@ -32,7 +32,7 @@
 				'Nom du commerce',
 				'Catégorie',
 				'Adresse',
-				"Pas d'offre promotionnelle pour vos clients (sur présentation de l'app)",
+				"Pas d'offre promotionnelle pour tes clients (sur présentation de l'app)",
 				'Pas de photos',
 				'Pas de lien web',
 				"Pas d'horaires",
@@ -52,7 +52,7 @@
 				'Photos',
 				'Horaires',
 				'Lien web',
-				"Offre promotionnelle pour vos clients (sur présentation de l'app)",
+				"Offre promotionnelle pour tes clients (sur présentation de l'app)",
 				"Bouton d'appel",
 				'Meilleure visibilité'
 			]
@@ -135,7 +135,7 @@
 		{
 			icon: 'fa-eye',
 			title: 'Visibilité locale',
-			desc: 'Touchez les utilisateurs autour de votre commerce.'
+			desc: 'Touchez les utilisateurs autour de ton commerce.'
 		},
 		{
 			icon: 'fa-ticket',
@@ -145,7 +145,7 @@
 		{
 			icon: 'fa-store',
 			title: 'Vitrine digitale',
-			desc: "Votre présence sur l'application Le Poilu, avec un espace Pro."
+			desc: "Ta présence sur l'application Le Poilu, avec un espace Pro."
 		}
 	];
 
@@ -188,7 +188,7 @@
 		try {
 			// 0. Validate SIRET
 			if (!isLuhnValid(form.siret)) {
-				throw new Error('Le numéro SIRET est invalide. Veuillez vérifier votre saisie.');
+				throw new Error('Le numéro SIRET est invalide. Veuillez vérifier ta saisie.');
 			}
 
 			// 1. Authentification (Forced Permanent Account)
@@ -299,13 +299,13 @@
 <div class="page-wrapper">
 	<div class="form-container-centered">
 		<div class="form-header-centered">
-			<h1>Finalisez votre inscription</h1>
-			<p>Rejoignez le réseau des commerçants du Poilu en quelques clics.</p>
+			<h1>Finalise ton inscription</h1>
+			<p>Rejoins le réseau des commerçants du Poilu en quelques clics.</p>
 		</div>
 
 		<div class="form-card">
 			<div class="form-header">
-				<h2>Votre Fiche Commerce</h2>
+				<h2>Ta Fiche Commerce</h2>
 				<div class="toggle-container">
 					<button
 						class="toggle-btn {selectedPlan === 'basic' ? 'active' : ''}"
@@ -372,7 +372,7 @@
 
 				<div class="form-row grid-2">
 					<div class="input-group">
-						<label for="contact">Votre nom</label>
+						<label for="contact">Ton nom</label>
 						<input type="text" id="contact" bind:value={form.contactName} required />
 					</div>
 					<div class="input-group">
@@ -407,12 +407,12 @@
 
 						<div class="form-row">
 							<div class="input-group">
-								<label for="description">Description de votre activité</label>
+								<label for="description">Description de ton activité</label>
 								<textarea
 									id="description"
 									bind:value={form.description}
 									rows="3"
-									placeholder="Présentez votre activité..."
+									placeholder="Présente ton activité..."
 								></textarea>
 							</div>
 						</div>

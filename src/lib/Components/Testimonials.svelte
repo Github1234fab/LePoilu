@@ -4,8 +4,8 @@
 	// import AppScreen from "../../lib/assets/events-v2.jpg"
 
 	export let downloadLinks = {
-		ios: 'https://apps.apple.com/fr/app/le-poilu/id6757426596',
-		android: 'https://play.google.com/store/games?hl=fr'
+	ios: 'https://apps.apple.com/fr/app/le-poilu-officiel/id6759300549',
+		android: 'https://play.google.com/store/apps/details?id=com.gralypho.lepoilu'
 	};
 	const testimonials = [
 		{

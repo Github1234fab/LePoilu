@@ -5,7 +5,7 @@
 <div class="pre-hero">
 	<div class="wrapper-title">
 		<!-- <h2>L'application pour publier et trouver tous les événements près de chez toi.</h2> -->
-		<h2>Tous les événements de l'Ouest Lyonnais concentrés sur une appli.</h2>
+		<h2>Tous les événements de l'Ouest Lyonnais concentrés sur une seule appli.</h2>
 	</div>
 
 	<div class="paragraph">
@@ -36,7 +36,6 @@
 		align-items: center;
 		justify-content: center;
 		padding: var(--spacing-md) 0;
-		margin-bottom: 100px;
 	}
 
 	.wrapper-title {

@@ -256,14 +256,14 @@
 			window.location.href = data.url;
 		} catch (error) {
 			console.error('Checkout process error:', error);
-			errorMsg = 'Une erreur est survenue lors du processus. Veuillez réessayer.';
+			errorMsg = 'Une erreur est survenue lors du processus. Réessaie un peu plus tard.';
 			isProcessing = false;
 		}
 	}
 </script>
 
 <svelte:head>
-	<title>{selectedPlan ? 'Finaliser votre inscription' : 'Rejoindre le Carnet'} - Le Poilu</title>
+	<title>{selectedPlan ? 'Finalise ton inscription' : 'Rejoins Le Carnet'} - Le Poilu</title>
 </svelte:head>
 
 <div class="min-h-screen bg-gray-50 pb-20 pt-6">
@@ -281,17 +281,17 @@
 					class="inline-flex items-center text-sm font-medium text-gray-500 hover:text-gray-900 mb-6 transition-colors"
 				>
 					<ChevronRightIcon class="h-4 w-4 mr-1 rotate-180" />
-					Retour à l'espace commerçant
+					Retour à mon espace vitrine
 				</a>
 
 				<!-- Header -->
 				<div class="bg-[#FFF8F0] p-8 rounded-2xl border border-orange-100 mb-10 text-center">
 					<h1 class="text-3xl md:text-4xl font-bold text-gray-900 font-poppins mb-3">
-						Rejoignez Le Carnet du Poilu
+						Rejoins Le Carnet du Poilu
 					</h1>
 					<p class="text-lg text-gray-700 max-w-2xl mx-auto">
-						Gagnez en visibilité auprès de milliers d'utilisateurs locaux de l'ouest Lyonnais et
-						propulsez votre commerce.
+						Gagne en visibilité auprès de milliers d'utilisateurs locaux de l'ouest Lyonnais et
+						propulse ton commerce.
 					</p>
 				</div>
 
@@ -311,7 +311,7 @@
 							<div>
 								<h3 class="text-lg font-bold text-gray-900 mb-1">Visibilité locale ciblée</h3>
 								<p class="text-gray-600">
-									Touchez directement les habitants de la région qui cherchent activement vos
+									Touchez directement les habitants de la région qui cherchent activement tes
 									services.
 								</p>
 							</div>
@@ -326,7 +326,7 @@
 							<div>
 								<h3 class="text-lg font-bold text-gray-900 mb-1">Offres exclusives</h3>
 								<p class="text-gray-600">
-									Proposez des réductions ou avantages aux utilisateurs de l'app pour les fidéliser.
+									Propose des réductions ou avantages aux utilisateurs de l'app pour les fidéliser.
 								</p>
 							</div>
 						</div>
@@ -340,7 +340,7 @@
 							<div>
 								<h3 class="text-lg font-bold text-gray-900 mb-1">Statistiques en direct</h3>
 								<p class="text-gray-600">
-									Suivez vos vues de profil, les clics et l'engagement global des utilisateurs.
+									Suis tes vues de profil, les clics et l'engagement global des utilisateurs.
 								</p>
 							</div>
 						</div>
@@ -354,7 +354,7 @@
 							<div>
 								<h3 class="text-lg font-bold text-gray-900 mb-1">Kit vitrine inclus</h3>
 								<p class="text-gray-600">
-									Recevez un autocollant et une belle affiche Le Poilu pour votre établissement
+									Reçois un autocollant et une belle affiche Le Poilu pour ton établissement
 									physique.
 								</p>
 							</div>
@@ -429,7 +429,7 @@
 					<h2
 						class="text-xl font-bold text-center text-gray-900 mb-6 flex items-center justify-center gap-2"
 					>
-						<span>🛡️</span> Nos garanties commerçantes
+						<span>🛡️</span> Nos garanties professionnelles
 					</h2>
 
 					<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
@@ -454,9 +454,9 @@
 
 				<!-- Contact -->
 				<div class="text-center">
-					<h3 class="text-lg font-bold text-gray-900 mb-2">Une question avant de vous lancer ?</h3>
+					<h3 class="text-lg font-bold text-gray-900 mb-2">Une question avant de te lancer ?</h3>
 					<p class="text-gray-600 mb-6">
-						Notre équipe est là pour vous accompagner dans la numérisation de votre commerce.
+						Notre équipe est là pour t'accompagner dans la numérisation de ton commerce.
 					</p>
 					<a
 						href="/contact"
@@ -611,13 +611,13 @@
 
 								<div>
 									<label for="description" class="block text-sm font-bold text-gray-700 mb-2"
-										>Petite présentation de votre établissement</label
+										>Petite présentation de ton établissement</label
 									>
 									<textarea
 										id="description"
 										bind:value={description}
 										rows="3"
-										placeholder="Décrivez votre boutique, vos spécialités, pour donner envie..."
+										placeholder="Décris ta boutique, tes spécialités, pour donner envie..."
 										class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary resize-none"
 									></textarea>
 								</div>
@@ -658,13 +658,13 @@
 								<div class="flex items-start gap-2">
 									<GlobeOutlineIcon class="h-4 w-4 text-green-600 shrink-0 mt-0.5" />
 									<p class="text-xs text-green-800 font-medium leading-tight">
-										Vous serez redirigé vers Stripe pour un paiement sécurisé 3D Secure.
+										Tu seras redirigé vers Stripe pour un paiement sécurisé 3D Secure.
 									</p>
 								</div>
 								<div class="flex items-start gap-2">
 									<ShieldCheckmarkIcon class="h-4 w-4 text-green-600 shrink-0 mt-0.5" />
 									<p class="text-xs text-green-800 font-medium leading-tight">
-										Votre fiche sera modérée et publiée sous 24-48h.
+										Ta fiche sera modérée et publiée sous 24-48h.
 									</p>
 								</div>
 							</div>
@@ -683,7 +683,7 @@
 								{/if}
 							</button>
 							<p class="text-center text-xs text-gray-500 mt-4 leading-relaxed">
-								En cliquant sur "Payer", vous acceptez nos CGV et notre politique de
+								En cliquant sur "Payer", tu acceptes nos CGV et notre politique de
 								confidentialité.
 							</p>
 						</div>

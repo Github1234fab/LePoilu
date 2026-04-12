@@ -22,8 +22,6 @@
 		ticketingUrl: '',
 		advertiserUrl: '',
 		customStartTime: '',
-		customStartTime: '',
-		customEndTime: '',
 		customEndTime: ''
 	};
 
@@ -360,21 +358,20 @@
 </script>
 
 <svelte:head>
-	<title>Publier une annonce - Le Poilu</title>
+	<title>Publication d'annonce - Le Poilu</title>
 </svelte:head>
 
 <div class="page-container">
 	<div class="content-wrapper">
 		<header class="header-section" in:fly={{ y: -20, duration: 800 }}>
 			<h1 class="title-responsive">
-				Publier une annonce <span class="highlight">{plan === 'free' ? 'Gratuite' : 'Premium'}</span
-				>
+				Publication d'annonce <span class="highlight">{plan === 'free' ? 'Gratuite' : 'Premium'}</span>
 			</h1>
 			<p class="subtitle-responsive">
 				{#if plan === 'free'}
-					Partagez votre annonce avec la communauté.
+					Partage ton annonce avec la communauté.
 				{:else}
-					Boostez votre visibilité avec une annonce Pro.
+					Booste ta visibilité avec une annonce Pro.
 				{/if}
 			</p>
 		</header>
@@ -402,7 +399,7 @@
 					id="description"
 					bind:value={ad.description}
 					rows="5"
-					placeholder="Détails de votre annonce..."
+					placeholder="Détails de ton annonce..."
 				></textarea>
 			</div>
 
@@ -479,7 +476,7 @@
 							<input type="file" id="image" on:change={handleImageUpload} accept="image/*" />
 							<div class="upload-placeholder">
 								<i class="fa-solid fa-cloud-arrow-up"></i>
-								<span>{ad.image ? ad.image.name : 'Cliquez ou glissez votre image'}</span>
+								<span>{ad.image ? ad.image.name : 'Clique ou glisse ton image'}</span>
 							</div>
 						</div>
 					</div>
@@ -505,7 +502,7 @@
 									type="text"
 									id="advertiser"
 									bind:value={ad.advertiserUrl}
-									placeholder="votre-site.com"
+									placeholder="ton-site.com"
 								/>
 							</div>
 						</div>
@@ -516,13 +513,13 @@
 			{#if plan === 'free'}
 				<div class="free-plan-note">
 					<i class="fa-solid fa-image"></i>
-					<span>Votre annonce sera accompagnée du logo du Poilu.</span>
+					<span>Ton annonce sera accompagnée du logo du Poilu.</span>
 				</div>
 			{/if}
 
 			<p class="disclaimer-text">
-				<i class="fa-solid fa-circle-info"></i> Vérifiez bien vos informations avant de valider. Une
-				fois soumise, votre annonce sera relue par notre équipe de modération avant d'être publiée.
+				<i class="fa-solid fa-circle-info"></i> Vérifie bien tes informations avant de valider. Une
+				fois soumise, ton annonce sera relue par notre équipe de modération avant d'être publiée.
 			</p>
 
 			{#if uploadProgress}

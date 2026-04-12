@@ -76,7 +76,7 @@
 			}
 		} catch (error) {
 			console.error('Error fetching sponsor data:', error);
-			errorMsg = 'Impossible de charger vos données.';
+			errorMsg = 'Impossible de charger tes données.';
 		} finally {
 			loading = false;
 		}
@@ -117,8 +117,8 @@
 			});
 
 			successMsg = isActive
-				? 'Votre offre spéciale a été publiée avec succès !'
-				: 'Votre offre a été enregistrée, mais reste masquée pour le moment.';
+				? 'Ton offre spéciale a été publiée avec succès !'
+				: 'Ton offre a été enregistrée, mais reste masquée pour le moment.';
 
 			// Update local state to reflect changes in preview
 			sponsor.specialOffer = offerData;
@@ -129,14 +129,14 @@
 			}, 4000);
 		} catch (error) {
 			console.error('Error saving offer:', error);
-			errorMsg = "Impossible d'enregistrer l'offre. Veuillez réessayer.";
+			errorMsg = "Impossible d'enregistrer ton offre. Veuillez réessayer.";
 		} finally {
 			isSaving = false;
 		}
 	}
 
 	async function handleDelete() {
-		if (!confirm('Êtes-vous sûr de vouloir supprimer votre offre spéciale ?')) return;
+		if (!confirm('Es-tu sûr de vouloir supprimer ton offre spéciale ?')) return;
 
 		isSaving = true;
 		try {
@@ -160,7 +160,7 @@
 			}, 4000);
 		} catch (error) {
 			console.error('Error deleting offer:', error);
-			errorMsg = "Impossible de supprimer l'offre.";
+			errorMsg = "Impossible de supprimer ton offre.";
 		} finally {
 			isSaving = false;
 		}
@@ -180,16 +180,16 @@
 		</a>
 
 		<header class="edit-header">
-			<h1>Gérer mon offre exclusive</h1>
+			<h1>Gère ton offre exclusive</h1>
 			<p>
-				Proposez un avantage spécial aux utilisateurs du Poilu pour attirer de nouveaux clients.
+				Propose un avantage spécial aux utilisateurs du Poilu pour attirer de nouveaux clients.
 			</p>
 		</header>
 
 		{#if loading}
 			<div class="loading-state">
 				<div class="spinner"></div>
-				<p>Chargement de votre offre...</p>
+				<p>Chargement de ton offre...</p>
 			</div>
 		{:else if sponsor}
 			<div class="edit-form-wrapper" in:fade>
@@ -212,7 +212,7 @@
 				<div class="info-note-pro">
 					<div class="note-icon-pro"><InformationCircleIcon /></div>
 					<p>
-						L'offre spéciale apparaîtra sur votre fiche dans <strong>Le Carnet</strong>. Les
+						Ton offre spéciale apparaîtra sur ta fiche dans <strong>Le Carnet</strong>. Les
 						utilisateurs devront montrer l'application pour en profiter.
 					</p>
 				</div>
@@ -227,7 +227,7 @@
 							</div>
 
 							<div class="input-field">
-								<label for="title">Titre de l'offre <span>*</span></label>
+								<label for="title">Titre de ton offre <span>*</span></label>
 								<input
 									type="text"
 									id="title"
@@ -272,14 +272,18 @@
 						<section class="form-card">
 							<div class="card-title">
 								<span class="emoji">⚙️</span>
-								<h2>Paramètres</h2>
+								<h2>Rends ton commerce irrésistible</h2>
 							</div>
+							<p style="margin-bottom: 1.5rem; font-size: 0.9rem; color: var(--secondary);">
+								L'ajout d'un bon plan exclusif sur ta vitrine est réservé aux abonnés de la
+								formule <strong class="highlight">Boost & Bons Plans</strong>.
+							</p>
 
 							<div class="settings-list">
 								<div class="setting-item">
 									<div class="setting-text">
 										<h3>Date de validité</h3>
-										<p>Ajouter une date limite d'expiration</p>
+										<p>Ajoute une date limite d'expiration</p>
 									</div>
 									<label class="switch">
 										<input type="checkbox" bind:checked={hasValidityDate} />
@@ -303,7 +307,7 @@
 								<div class="setting-item">
 									<div class="setting-text">
 										<h3>Visibilité publique</h3>
-										<p>{isActive ? "L'offre est visible" : "L'offre est masquée"}</p>
+										<p>Décris ton offre de manière courte et impactante pour tes clients.</p>
 									</div>
 									<label class="switch">
 										<input type="checkbox" bind:checked={isActive} />
@@ -513,7 +517,7 @@
 
 	.date-input { margin-top: 0.5rem; }
 	.date-wrapper { position: relative; display: flex; align-items: center; }
-	.date-icon { position: absolute; left: 1rem; color: var(--secondary); width: 1.25rem; }
+	/* .date-icon { position: absolute; left: 1rem; color: var(--secondary); width: 1.25rem; } */
 	.date-input input { padding-left: 3rem; }
 
 	/* Preview Column */

@@ -2,6 +2,7 @@
 	import PoiluJumelles from '../../lib/assets/Poilu-jumelles.png';
 	import { auth } from '$lib/firebase';
 	import { goto } from '$app/navigation';
+	import { fade } from 'svelte/transition';
 
 	const pricing = [
 		{
@@ -68,565 +69,460 @@
 </script>
 
 <svelte:head>
-	<title>Publier un événement — Le Poilu</title>
+	<title>Publication d'annonce — Le Poilu</title>
 	<meta
 		name="description"
-		content="Publiez votre événement local en 2 minutes. Paiement sécurisé, modération rapide, grande visibilité locale."
+		content="Fais rayonner tes événements sur l'application Le Poilu. Touche une audience locale qualifiée en quelques minutes."
 	/>
 </svelte:head>
 
 <main>
-	<!-- Hero Section -->
-	<!-- <section class="hero">
+	<!-- PREMIUM HERO SECTION -->
+	<section class="publish-hero">
+		<div class="hero-overlay"></div>
 		<div class="hero-content">
-			<h1 class="hero-title">Publier un événement</h1>
-			<p class="hero-subtitle">
-				Créez votre annonce, payez. Elle sera mise en ligne après modération.<br />
-			</p>
-			<img class="poilu-jumelles" src={PoiluJumelles} alt="Personnage le poilu avec des jumelles" />
+			<div class="hero-text" in:fade>
+				<span class="eyebrow">ORGANISE, PUBLIE, RAYONNE</span>
+				<h1>Propulse ton événement au cœur de la vie locale.</h1>
+				<p>
+					Le Poilu regroupe des milliers d'utilisateurs passionnés par l'Ouest Lyonnais. 
+					Publie ton annonce ici et apparais instantanément sur leur application mobile préférée.
+				</p>
+				<div class="hero-actions">
+					<a href="#plans" class="btn-primary">Voir les formules</a>
+					<a href="#how" class="btn-secondary">Comment ça marche ?</a>
+				</div>
+			</div>
+			<div class="hero-visual">
+				<img class="poilu-jumelles" src={PoiluJumelles} alt="Illustration Le Poilu" />
+			</div>
 		</div>
-	</section> -->
+	</section>
 
-	<!-- Pricing Section -->
-	<section class="pricing-section">
+	<!-- STRATEGY SECTION: WEB TO APP -->
+	<section id="how" class="strategy-section">
+		<div class="strategy-container">
+			<header class="section-header">
+				<h2>Le pont entre toi et ton audience</h2>
+				<p>Pourquoi passer par le Web pour publier sur l'App ?</p>
+			</header>
+
+			<div class="strategy-grid">
+				<div class="strategy-item">
+					<div class="step-num">1</div>
+					<h3>Créateur Web</h3>
+					<p>Remplis les détails de ton événement confortablement depuis ton ordinateur ou mobile.</p>
+				</div>
+				<div class="strategy-connector">
+					<i class="fa-solid fa-arrow-right"></i>
+				</div>
+				<div class="strategy-item">
+					<div class="step-num">2</div>
+					<h3>Paiement Sécurisé</h3>
+					<p>Règle sans frais de plateforme Apple ou Google. 100% de ton budget sert à ta visibilité.</p>
+				</div>
+				<div class="strategy-connector">
+					<i class="fa-solid fa-arrow-right"></i>
+				</div>
+				<div class="strategy-item">
+					<div class="step-num">3</div>
+					<h3>Visibilité App</h3>
+					<p>Une fois validée, ton annonce brille sur l'application iOS et Android du Poilu.</p>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- PRICING SECTION -->
+	<section id="plans" class="pricing-section">
 		<div class="section-header">
-			<h2 class="section-title">Nos tarifs de publication d'évènement</h2>
-			<p class="section-description">Choisissez la formule qui correspond le mieux à vos besoins</p>
+			<h2 class="title-vibrant">Choisis ta formule de visibilité</h2>
+			<p>Des tarifs simples, sans engagement, adaptés à tous les budgets.</p>
 		</div>
 
 		<div class="pricing-grid">
 			{#each pricing as tier}
 				<article class="pricing-card" class:recommended={tier.recommended}>
 					{#if tier.recommended}
-						<div class="badge-recommended">Populaire</div>
+						<div class="badge-recommended">Le plus efficace</div>
 					{/if}
-					<div class="pricing-icon">
-						<i class={tier.icon}></i>
+					
+					<div class="card-header">
+						<div class="pricing-icon">
+							<i class={tier.icon}></i>
+						</div>
+						<h3 class="pricing-name">{tier.name}</h3>
 					</div>
-					<h3 class="pricing-name">{tier.name}</h3>
-					<p class="pricing-price">{tier.price}</p>
+
+					<div class="price-box">
+						<span class="currency">€</span>
+						<span class="amount">{tier.price.replace(' €', '').replace('€', '')}</span>
+						{#if tier.name.includes('mensuel')}
+							<span class="period">/mois</span>
+						{/if}
+					</div>
+
 					<ul class="pricing-details">
 						{#each tier.details as detail}
-							<li>{detail}</li>
+							<li>
+								<i class="fa-solid fa-check"></i>
+								<span>{detail}</span>
+							</li>
 						{/each}
 					</ul>
+
 					<a
 						class="btn-pricing"
 						href={tier.link}
 						on:click={(e) => handlePlanSelection(e, tier.link)}
 					>
-						Commencer
+						Choisir cette offre
 					</a>
 				</article>
 			{/each}
 		</div>
+
+		<div class="pricing-footer">
+			<p><i class="fa-solid fa-shield-halved"></i> Paiement 100% sécurisé via Stripe</p>
+		</div>
 	</section>
-
-	<!-- How It Works Section -->
-	<!-- <section class="howto-section">
-		<div class="howto-header">
-			<h2 class="section-title">Comment ça marche ?</h2>
-			<p class="section-description">Quatre étapes simples pour publier votre événement</p>
-		</div>
-
-		<div class="steps-grid">
-			<div class="step-item">
-				<div class="step-number">1</div>
-				<h3 class="step-title">Créez votre événement</h3>
-				<p class="step-description">
-					Renseignez le titre, la date, le lieu, la description et ajoutez une image.
-				</p>
-			</div>
-
-			<div class="step-item">
-				<div class="step-number">2</div>
-				<h3 class="step-title">Choisissez votre formule</h3>
-				<p class="step-description">
-					Sélectionnez l'offre qui correspond à vos besoins et payez en ligne de manière sécurisée.
-				</p>
-			</div>
-
-			<div class="step-item">
-				<div class="step-number">3</div>
-				<h3 class="step-title">Modération rapide</h3>
-				<p class="step-description">
-					Notre équipe vérifie votre annonce en moins de 24h (ou en prioritaire avec le Pack 10 et
-					le pack Pro).
-				</p>
-			</div>
-
-			<div class="step-item">
-				<div class="step-number">4</div>
-				<h3 class="step-title">Publication en ligne</h3>
-				<p class="step-description">
-					Votre événement est publié et visible par tous les utilisateurs de l'application.
-				</p>
-			</div>
-		</div>
-
-		<a
-			href="/publier?plan=free"
-			class="btn-cta"
-			on:click={(e) => handlePlanSelection(e, '/publier?plan=free')}
-		>
-			Publier mon événement
-		</a>
-	</section> -->
 </main>
 
 <style>
 	main {
-		display: flex;
-		flex-direction: column;
-		gap: var(--spacing-lg);
-		padding: var(--spacing-xs);
-		max-width: var(--desktop);
-		margin: 0 auto;
+		background-color: #f8fafc;
+		min-height: 100vh;
+		padding-bottom: 5rem;
 	}
 
-	/* Hero Section */
-	.hero {
-		background: linear-gradient(135deg, var(--ctaSecondary), #ff6101);
-		border-radius: var(--radius-lg);
-		height: auto;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
+	/* PREMIUM HERO */
+	.publish-hero {
 		position: relative;
-		margin-top: var(--spacing-md);
-		margin-bottom: 50px;
-		padding: var(--spacing-xl) var(--spacing-lg);
-		box-shadow: var(--shadow);
+		background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+		padding: 6rem 1.5rem 8rem;
+		color: white;
+		overflow: hidden;
+		border-radius: 0 0 60px 60px;
+	}
+
+	.hero-overlay {
+		position: absolute;
+		top: 0; left: 0; right: 0; bottom: 0;
+		background-image: radial-gradient(circle at 80% 20%, rgba(16, 185, 129, 0.1) 0%, transparent 40%);
+		pointer-events: none;
 	}
 
 	.hero-content {
-		display: flex;
-		flex-direction: column;
+		max-width: 1200px;
+		margin: 0 auto;
+		display: grid;
+		grid-template-columns: 1.2fr 0.8fr;
+		gap: 4rem;
 		align-items: center;
-		justify-content: center;
-		text-align: center;
+		position: relative;
+		z-index: 2;
 	}
 
-	.hero-title {
-		color: white;
-		font-size: clamp(2rem, 5vw, 3.5rem);
+	.eyebrow {
+		display: block;
+		color: #10b981;
+		font-weight: 800;
+		letter-spacing: 2px;
+		font-size: 0.85rem;
+		margin-bottom: 1.5rem;
+	}
+
+	.hero-text h1 {
 		font-family: var(--FFTitle);
+		font-size: clamp(2.2rem, 5vw, 3.8rem);
 		font-weight: 900;
-		margin-bottom: var(--spacing-md);
-		text-align: center;
+		line-height: 1.1;
+		margin-bottom: 2rem;
 	}
 
-	.hero-subtitle {
-		font-weight: 600;
-		font-family: var(--FFTitle);
-		text-align: center;
-		font-size: clamp(1rem, 2.5vw, 1.3rem);
-		color: white;
-		max-width: 800px;
-		line-height: clamp(1.4rem, 3vw, 1.8rem);
-		margin-bottom: var(--spacing-lg);
+	.hero-text p {
+		font-size: 1.25rem;
+		opacity: 0.9;
+		line-height: 1.6;
+		margin-bottom: 3rem;
+		max-width: 650px;
 	}
+
+	.hero-actions {
+		display: flex;
+		gap: 1.5rem;
+	}
+
+	.btn-primary {
+		background: #10b981;
+		color: white;
+		padding: 1.25rem 2.5rem;
+		border-radius: 50px;
+		font-weight: 800;
+		text-decoration: none;
+		transition: transform 0.2s, box-shadow 0.2s;
+	}
+
+	.btn-secondary {
+		background: rgba(255, 255, 255, 0.1);
+		backdrop-filter: blur(10px);
+		color: white;
+		padding: 1.25rem 2.5rem;
+		border-radius: 50px;
+		font-weight: 800;
+		text-decoration: none;
+		border: 1px solid rgba(255, 255, 255, 0.2);
+		transition: background 0.2s;
+	}
+
+	.btn-primary:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3); }
+	.btn-secondary:hover { background: rgba(255, 255, 255, 0.2); }
 
 	.poilu-jumelles {
-		height: clamp(250px, 40vw, 400px);
-		width: auto;
-		filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.3));
+		width: 100%;
+		height: auto;
+		filter: drop-shadow(0 20px 40px rgba(0,0,0,0.5));
+		animation: float 6s ease-in-out infinite;
 	}
 
-	/* Pricing Section */
-	.pricing-section {
-		background: linear-gradient(135deg, var(--background), #ff6101);
-		border-radius: var(--radius-lg);
-		height: 100%;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-		padding: var(--spacing-xl) var(--spacing-lg);
-		box-shadow: var(--shadow);
-		margin-bottom: 50px;
+	@keyframes float {
+		0%, 100% { transform: translateY(0); }
+		50% { transform: translateY(-20px); }
 	}
 
-	.section-header,
-	.howto-header {
+	/* STRATEGY SECTION */
+	.strategy-section {
+		padding: 6rem 1.5rem;
+		max-width: 1200px;
+		margin: -4rem auto 4rem;
+		position: relative;
+		z-index: 3;
+	}
+
+	.strategy-container {
+		background: white;
+		border-radius: 32px;
+		padding: 4rem;
+		box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.08);
+	}
+
+	.section-header {
+		text-align: center;
+		margin-bottom: 4rem;
+	}
+
+	.section-header h2 {
+		font-family: var(--FFTitle);
+		font-size: 2.2rem;
+		font-weight: 900;
+		color: #1e293b;
+		margin-bottom: 1rem;
+	}
+
+	.section-header p {
+		color: #64748b;
+		font-size: 1.1rem;
+		font-weight: 600;
+	}
+
+	.strategy-grid {
 		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-		margin-bottom: var(--spacing-xl);
+		align-items: flex-start;
+		justify-content: space-between;
+		gap: 2rem;
+	}
+
+	.strategy-item {
+		flex: 1;
 		text-align: center;
 	}
 
-	.section-title {
+	.step-num {
+		width: 50px;
+		height: 50px;
+		background: #f1f5f9;
+		color: #10b981;
+		border-radius: 50%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		margin: 0 auto 1.5rem;
 		font-weight: 900;
-		font-family: var(--FFTitle);
-		font-size: clamp(1.8rem, 4vw, 2.5rem);
-		color: var(--textDark);
-		margin-bottom: var(--spacing-sm);
+		font-size: 1.25rem;
 	}
 
-	.section-description {
+	.strategy-item h3 {
 		font-family: var(--FFTitle);
-		color: var(--text);
-		font-size: clamp(0.95rem, 2vw, 1.1rem);
-		font-weight: 500;
-		max-width: 800px;
-		line-height: clamp(1.4rem, 2.5vw, 1.7rem);
+		font-weight: 800;
+		color: #1e293b;
+		margin-bottom: 1rem;
 	}
 
-	/* Pricing Grid */
+	.strategy-item p {
+		color: #64748b;
+		line-height: 1.6;
+		font-size: 0.95rem;
+	}
+
+	.strategy-connector {
+		padding-top: 1.5rem;
+		color: #cbd5e1;
+		font-size: 1.5rem;
+	}
+
+	/* PRICING SECTION */
+	.pricing-section {
+		padding: 4rem 1.5rem;
+		max-width: 1200px;
+		margin: 0 auto;
+	}
+
+	.title-vibrant {
+		font-family: var(--FFTitle);
+		font-size: 2.5rem;
+		font-weight: 900;
+		background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+		background-clip: text;
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+	}
+
 	.pricing-grid {
 		display: grid;
-		grid-template-columns: repeat(2, 1fr);
-		gap: var(--spacing-md);
-		width: 100%;
-		margin-bottom: var(--spacing-md);
+		grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+		gap: 2rem;
+		margin-bottom: 4rem;
 	}
 
 	.pricing-card {
+		background: white;
+		border-radius: 24px;
+		padding: 2.5rem;
 		display: flex;
 		flex-direction: column;
-		align-items: center;
-		justify-content: flex-start;
-		border-radius: var(--radius-md);
-		padding: var(--spacing-md);
-		gap: var(--spacing-sm);
-		backdrop-filter: blur(10px);
-		-webkit-backdrop-filter: blur(10px);
-		background-color: rgba(255, 255, 255, 0.9);
-		border: 2px solid rgba(255, 97, 1, 0.2);
-		box-shadow: var(--shadow3);
-		transition:
-			transform var(--transition-normal),
-			box-shadow var(--transition-normal);
-		text-align: center;
+		border: 1px solid #e2e8f0;
+		transition: all 0.3s;
 		position: relative;
 	}
 
 	.pricing-card.recommended {
-		border: 2px solid #ff6101;
+		border: 2px solid #10b981;
 		transform: scale(1.05);
-		background-color: rgba(255, 255, 255, 0.95);
-	}
-
-	.pricing-card:hover {
-		transform: translateY(-5px);
-		box-shadow: var(--shadow2);
-	}
-
-	.pricing-card.recommended:hover {
-		transform: scale(1.05) translateY(-5px);
+		box-shadow: 0 20px 40px rgba(16, 185, 129, 0.1);
 	}
 
 	.badge-recommended {
 		position: absolute;
-		top: -12px;
+		top: -15px;
 		left: 50%;
 		transform: translateX(-50%);
-		background: linear-gradient(135deg, #ff6101, var(--ctaSecondary));
+		background: #10b981;
 		color: white;
-		padding: 4px 12px;
-		border-radius: 20px;
-		font-family: var(--FFTitle);
-		font-weight: 700;
-		font-size: clamp(0.7rem, 1.2vw, 0.8rem);
-		box-shadow: var(--shadow3);
+		padding: 0.4rem 1.2rem;
+		border-radius: 50px;
+		font-weight: 800;
+		font-size: 0.75rem;
+		text-transform: uppercase;
+	}
+
+	.card-header {
+		display: flex;
+		align-items: center;
+		gap: 1rem;
+		margin-bottom: 1.5rem;
 	}
 
 	.pricing-icon {
-		font-size: clamp(1.8rem, 3.5vw, 2.5rem);
-		color: #ff6101;
-		background: linear-gradient(135deg, rgba(255, 97, 1, 0.1), rgba(232, 132, 60, 0.1));
-		width: clamp(60px, 10vw, 80px);
-		height: clamp(60px, 10vw, 80px);
-		border-radius: 50%;
+		width: 50px;
+		height: 50px;
+		background: #f0fdf4;
+		color: #10b981;
+		border-radius: 12px;
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		box-shadow: var(--shadow3);
-		margin-top: 0;
+		font-size: 1.25rem;
 	}
 
 	.pricing-name {
-		font-family: var(--FFTitle);
-		font-weight: 700;
-		font-size: clamp(1.1rem, 2.2vw, 1.4rem);
-		color: var(--textDark);
-		margin: 0;
+		font-size: 1.2rem;
+		font-weight: 800;
+		color: #1e293b;
 	}
 
-	.pricing-price {
-		font-family: var(--FFTitle);
-		font-weight: 900;
-		font-size: clamp(1.6rem, 3.5vw, 2.2rem);
-		color: #ff6101;
-		margin: 0;
+	.price-box {
+		margin-bottom: 2rem;
+		display: flex;
+		align-items: baseline;
 	}
+
+	.currency { font-size: 1.5rem; font-weight: 600; color: #64748b; margin-right: 2px; }
+	.amount { font-size: 3rem; font-weight: 900; color: #1e293b; letter-spacing: -2px; }
+	.period { color: #64748b; font-weight: 600; font-size: 1rem; margin-left: 4px; }
 
 	.pricing-details {
 		list-style: none;
 		padding: 0;
-		margin: var(--spacing-sm) 0;
+		margin: 0 0 2.5rem;
 		flex-grow: 1;
 	}
 
 	.pricing-details li {
-		font-family: var(--FFTitle);
-		color: #555;
-		font-size: clamp(0.85rem, 1.6vw, 0.95rem);
-		line-height: 1.6rem;
-		position: relative;
-		padding-left: 22px;
+		display: flex;
+		gap: 0.75rem;
+		margin-bottom: 1rem;
+		color: #475569;
+		font-size: 0.95rem;
 	}
 
-	.pricing-details li:before {
-		content: '✓';
-		position: absolute;
-		left: 0;
-		color: #ff6101;
-		font-weight: bold;
-		font-size: clamp(0.9rem, 1.8vw, 1.1rem);
+	.pricing-details li i {
+		color: #10b981;
+		padding-top: 4px;
 	}
 
 	.btn-pricing {
-		display: inline-block;
-		padding: 10px 20px;
-		background: linear-gradient(135deg, #ff6101, var(--ctaSecondary));
+		background: #1e293b;
 		color: white;
+		text-align: center;
+		padding: 1rem;
+		border-radius: 12px;
 		text-decoration: none;
 		font-weight: 700;
-		font-size: clamp(0.95rem, 1.8vw, 1.05rem);
-		border-radius: var(--radius-md);
-		transition: all var(--transition-normal);
-		font-family: var(--FFTitle);
-		text-align: center;
-		box-shadow: var(--shadow3);
-		border: 2px solid rgba(255, 255, 255, 0.4);
-		width: 100%;
+		transition: background 0.2s;
+	}
+
+	.recommended .btn-pricing {
+		background: #10b981;
 	}
 
 	.btn-pricing:hover {
-		transform: scale(1.05);
-		box-shadow: var(--shadow2);
+		background: #0f172a;
 	}
 
-	/* How It Works Section */
-	.howto-section {
-		background: linear-gradient(135deg, var(--ctaSecondary), #ff6101);
-		border-radius: var(--radius-lg);
-		height: 100%;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-		padding: var(--spacing-xl) var(--spacing-lg);
-		box-shadow: var(--shadow);
+	.recommended .btn-pricing:hover {
+		background: #059669;
 	}
 
-	/* .howto-header .section-title,
-	.howto-header .section-description {
-		color: white;
-	} */
-
-	.steps-grid {
-		display: grid;
-		grid-template-columns: repeat(4, 1fr);
-		gap: var(--spacing-md);
-		width: 100%;
-		margin-bottom: var(--spacing-xl);
-	}
-
-	.step-item {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
+	.pricing-footer {
 		text-align: center;
-		gap: var(--spacing-sm);
-		backdrop-filter: blur(10px);
-		-webkit-backdrop-filter: blur(10px);
-		background-color: rgba(255, 255, 255, 0.15);
-		border: 1px solid rgba(255, 255, 255, 0.3);
-		border-radius: var(--radius-md);
-		padding: var(--spacing-md) var(--spacing-md);
-		box-shadow: var(--shadow3);
-		transition:
-			transform var(--transition-normal),
-			box-shadow var(--transition-normal);
+		color: #64748b;
+		font-weight: 600;
+		font-size: 0.9rem;
 	}
 
-	.step-item:hover {
-		transform: translateY(-5px);
-		box-shadow: var(--shadow2);
-	}
+	.pricing-footer i { color: #10b981; margin-right: 0.5rem; }
 
-	.step-number {
-		font-size: clamp(2rem, 4vw, 2.5rem);
-		font-weight: 900;
-		background: white;
-		color: #ff6101;
-		height: clamp(70px, 10vw, 80px);
-		width: clamp(70px, 10vw, 80px);
-		border-radius: 50%;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		box-shadow: var(--shadow3);
-		border: 2px solid rgba(255, 255, 255, 0.4);
-		font-family: var(--FFTitle);
-	}
+	/* MOBILE ADAPTATION */
+	@media (max-width: 900px) {
+		.hero-content { grid-template-columns: 1fr; text-align: center; gap: 2rem; }
+		.hero-text p { margin: 0 auto 3rem; }
+		.hero-actions { justify-content: center; flex-direction: column; }
+		.hero-visual { max-width: 300px; margin: 0 auto; }
+		
+		.strategy-grid { flex-direction: column; align-items: center; }
+		.strategy-connector { transform: rotate(90deg); padding: 0.5rem 0; }
+		.strategy-container { padding: 2rem; }
 
-	.step-title {
-		font-family: var(--FFTitle);
-		font-weight: 700;
-		font-size: clamp(1rem, 2vw, 1.2rem);
-		color: white;
-		margin: 0;
-	}
-
-	.step-description {
-		font-family: var(--FFTitle);
-		color: white;
-		font-size: clamp(0.85rem, 1.6vw, 0.95rem);
-		line-height: clamp(1.3rem, 2.5vw, 1.5rem);
-		opacity: 0.95;
-		margin: 0;
-	}
-
-	/* CTA Button */
-	.btn-cta {
-		display: inline-block;
-		padding: var(--spacing-md) var(--spacing-xl);
-		background: white;
-		color: #ff6101;
-		text-decoration: none;
-		font-weight: 700;
-		font-size: clamp(1rem, 2.5vw, 1.2rem);
-		border-radius: var(--radius-md);
-		transition: all var(--transition-normal);
-		font-family: var(--FFTitle);
-		text-align: center;
-		box-shadow: var(--shadow);
-		border: 2px solid rgba(255, 255, 255, 0.4);
-		margin-bottom: 50px;
-	}
-
-	.btn-cta:hover {
-		transform: scale(1.05);
-		box-shadow: var(--shadow2);
-	}
-
-	/* === MEDIA QUERIES RESPONSIVE === */
-
-	/* Tablet */
-	@media (max-width: 1024px) {
-		.pricing-grid {
-			grid-template-columns: repeat(2, 1fr);
-			gap: var(--spacing-md);
-		}
-
-		.steps-grid {
-			grid-template-columns: repeat(2, 1fr);
-		}
-	}
-
-	/* Mobile */
-	@media (max-width: 768px) {
-		main {
-			padding: var(--spacing-xs);
-			gap: var(--spacing-md);
-		}
-
-		.hero {
-			padding: var(--spacing-lg) var(--spacing-md);
-			margin-top: var(--spacing-md);
-		}
-
-		.pricing-section,
-		.howto-section {
-			padding: var(--spacing-lg) var(--spacing-md);
-		}
-
-		.event-tag {
-			padding: 8px 14px;
-			font-size: 0.85rem;
-		}
-
-		.event-types-grid {
-			gap: 8px;
-		}
-
-		.pricing-grid {
-			grid-template-columns: 1fr;
-			gap: var(--spacing-lg);
-		}
-
-		.pricing-card.recommended {
-			transform: scale(1);
-		}
-
-		.pricing-card.recommended:hover {
-			transform: translateY(-5px);
-		}
-
-		.steps-grid {
-			grid-template-columns: 1fr;
-			gap: var(--spacing-md);
-		}
-
-		.btn-cta {
-			max-width: 100%;
-		}
-
-		.btn-pricing {
-			max-width: 100%;
-		}
-	}
-
-	/* Mobile Small */
-	@media (max-width: 480px) {
-		main {
-			gap: var(--spacing-xl);
-		}
-
-		.hero {
-			padding: var(--spacing-lg) var(--spacing-md);
-			margin-bottom: var(--spacing-xl);
-		}
-
-		.pricing-section,
-		.howto-section {
-			padding: var(--spacing-xl) var(--spacing-md);
-			margin-bottom: var(--spacing-xl);
-		}
-
-		.pricing-grid {
-			gap: var(--spacing-xl);
-		}
-
-		.pricing-card {
-			padding: var(--spacing-xl) var(--spacing-md);
-			gap: var(--spacing-lg);
-		}
-
-		.steps-grid {
-			gap: var(--spacing-lg);
-		}
-
-		.step-item {
-			padding: var(--spacing-lg) var(--spacing-md);
-			gap: var(--spacing-md);
-		}
-
-		.section-header,
-		.howto-header {
-			margin-bottom: var(--spacing-xl);
-		}
-
-		.poilu-jumelles {
-			height: 150px;
-			width: auto;
-			filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.3));
-		}
+		.pricing-card.recommended { transform: none; margin: 1rem 0; }
 	}
 </style>

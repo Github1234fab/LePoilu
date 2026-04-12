@@ -2,8 +2,11 @@
 	import { page } from '$app/stores';
 	import { onMount, onDestroy } from 'svelte';
 	import { fade, slide } from 'svelte/transition';
-	import { db } from '$lib/firebase';
+	import { db, auth } from '$lib/firebase';
 	import { doc, getDoc, updateDoc, increment } from 'firebase/firestore';
+	import { onAuthStateChanged } from 'firebase/auth';
+	import { getFavoriteSponsors } from '$lib/favorites';
+	import FavoriteHeart from '$lib/Components/FavoriteHeart.svelte';
 
 	import ChevronRightIcon from '$lib/Components/icons/ChevronRightIcon.svelte';
 	import StarIcon from '$lib/Components/icons/StarIcon.svelte';
@@ -27,6 +30,8 @@
 	let sponsor = null;
 	let loading = true;
 	let offerShown = false;
+	let favoriteSponsors = [];
+	let user = null;
 
 	// Lightbox state
 	let lightboxImage = null;
@@ -47,6 +52,16 @@
 			} else {
 				window.location.href = '/carnet';
 			}
+
+			// Listen for auth to get favorites
+			onAuthStateChanged(auth, async (u) => {
+				user = u;
+				if (user) {
+					favoriteSponsors = await getFavoriteSponsors(user.uid);
+				} else {
+					favoriteSponsors = [];
+				}
+			});
 		} catch (error) {
 			console.error('Error fetching sponsor details:', error);
 		} finally {
@@ -90,7 +105,7 @@
 	{#if loading}
 		<div class="loading-full">
 			<div class="spinner-large"></div>
-			<p>Chargement de l'univers de {sponsor?.businessName || 'votre commerce'}...</p>
+			<p>Chargement de l'univers de {sponsor?.businessName || 'ton commerce'}...</p>
 		</div>
 	{:else if sponsor}
 		<!-- Floating Back & Share -->
@@ -98,7 +113,13 @@
 			<a href="/carnet" class="nav-round-btn" aria-label="Retour au carnet">
 				<ChevronRightIcon />
 			</a>
-			<!-- Future: Share button could go here -->
+			
+			<div class="nav-actions">
+				<FavoriteHeart 
+					sponsorId={sponsorId} 
+					isFavorite={favoriteSponsors.includes(sponsorId)} 
+				/>
+			</div>
 		</nav>
 
 		<!-- Hero Section -->
@@ -143,7 +164,7 @@
 			{#if sponsor.isModel}
 				<div class="demo-banner" in:slide>
 					<InformationCircleIcon />
-					<p>Ceci est un modèle de démonstration pour votre futur espace.</p>
+					<p>Ceci est un modèle de démonstration pour ton futur espace.</p>
 				</div>
 			{/if}
 
@@ -399,6 +420,10 @@
 
 	.nav-round-btn:hover { background: rgba(0, 0, 0, 0.5); transform: scale(1.1); }
 	:global(.nav-round-btn svg) { transform: rotate(180deg); width: 24px; height: 24px; }
+
+	.nav-actions {
+		pointer-events: auto;
+	}
 
 	/* Hero */
 	.vitrine-hero {
