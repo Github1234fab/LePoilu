@@ -1,5 +1,5 @@
 <script>
-	import { fade, fly, slide } from 'svelte/transition';
+	import { slide } from 'svelte/transition';
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
 	import { initFirebase } from '$lib/firebase';
@@ -7,8 +7,7 @@
 	import { collection, addDoc, serverTimestamp, updateDoc, doc } from 'firebase/firestore';
 	import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
-	let step = 1;
-	let selectedPlan = 'premium'; // 'basic' or 'premium'
+	let selectedPlan = $page.url.searchParams.get('plan') === 'basic' ? 'basic' : 'premium'; // 'basic' or 'premium'
 	let auth, db, storage;
 	let fromApp = $page.url.searchParams.get('from_app') === 'true';
 
@@ -130,24 +129,6 @@
 			form.photos = Array.from(e.target.files).slice(0, 6);
 		}
 	}
-
-	const benefits = [
-		{
-			icon: 'fa-eye',
-			title: 'Visibilité locale',
-			desc: 'Touchez les utilisateurs autour de ton commerce.'
-		},
-		{
-			icon: 'fa-ticket',
-			title: 'Offres exclusives',
-			desc: 'Attirez de nouveaux clients avec des promos dédiées (Plan Premium).'
-		},
-		{
-			icon: 'fa-store',
-			title: 'Vitrine digitale',
-			desc: "Ta présence sur l'application Le Poilu, avec un espace Pro."
-		}
-	];
 
 	function togglePlan(plan) {
 		selectedPlan = plan;
@@ -322,6 +303,7 @@
 				<span class="amount">{planDetails[selectedPlan].price}</span><span class="period"
 					>/mois</span
 				>
+				<p class="plan-disclaimer">Sans engagement. Annulable à tout moment.</p>
 			</div>
 
 			<ul class="plan-features-list">
@@ -624,6 +606,13 @@
 	.price-display .period {
 		font-size: 1.2rem;
 		color: var(--secondary);
+	}
+
+	.plan-disclaimer {
+		font-size: 0.85rem;
+		color: var(--secondary);
+		margin-top: 5px;
+		opacity: 0.8;
 	}
 
 	/* Inputs */

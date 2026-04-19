@@ -253,7 +253,7 @@
 				} catch (uploadError) {
 					console.error('Image upload failed:', uploadError);
 					// Continue anyway - the ad is created, just without image
-					error = `Annonce créée mais l'image n'a pas pu être téléchargée: ${uploadError.message}`;
+					error = `Évènement créé mais l'image n'a pas pu être téléchargée: ${uploadError.message}`;
 				}
 			}
 
@@ -263,7 +263,7 @@
 				if ($page.data.from_app) {
 					window.location.href = '/succes?from_app=true&type=free';
 				} else {
-					alert('Annonce envoyée pour validation !');
+					alert('Évènement envoyé pour validation !');
 					window.location.href = '/compte';
 				}
 				return;
@@ -308,7 +308,7 @@
 					if ($page.data.from_app) {
 						window.location.href = '/succes?from_app=true&type=credit';
 					} else {
-						alert('Annonce publiée avec succès ! Un crédit a été déduit.');
+						alert('Évènement publié avec succès ! Un crédit a été déduit.');
 						window.location.href = '/compte';
 					}
 				} else {
@@ -358,20 +358,20 @@
 </script>
 
 <svelte:head>
-	<title>Publication d'annonce - Le Poilu</title>
+	<title>Publication d'évènement - Le Poilu</title>
 </svelte:head>
 
 <div class="page-container">
 	<div class="content-wrapper">
 		<header class="header-section" in:fly={{ y: -20, duration: 800 }}>
 			<h1 class="title-responsive">
-				Publication d'annonce <span class="highlight">{plan === 'free' ? 'Gratuite' : 'Premium'}</span>
+				Publication d'évènement <span class="highlight">{plan === 'free' ? 'Gratuite' : 'Premium'}</span>
 			</h1>
 			<p class="subtitle-responsive">
 				{#if plan === 'free'}
-					Partage ton annonce avec la communauté.
+					Partage ton évènement avec la communauté.
 				{:else}
-					Booste ta visibilité avec une annonce Pro.
+					Booste ta visibilité avec un évènement Pro.
 				{/if}
 			</p>
 		</header>
@@ -383,7 +383,7 @@
 		>
 			<!-- Common Fields -->
 			<div class="form-group">
-				<label for="title">Titre de l'annonce *</label>
+				<label for="title">Titre de l'évènement *</label>
 				<input
 					type="text"
 					id="title"
@@ -394,12 +394,12 @@
 			</div>
 
 			<div class="form-group">
-				<label for="description">Description</label>
+				<label for="description">Description (Optionnel)</label>
 				<textarea
 					id="description"
 					bind:value={ad.description}
 					rows="5"
-					placeholder="Détails de ton annonce..."
+					placeholder="Détails de ton évènement..."
 				></textarea>
 			</div>
 
@@ -519,7 +519,7 @@
 
 			<p class="disclaimer-text">
 				<i class="fa-solid fa-circle-info"></i> Vérifie bien tes informations avant de valider. Une
-				fois soumise, ton annonce sera relue par notre équipe de modération avant d'être publiée.
+				fois soumis, ton évènement sera relu par notre équipe de modération avant d'être publié.
 			</p>
 
 			{#if uploadProgress}

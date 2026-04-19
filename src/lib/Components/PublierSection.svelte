@@ -12,12 +12,12 @@
 	<div class="benefit-item">
 		<i class="fa-solid fa-bolt benefit-icon"></i>
 		<h3>Parution Flash</h3>
-		<p>Ton annonce en ligne en moins de 2 minutes.</p>
+		<p>Ton évènement en ligne en moins de 2 minutes.</p>
 	</div>
 	<div class="benefit-item">
 		<i class="fa-solid fa-mobile-screen benefit-icon"></i>
 		<h3>Gratuit ou plus aboutit</h3>
-		<p>Publie gratuitement ou opte pour plus de visibilité.</p>
+		<p>Publie ton évènement gratuitement ou opte pour plus de visibilité.</p>
 	</div>
 </div>
 
@@ -26,7 +26,7 @@
 		<span class="card-icon">📅</span>
 		<span class="card-title">Prêt à publier ?</span>
 		<span class="card-desc">Asso, club ou particulier : diffuse ton évènement dès maintenant.</span>
-		<span class="card-cta">Publier mon annonce →</span>
+		<span class="card-cta">Publier mon évènement →</span>
 	</a>
 </div>
 

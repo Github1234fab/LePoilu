@@ -1,6 +1,6 @@
 <svelte:head>
-	<title>Le Poilu — L'agenda des événements et bons plans de l'Ouest Lyonnais</title>
-	<meta name="description" content="Découvre tous les événements, concerts et festivals de ta région, ainsi que les meilleurs bons plans vitrines de l'Ouest Lyonnais." />
+	<title>Le Poilu — L'agenda des événements et vitrines de l'Ouest Lyonnais</title>
+	<meta name="description" content="Découvre tous les événements, concerts et festivals de ta région, ainsi que les meilleures vitrines de l'Ouest Lyonnais." />
 </svelte:head>
 
 <script>
@@ -45,8 +45,8 @@
 
 			<PreHero />
 	</section>
-	<!-- BLOC BONS PLANS -->
-	<div class="homepage-block bons-plans-block">
+	<!-- BLOC VITRINES -->
+	<div class="homepage-block vitrines-block">
 		<BonsPlansSection />
 	</div>
 

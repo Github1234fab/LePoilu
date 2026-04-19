@@ -69,7 +69,7 @@
 </script>
 
 <svelte:head>
-	<title>Publication d'annonce — Le Poilu</title>
+	<title>Publication d'évènement — Le Poilu</title>
 	<meta
 		name="description"
 		content="Fais rayonner tes événements sur l'application Le Poilu. Touche une audience locale qualifiée en quelques minutes."
@@ -86,7 +86,7 @@
 				<h1>Propulse ton événement au cœur de la vie locale.</h1>
 				<p>
 					Le Poilu regroupe des milliers d'utilisateurs passionnés par l'Ouest Lyonnais. 
-					Publie ton annonce ici et apparais instantanément sur leur application mobile préférée.
+					Publie ton évènement ici et apparais instantanément sur leur application mobile préférée, Le Poilu.
 				</p>
 				<div class="hero-actions">
 					<a href="#plans" class="btn-primary">Voir les formules</a>
@@ -104,14 +104,14 @@
 		<div class="strategy-container">
 			<header class="section-header">
 				<h2>Le pont entre toi et ton audience</h2>
-				<p>Pourquoi passer par le Web pour publier sur l'App ?</p>
+				<p>Publier un évènement n'a jamais été aussi simple</p>
 			</header>
 
 			<div class="strategy-grid">
 				<div class="strategy-item">
 					<div class="step-num">1</div>
-					<h3>Créateur Web</h3>
-					<p>Remplis les détails de ton événement confortablement depuis ton ordinateur ou mobile.</p>
+					<h3>Choisis ta formule</h3>
+					<p>Remplis les détails de ton événement confortablement depuis ton ordinateur ou ton mobile.</p>
 				</div>
 				<div class="strategy-connector">
 					<i class="fa-solid fa-arrow-right"></i>
@@ -119,15 +119,15 @@
 				<div class="strategy-item">
 					<div class="step-num">2</div>
 					<h3>Paiement Sécurisé</h3>
-					<p>Règle sans frais de plateforme Apple ou Google. 100% de ton budget sert à ta visibilité.</p>
+					<p>Pour les publications d'évènements payantes, le paiement s'effectue via Stripe, une plateforme 100% sécurisée.</p>
 				</div>
 				<div class="strategy-connector">
 					<i class="fa-solid fa-arrow-right"></i>
 				</div>
 				<div class="strategy-item">
 					<div class="step-num">3</div>
-					<h3>Visibilité App</h3>
-					<p>Une fois validée, ton annonce brille sur l'application iOS et Android du Poilu.</p>
+					<h3>Visibilité sur l'App</h3>
+					<p>Une fois validée, ton annonce est visible par tous les utilisateurs de l'application Le Poilu.</p>
 				</div>
 			</div>
 		</div>

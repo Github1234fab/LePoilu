@@ -22,8 +22,8 @@
 		</div>
 
 		{#if type === 'free'}
-			<h1>Annonce créée !</h1>
-			<p class="subtitle">Ton annonce a bien été enregistrée.</p>
+			<h1>Évènement créé !</h1>
+			<p class="subtitle">Ton évènement a bien été enregistré.</p>
 		{:else}
 			<h1>Merci pour ta commande !</h1>
 			<p class="subtitle">Ton paiement a été validé avec succès.</p>

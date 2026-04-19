@@ -31,9 +31,9 @@
 
 		<!-- Navigation desktop -->
 		<nav class="nav-desktop">
-			<a href="/Tarifs" class="nav-link nav-publish">Publication d'annonce</a>
+			<a href="/Tarifs" class="nav-link nav-publish">Publication d'évènement</a>
 			<a href="/carnet/rejoindre" class="nav-link nav-merchant">Création de vitrine</a>
-			<a href="/carnet" class="nav-link nav-deals">Les Bons Plans</a>
+			<a href="/carnet" class="nav-link nav-deals">Les Vitrines</a>
 			<a href="/Concept" class="nav-link">Le Concept</a>
 			<a href="/Apropos" class="nav-link">À propos</a>
 			<a href="/Contact" class="nav-link">Contact</a>
@@ -73,9 +73,9 @@
 				<i class="fa-solid fa-circle-user"></i>
 				{user ? 'Mon Compte' : 'Se connecter'}
 			</a>
-			<a href="/Tarifs" class="nav-link-mobile nav-publish-mobile" on:click={closeMenu}>Publication d'annonce</a>
+			<a href="/Tarifs" class="nav-link-mobile nav-publish-mobile" on:click={closeMenu}>Publication d'évènement</a>
 			<a href="/carnet/rejoindre" class="nav-link-mobile nav-merchant-mobile" on:click={closeMenu}>Création de vitrine</a>
-			<a href="/carnet" class="nav-link-mobile nav-deals-mobile" on:click={closeMenu}>Les Bons Plans</a>
+			<a href="/carnet" class="nav-link-mobile nav-deals-mobile" on:click={closeMenu}>Les Vitrines</a>
 			<a href="/Concept" class="nav-link-mobile" on:click={closeMenu}>Le Concept</a>
 			<a href="/Apropos" class="nav-link-mobile" on:click={closeMenu}>À propos</a>
 			<a href="/Contact" class="nav-link-mobile" on:click={closeMenu}>Contact</a>

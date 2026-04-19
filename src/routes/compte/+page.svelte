@@ -566,7 +566,7 @@
 				{:else if activeTab === 'favorites'}
 					<div class="tab-content favorites-view" in:fade>
 						<div class="favorites-header">
-							<h3>Mes Bons Plans locaux</h3>
+							<h3>Mes Vitrines locales</h3>
 							<p>Retrouve ici les commerces que tu as ajoutés en favoris sur le site.</p>
 						</div>
 
@@ -617,7 +617,7 @@
 							<div class="promo-content">
 								<div class="promo-text">
 									<h4>Tes favoris partout</h4>
-									<p>Retrouve tes Bons Plans et ton Agenda favoris sur l'application mobile Le Poilu.</p>
+									<p>Retrouve tes Vitrines et ton Agenda favoris sur l'application mobile Le Poilu.</p>
 								</div>
 								<div class="promo-links">
 									<a href="/Telecharger" class="btn-secondary small">Télécharger l'app</a>

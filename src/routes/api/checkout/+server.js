@@ -28,7 +28,7 @@ export async function POST({ request, url, cookies }) {
         if (type === 'ad') {
             // === ONE-OFF AD PAYMENT ===
             const priceInCents = planId === 'premium' ? 499 : 2499; 
-            const productName = planId === 'premium' ? 'Annonce Premium' : 'Pack 10 Annonces';
+            const productName = planId === 'premium' ? 'Évènement Premium' : 'Pack 10 Évènements';
 
             sessionConfig.line_items = [{
                 price_data: {
@@ -90,7 +90,7 @@ export async function POST({ request, url, cookies }) {
             sessionConfig.line_items = [{
                 price_data: {
                     currency: 'eur',
-                    product_data: { name: 'Pack 10 Annonces Premium' },
+                    product_data: { name: 'Pack 10 Évènements Premium' },
                     unit_amount: 2499, // 24.99€
                 },
                 quantity: 1,

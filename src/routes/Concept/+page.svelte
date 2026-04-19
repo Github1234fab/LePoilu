@@ -8,7 +8,7 @@
 	<title>Le Concept — Le Poilu</title>
 	<meta
 		name="description"
-		content="Découvre le concept du Poilu : agenda local, bons plans vitrines, et solutions professionnelles pour booster ta visibilité."
+		content="Découvre le concept du Poilu : agenda local, vitrines, et solutions professionnelles pour booster ta visibilité."
 	/>
 </svelte:head>
 
@@ -71,7 +71,7 @@
 			<!-- SEGMENT 2: POUR LES PROS -->
 			<div class="feature-segment pro-segment">
 				<header class="segment-header">
-					<span class="segment-badge pro">LES BONS PLANS</span>
+					<span class="segment-badge pro">LES VITRINES</span>
 					<h2>Donne de l'élan à ton activité.</h2>
 					<p>Annonces ciblées ou vitrine permanente : le choix t'appartient.</p>
 				</header>
@@ -80,7 +80,7 @@
 					<article class="feature-item">
 						<div class="icon-box pro"><i class="fa-solid fa-store"></i></div>
 						<h3>Ta Vitrine Digitale</h3>
-						<p>Crée ta vitrine pour que le Poilu t'indexe dans ses bons plans.</p>
+						<p>Crée ta vitrine pour que le Poilu t'indexe dans ses vitrines.</p>
 					</article>
 
 					<article class="feature-item">

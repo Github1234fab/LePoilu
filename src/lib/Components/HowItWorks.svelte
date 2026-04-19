@@ -9,14 +9,14 @@
 		},
 		{
 			number: '2',
-			title: 'Consulte les évènements ou créer ton propre évènement.<br><br> Consulte les bons plans ou créer ta vitrine en ligne.',
+			title: 'Consulte les évènements ou créer ton propre évènement.<br><br> Consulte les vitrines ou créer ta vitrine en ligne.',
 			description:
-				'Accède facilement aux évènement et aux bons plans des commerçants. Tu peux aussi créer tes propres évènements ou ta vitrine en ligne.'
+				'Accède facilement aux évènement et aux vitrines des commerçants. Tu peux aussi créer tes propres évènements ou ta vitrine en ligne.'
 		},
 		{
 			number: '3',
 			title: '',
-			description: 'Ajoute en favoris, partage les évènements et les bons plans autour de toi. Utilise les widgets et les filtres intelligent.'
+			description: 'Ajoute en favoris, partage les évènements et les vitrines autour de toi. Utilise les widgets et les filtres intelligent.'
 		}
 	];
 </script>

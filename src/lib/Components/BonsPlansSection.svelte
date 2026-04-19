@@ -3,13 +3,13 @@
     import ChevronRightIcon from './icons/ChevronRightIcon.svelte';
 </script>
 
-<section class="bons-plans-section">
+<section class="vitrines-section">
     <div class="bp-container">
         <header class="section-header">
-            <span class="badge">LES BONS PLANS LOCAUX</span>
+            <span class="badge">LES VITRINES LOCALES</span>
             <h2 class="section-title">Profite des offres exclusives de tes commerçants locaux.</h2>
             <p class="section-desc">
-                Consulte les bons plans du Poilu, et présente l'appli en caisse pour en profiter !
+                Consulte les vitrines du Poilu, et présente l'appli en caisse pour en profiter !
             </p>
         </header>
 
@@ -45,7 +45,7 @@
 
         <div class="bp-cta-group">
             <a href="/carnet" class="btn-bp">
-                Découvre tous les Bons Plans
+                Découvre toutes les Vitrines
                 <div class="icon-arrow"><ChevronRightIcon /></div>
             </a>
             
@@ -62,7 +62,7 @@
 </section>
 
 <style>
-    .bons-plans-section {
+    .vitrines-section {
         background: linear-gradient(135deg, #fff 0%, #fff5f2 100%);
         padding: 6rem 1.5rem;
         border-radius: 40px;

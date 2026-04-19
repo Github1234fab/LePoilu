@@ -101,7 +101,7 @@
 </script>
 
 <svelte:head>
-	<title>Les Bons Plans (Offres locales) - Le Poilu</title>
+	<title>Les Vitrines (Offres locales) - Le Poilu</title>
 </svelte:head>
 
 <div class="carnet-page">
@@ -109,15 +109,12 @@
 	<section class="merchant-cta-banner">
 		<div class="cta-content">
 			<div class="cta-text-side">
-				<div class="cta-badge-pro">
-					<i class="fa-solid fa-bolt"></i> PRO
-				</div>
 				<p>
-					Vous êtes un commerce local ? <br />
+					Vous êtes un commerce local ?
 					<span class="highlight-vibrant">Boostez votre visibilité</span> sur Le Poilu.
 				</p>
 			</div>
-			<a href="/carnet/rejoindre" class="cta-button-vibrant big-pulse">
+			<a href="/carnet/rejoindre" class="cta-button-vibrant">
 				En savoir plus <i class="fa-solid fa-arrow-right"></i>
 			</a>
 		</div>
@@ -138,7 +135,7 @@
 
 					<div>
 						<h1 class="header-title">
-							Les Bons Plans
+							Les Vitrines
 						</h1>
 						<p class="header-subtitle">DÉCOUVREZ VOS COMMERCES & OFFRES LOCALES</p>
 					</div>
@@ -274,14 +271,6 @@
 			</div>
 		{/if}
 	</main>
-
-	<!-- Floating Action Button for Merchants -->
-	<div class="floating-cta-container">
-		<button on:click={handleCommerceButton} class="floating-cta-btn">
-			<div class="cta-icon"><StorefrontIcon /></div>
-			<span class="cta-text">{userHasSponsor ? 'Mon Espace' : 'Espace Pro'}</span>
-		</button>
-	</div>
 </div>
 
 <style>
@@ -319,120 +308,61 @@
 
 	/* MERCHANT CTA BANNER - REJOINRE INSPIRED */
 	.merchant-cta-banner {
-		padding: 2.5rem var(--spacing-sm);
-		background: #fffcf9;
+		padding: 0.5rem var(--spacing-sm);
+		background: #fdfdfd;
+		border-bottom: 1px solid var(--border);
 		position: relative;
-		overflow: hidden;
-		border-bottom: 1px solid var(--borderColor);
+		z-index: 5;
 	}
 
 	.cta-content {
 		max-width: var(--desktop);
 		margin: 0 auto;
 		display: flex;
-		justify-content: space-between;
+		justify-content: center;
 		align-items: center;
-		gap: 2rem;
-		background: white;
-		padding: 2rem 3rem;
-		border-radius: var(--radius-lg);
-		border: 2px dashed #fbd5c6;
-		box-shadow: 0 10px 30px rgba(175, 52, 12, 0.05);
+		gap: 1.5rem;
 	}
 
 	.cta-text-side {
 		display: flex;
-		flex-direction: column;
-		gap: 0.75rem;
-	}
-
-	.cta-badge-pro {
-		display: inline-flex;
 		align-items: center;
-		gap: 8px;
-		background: #fff5f2;
-		color: var(--accent);
-		padding: 6px 16px;
-		border-radius: 50px;
-		font-weight: 800;
-		font-size: 0.8rem;
-		text-transform: uppercase;
-		width: fit-content;
-		border: 1px solid #fbd5c6;
+		gap: 1.5rem;
 	}
 
 	.cta-text-side p {
-		font-size: 1.25rem;
-		font-weight: 700;
-		color: var(--textDark);
-		line-height: 1.4;
+		font-size: 0.85rem;
+		font-weight: 500;
+		color: var(--secondary);
+		line-height: normal;
 	}
 
 	.highlight-vibrant {
 		color: var(--cta);
-		position: relative;
-		display: inline-block;
-		z-index: 1;
-	}
-
-	.highlight-vibrant::after {
-		content: '';
-		position: absolute;
-		bottom: 2px;
-		left: -2px;
-		right: -2px;
-		height: 10px;
-		background: #fbd5c6;
-		z-index: -1;
-		opacity: 0.6;
-		transform: rotate(-1deg);
-		border-radius: 2px;
+		font-weight: 700;
 	}
 
 	.cta-button-vibrant {
 		display: inline-flex;
 		align-items: center;
-		gap: 12px;
-		background: var(--cta);
-		color: white;
-		padding: 1rem 2rem;
-		border-radius: 50px;
-		font-weight: 800;
-		font-size: 1.1rem;
+		gap: 5px;
+		color: var(--cta);
+		font-weight: 700;
+		font-size: 0.85rem;
 		text-decoration: none;
-		transition: all 0.3s ease;
-		box-shadow: 0 8px 25px rgba(217, 70, 122, 0.25);
-		white-space: nowrap;
+		transition: opacity 0.2s ease;
 	}
 
 	.cta-button-vibrant:hover {
-		transform: translateY(-3px) scale(1.05);
-		background: var(--ctaHover);
-		box-shadow: 0 12px 30px rgba(217, 70, 122, 0.35);
-	}
-
-	.big-pulse {
-		animation: cta-pulse 2s infinite;
-	}
-
-	@keyframes cta-pulse {
-		0% { box-shadow: 0 0 0 0 rgba(217, 70, 122, 0.4); }
-		70% { box-shadow: 0 0 0 15px rgba(217, 70, 122, 0); }
-		100% { box-shadow: 0 0 0 0 rgba(217, 70, 122, 0); }
+		opacity: 0.8;
+		text-decoration: underline;
 	}
 
 	@media (max-width: 768px) {
 		.cta-content {
 			flex-direction: column;
+			gap: 0.5rem;
 			text-align: center;
-			padding: 2rem;
-		}
-		.cta-text-side {
-			align-items: center;
-		}
-		.cta-button-vibrant {
-			width: 100%;
-			justify-content: center;
 		}
 	}
 
@@ -996,62 +926,4 @@
 		text-overflow: ellipsis;
 	}
 
-	/* Floating CTA */
-	.floating-cta-container {
-		position: fixed;
-		bottom: 32px;
-		left: 0;
-		right: 0;
-		z-index: 20;
-		pointer-events: none;
-		display: flex;
-		justify-content: center;
-	}
-
-	.floating-cta-btn {
-		pointer-events: auto;
-		box-shadow:
-			0 20px 25px -5px rgba(0, 0, 0, 0.1),
-			0 10px 10px -5px rgba(0, 0, 0, 0.04);
-		background-color: #111827;
-		color: white;
-		padding: 14px 24px;
-		border-radius: 50px;
-		display: flex;
-		align-items: center;
-		gap: 10px;
-		transition: all var(--transition-normal);
-		border: none;
-		cursor: pointer;
-	}
-
-	.floating-cta-btn:hover {
-		background-color: #000000;
-		transform: scale(1.05);
-	}
-
-	.floating-cta-btn:active {
-		transform: scale(0.95);
-	}
-
-	.cta-icon {
-		width: 20px;
-		height: 20px;
-		color: rgba(255, 255, 255, 0.8);
-		transition: color var(--transition-normal);
-	}
-
-	.cta-icon :global(svg) {
-		width: 20px;
-		height: 20px;
-	}
-
-	.floating-cta-btn:hover .cta-icon {
-		color: white;
-	}
-
-	.cta-text {
-		font-weight: 700;
-		letter-spacing: 0.025em;
-	}
 </style>

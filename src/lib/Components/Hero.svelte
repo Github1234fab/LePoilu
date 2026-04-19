@@ -15,17 +15,17 @@
 		<h1 class="hero-title">Le Poilu <br /><span>L'agenda de l'Ouest Lyonnais</span></h1>
 
 		<p class="hero-description">
-			Retrouve facilement tous les évènements de l'Ouest Lyonnais, <br />ainsi que tous les bons plans de tes commerçants.
+			Retrouve facilement tous les évènements de l'Ouest Lyonnais, <br />ainsi que toutes les vitrines de tes commerçants.
 		</p>
 
 		<div class="organizer-chips">
 			<a href="/Tarifs" class="chip chip-event">
 				<span class="chip-icon">📅</span>
-				<span>Publication d'annonce</span>
+				<span>Publication d'évènement</span>
 			</a>
 			<!-- <a href="/carnet" class="chip chip-deals">
 				<span class="chip-icon">🏷️</span>
-				<span>Voir les Bons Plans</span>
+				<span>Voir les Vitrines</span>
 			</a> -->
 			<a href="/carnet/rejoindre" class="chip chip-merchant">
 				<span class="chip-icon">🏪</span>

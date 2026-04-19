@@ -3,7 +3,6 @@
 	import screenA from '$lib/assets/screen_sponsorA.webp';
 	import screenB from '$lib/assets/screen_sponsorB.webp';
 	import screenD from '$lib/assets/screen_sponsor_d.webp';
-	import screenF from '$lib/assets/screen_sponsor_f.webp';
 </script>
 
 <svelte:head>
@@ -14,25 +13,42 @@
 	<!-- HERO SECTION -->
 	<header class="hero-section">
 		<div class="hero-content">
-			<div class="badge-pro" in:fade={{ delay: 100 }}><i class="fa-solid fa-store"></i> ESPACE PRO</div>
+			<div class="badge-pro" in:fade={{ delay: 100 }}><i class="fa-solid fa-store"></i> Pour les commerçants locaux</div>
 			<h1 in:fly={{ y: 20, duration: 600 }}>
-				Créer ma <span class="highlight">vitrine</span> sur Le Poilu.
+				Création de <span class="highlight">vitrine</span> sur Le Poilu.
 			</h1>
 			<p class="hero-subtitle" in:fade={{ delay: 200 }}>
-				Le principe est simple : Tu proposes une offre exclusive sur l'app. La tribu du Poilu
-				vient en profiter !
+				Le principe est simple: 
+				Tu crées ta vitrine. tu deviens visible instantanément auprès de la tribu du Poilu.
+				Et si tu choisis de proposer une offre, la tribu du poilu en profite. 
 			</p>
-			<a href="/carnet/rejoindre/inscription" class="cta-button big-pulse">
-				Je lance mon offre <i class="fa-solid fa-arrow-right"></i>
-			</a>
 		</div>
 
 		<div class="hero-visual" in:fly={{ x: 50, duration: 800, delay: 300 }}>
-			<div class="phone-mockup">
-				<img src={screenF} alt="Exemple d'offre sur mobile" />
-				<div class="floating-card">
-					<i class="fa-solid fa-check-circle text-success"></i> "Bonjour ! J'ai vu ton offre sur Le
-					Poilu."
+			<div class="comparison-grid">
+				<!-- OPTION 1: AVEC OFFRE (PREMIUM) -->
+				<div class="comparison-item premium" in:fly={{ y: 20, delay: 400 }}>
+					<div class="mini-phone-mockup">
+						<img src={screenD} alt="Exemple vitrine avec offre" />
+						<div class="badge-mini">RECOMMANDÉ</div>
+					</div>
+					<div class="comparison-info">
+						<a href="/carnet/rejoindre/inscription?plan=premium" class="btn-choice primary pulse-button">
+							Crées ta vitrine avec offre <i class="fa-solid fa-star"></i>
+						</a>
+					</div>
+				</div>
+
+				<!-- OPTION 2: SANS OFFRE (ESSENTIEL) -->
+				<div class="comparison-item" in:fly={{ y: 20, delay: 600 }}>
+					<div class="mini-phone-mockup">
+						<img src={screenB} alt="Exemple vitrine simple" />
+					</div>
+					<div class="comparison-info">
+						<a href="/carnet/rejoindre/inscription?plan=basic" class="btn-choice secondary">
+							Crées ta vitrine sans offre <i class="fa-solid fa-arrow-right"></i>
+						</a>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -42,7 +58,7 @@
 	<section class="final-cta">
 		<h2>Prêt à booster ton activité ?</h2>
 		<a href="/carnet/rejoindre/inscription" class="cta-button">
-			Créer ma vitrine <i class="fa-solid fa-star"></i>
+			Crées ta vitrine <i class="fa-solid fa-star"></i>
 		</a>
 		<p class="sub-cta">Sans engagement. Annulable à tout moment.</p>
 	</section>
@@ -53,20 +69,20 @@
 		<div class="steps-grid">
 			<div class="step-card">
 				<div class="step-number">1</div>
-				<h3>Tu crées ta fiche</h3>
-				<p>Renseigne tes infos et choisis ton plan Premium.</p>
+				<h3>Tu crées ta vitrine</h3>
+				<p>Renseigne tes infos, télécharge tes photos et choisis l'option qui te convient.</p>
 			</div>
 			<div class="step-line"></div>
 			<div class="step-card">
 				<div class="step-number">2</div>
-				<h3>Tu définis une offre</h3>
-				<p>Ex: "Café offert", "-20% le mardi", "Dessert offert"...</p>
+				<h3>Tu crées ton offre</h3>
+				<p>Ex: "30% sur les achats avant 11h", "-20% le mardi", "Dessert offert"...</p>
 			</div>
 			<div class="step-line"></div>
 			<div class="step-card">
 				<div class="step-number">3</div>
-				<h3>Les clients arrivent</h3>
-				<p>Ils présentent l'offre sur leur téléphone lors du passage en caisse.</p>
+				<h3>Tu crées ta dynamique</h3>
+				<p>La tribu te présente l'offre sur son téléphone pour en profiter lors du passage en caisse.</p>
 			</div>
 		</div>
 	</section>
@@ -81,15 +97,15 @@
 		<div class="app-screens">
 			<div class="screen-item" in:fly={{ y: 50, duration: 800 }}>
 				<img src={screenA} alt="Liste des commerces" />
-				<div class="screen-caption">Un Carnet Clair</div>
+				<div class="screen-caption">Ta vitrine</div>
 			</div>
 			<div class="screen-item center-screen" in:fly={{ y: 50, duration: 800, delay: 200 }}>
 				<img src={screenB} alt="Fiche commerce détaillée" />
-				<div class="screen-caption">Ta Fiche Complète</div>
+				<div class="screen-caption">Ton offre</div>
 			</div>
 			<div class="screen-item" in:fly={{ y: 50, duration: 800, delay: 400 }}>
 				<img src={screenD} alt="Offre promotionalle" />
-				<div class="screen-caption">Tes Offres Exclusives</div>
+				<div class="screen-caption">Ton interface de gestion</div>
 			</div>
 		</div>
 	</section>
@@ -211,45 +227,107 @@
 		letter-spacing: 0.05em;
 	}
 
-	/* Hero Visual */
-	.phone-mockup {
-		position: relative;
-		width: 280px;
-		margin: 0 auto;
-	}
-
-	.phone-mockup img {
-		width: 100%;
-		border-radius: 30px;
-		box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
-		border: 8px solid white;
-	}
-
-	.floating-card {
-		position: absolute;
-		bottom: 10%;
-		left: -40px;
-		background: white;
-		padding: 15px 20px;
-		border-radius: 12px;
-		box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-		font-weight: 600;
+	.btn-choice {
 		display: flex;
 		align-items: center;
-		gap: 10px;
-		width: 300px;
+		justify-content: center;
+		gap: 8px;
+		padding: 12px;
+		border-radius: 12px;
+		text-decoration: none;
+		font-weight: 700;
 		font-size: 0.9rem;
-		animation: float 4s ease-in-out infinite;
+		transition: all 0.2s ease;
 	}
 
-	@keyframes float {
-		0%,
-		100% {
-			transform: translateY(0);
-		}
-		50% {
-			transform: translateY(-10px);
-		}
+	.btn-choice.secondary {
+		background: #f1f3f5;
+		color: #495057;
+	}
+
+	.btn-choice.secondary:hover {
+		background: #e9ecef;
+	}
+
+	.btn-choice.primary {
+		background: var(--cta);
+		color: white;
+	}
+
+	.btn-choice.primary:hover {
+		background: var(--ctaHover);
+		transform: scale(1.02);
+	}
+
+	.pulse-button {
+		animation: pulse-small 2s infinite;
+	}
+
+	@keyframes pulse-small {
+		0% { box-shadow: 0 0 0 0 rgba(217, 70, 122, 0.4); }
+		70% { box-shadow: 0 0 0 10px rgba(217, 70, 122, 0); }
+		100% { box-shadow: 0 0 0 0 rgba(217, 70, 122, 0); }
+	}
+
+	/* --- Comparison Grid --- */
+	.comparison-grid {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 30px;
+		align-items: end;
+	}
+
+	.comparison-item {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 15px;
+	}
+
+	.mini-phone-mockup {
+		position: relative;
+		width: 100%;
+		max-width: 200px;
+		border-radius: 20px;
+		overflow: hidden;
+		box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+		border: 4px solid white;
+		transition: transform 0.3s ease;
+	}
+
+	.comparison-item:hover .mini-phone-mockup {
+		transform: translateY(-5px);
+	}
+
+	.mini-phone-mockup img {
+		width: 100%;
+		display: block;
+	}
+
+	.badge-mini {
+		position: absolute;
+		top: 10px;
+		right: 10px;
+		background: var(--cta);
+		color: white;
+		font-size: 0.5rem;
+		font-weight: 800;
+		padding: 3px 8px;
+		border-radius: 50px;
+	}
+
+	.comparison-info {
+		width: 100%;
+		text-align: center;
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+	}
+
+	/* Re-using btn-choice from previous step but styling for this context */
+	.comparison-info .btn-choice {
+		padding: 10px;
+		font-size: 0.85rem;
 	}
 
 	/* --- STEPS --- */
@@ -460,30 +538,10 @@
 		box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
 	}
 
-	.big-pulse {
-		animation: pulse 2s infinite;
-	}
-
-	@keyframes pulse {
-		0% {
-			box-shadow: 0 0 0 0 rgba(217, 70, 122, 0.4);
-		}
-		70% {
-			box-shadow: 0 0 0 15px rgba(217, 70, 122, 0);
-		}
-		100% {
-			box-shadow: 0 0 0 0 rgba(217, 70, 122, 0);
-		}
-	}
-
 	.sub-cta {
 		margin-top: 15px;
 		opacity: 0.7;
 		font-size: 0.9rem;
-	}
-
-	.text-success {
-		color: #10b981;
 	}
 
 	/* RESPONSIVE */
@@ -498,6 +556,13 @@
 		}
 		.hero-subtitle {
 			margin: 0 auto var(--spacing-lg) auto;
+		}
+
+		.comparison-grid {
+			grid-template-columns: 1fr;
+			max-width: 400px;
+			margin: var(--spacing-md) auto 0;
+			gap: 40px;
 		}
 
 		.steps-grid {
