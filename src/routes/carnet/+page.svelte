@@ -110,7 +110,7 @@
 		<div class="cta-content">
 			<div class="cta-text-side">
 				<p>
-					Tu es un commerce local ?
+					Tu es un commerce local ? <br>
 					<span class="highlight-vibrant">Crée ta vitrine</span> sur Le Poilu.
 				</p>
 			</div>
@@ -216,7 +216,7 @@
 								/>
 							</div>
 
-							{#if sponsor.images && sponsor.images.length > 0}
+							{#if isPremium && sponsor.images && sponsor.images.length > 0}
 								<img
 									src={sponsor.images[0]}
 									alt={`Vue de ${sponsor.businessName}`}
@@ -225,9 +225,13 @@
 								/>
 								<div class="img-gradient-overlay"></div>
 							{:else}
-								<div class="card-no-img">
-									<div class="icon-large"><BusinessOutlineIcon /></div>
-								</div>
+								<img
+									src="/Poilu-village.png"
+									alt="Découvrir ce commerce"
+									class="card-img placeholder-img"
+									loading="lazy"
+								/>
+								<div class="img-gradient-overlay"></div>
 							{/if}
 						</div>
 
@@ -788,7 +792,7 @@
 		pointer-events: none;
 	}
 
-	.card-no-img {
+	/* .card-no-img {
 		width: 100%;
 		height: 100%;
 		display: flex;
@@ -806,7 +810,7 @@
 	.icon-large :global(svg) {
 		width: 64px;
 		height: 64px;
-	}
+	} */
 
 	.card-body {
 		padding: 24px;
@@ -915,7 +919,12 @@
 		height: 16px;
 		color: #9ca3af;
 		transition: color var(--transition-normal);
-		transform: translateX(1px);
+	}
+
+	.icon-chevron :global(svg) {
+		width: 16px;
+		height: 16px;
+		display: block;
 	}
 
 	.sponsor-card:hover .icon-chevron {

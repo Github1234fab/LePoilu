@@ -124,7 +124,7 @@
 
 		<!-- Hero Section -->
 		<section class="vitrine-hero">
-			{#if sponsor.images && sponsor.images.length > 0}
+			{#if isPremium && sponsor.images && sponsor.images.length > 0}
 				<div class="hero-image-wrapper">
 					<img
 						src={sponsor.images[0]}
@@ -134,8 +134,13 @@
 					<div class="hero-overlay-gradient"></div>
 				</div>
 			{:else}
-				<div class="hero-placeholder">
-					<ImageOutlineIcon />
+				<div class="hero-image-wrapper">
+					<img
+						src="/Poilu-village.png"
+						alt="Le Poilu"
+						class="hero-parallax"
+					/>
+					<div class="hero-overlay-gradient"></div>
 				</div>
 			{/if}
 
@@ -169,7 +174,7 @@
 			{/if}
 
 			<!-- Special Offer Spotlight -->
-			{#if hasOffer}
+			{#if isPremium && hasOffer}
 				<section class="offer-spotlight" in:fade={{ delay: 400 }}>
 					<div class="offer-card-premium {offerShown ? 'is-active' : ''}">
 						<div class="offer-card-inner">
@@ -210,7 +215,7 @@
 			{/if}
 
 			<!-- Story Section -->
-			{#if sponsor.description}
+			{#if isPremium && sponsor.description}
 				<section class="story-section">
 					<div class="section-header-pro">
 						<span class="section-subtitle">À propos</span>
@@ -223,7 +228,7 @@
 			{/if}
 
 			<!-- Visual Portfolio -->
-			{#if sponsor.images && sponsor.images.length > 1}
+			{#if isPremium && sponsor.images && sponsor.images.length > 1}
 				<section class="portfolio-section">
 					<div class="section-header-pro">
 						<span class="section-subtitle">Galerie</span>
@@ -265,7 +270,7 @@
 							<ChevronRightIcon class="row-arrow" />
 						</a>
 
-						{#if sponsor.website}
+						{#if isPremium && sponsor.website}
 							<a
 								href={sponsor.website.startsWith('http') ? sponsor.website : `https://${sponsor.website}`}
 								target="_blank"
@@ -280,7 +285,7 @@
 							</a>
 						{/if}
 
-						{#if sponsor.email}
+						{#if isPremium && sponsor.email}
 							<a href={`mailto:${sponsor.email}`} class="access-row">
 								<div class="access-details">
 									<p class="access-label">Email</p>
@@ -294,7 +299,7 @@
 
 				<!-- Hours & Social -->
 				<div class="secondary-info-stack">
-					{#if sponsor.openingHours}
+					{#if isPremium && sponsor.openingHours}
 						<section class="info-card-pro">
 							<div class="info-card-icon time"><TimeOutlineIcon /></div>
 							<h3>Horaires</h3>
@@ -304,7 +309,7 @@
 						</section>
 					{/if}
 
-					{#if sponsor.socialMedia && (sponsor.socialMedia.facebook || sponsor.socialMedia.instagram)}
+					{#if isPremium && sponsor.socialMedia && (sponsor.socialMedia.facebook || sponsor.socialMedia.instagram)}
 						<section class="social-connect">
 							{#if sponsor.socialMedia.facebook}
 								<a href={sponsor.socialMedia.facebook} target="_blank" class="social-pill fb">
@@ -327,7 +332,7 @@
 		<!-- Sticky Conversion Bar -->
 		<div class="sticky-cta-bar">
 			<div class="cta-inner">
-				{#if sponsor.phone}
+				{#if isPremium && sponsor.phone}
 					<a href={`tel:${sponsor.phone}`} on:click={trackClick} class="btn-cta-primary">
 						<CallIcon />
 						<span>Appeler</span>
@@ -441,14 +446,14 @@
 		background: linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0) 50%, rgba(0,0,0,0.6) 100%);
 	}
 
-	.hero-placeholder {
+	/* .hero-placeholder {
 		width: 100%;
 		height: 100%;
 		display: flex;
 		align-items: center;
 		justify-content: center;
 		color: rgba(255,255,255,0.2);
-	}
+	} */
 	:global(.hero-placeholder svg) { width: 4rem; height: 4rem; }
 
 	/* Brand Card */
