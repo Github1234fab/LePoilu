@@ -110,8 +110,8 @@
 		<div class="cta-content">
 			<div class="cta-text-side">
 				<p>
-					Vous êtes un commerce local ?
-					<span class="highlight-vibrant">Boostez votre visibilité</span> sur Le Poilu.
+					Tu es un commerce local ?
+					<span class="highlight-vibrant">Crée ta vitrine</span> sur Le Poilu.
 				</p>
 			</div>
 			<a href="/carnet/rejoindre" class="cta-button-vibrant">
@@ -137,7 +137,7 @@
 						<h1 class="header-title">
 							Les Vitrines
 						</h1>
-						<p class="header-subtitle">DÉCOUVREZ VOS COMMERCES & OFFRES LOCALES</p>
+						<p class="header-subtitle">DÉCOUVRE LES COMMERCES & LES OFFRES LOCALES</p>
 					</div>
 				</div>
 
@@ -285,13 +285,13 @@
 
 	/* Header */
 	.carnet-header {
-		background-color: var(--background);
-		border-bottom: 1px solid var(--borderColor);
-		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+		background-color: #1B2E3C;
+		border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 		position: sticky;
 		top: 0;
 		z-index: 10;
 		overflow: hidden;
+		color: white;
 	}
 
 	.header-bg-glow {
@@ -301,7 +301,7 @@
 		width: 250px;
 		height: 250px;
 		border-radius: 50%;
-		background-color: rgba(255, 183, 158, 0.15); /* var(--primary) with opacity */
+		background-color: rgba(255, 255, 255, 0.05); /* very subtle light glow */
 		filter: blur(40px);
 		pointer-events: none;
 	}
@@ -345,24 +345,44 @@
 	.cta-button-vibrant {
 		display: inline-flex;
 		align-items: center;
-		gap: 5px;
-		color: var(--cta);
+		gap: 8px;
+		background-color: var(--cta);
+		color: white;
+		padding: 8px 18px;
+		border-radius: 50px;
 		font-weight: 700;
-		font-size: 0.85rem;
+		font-size: 0.8rem;
 		text-decoration: none;
-		transition: opacity 0.2s ease;
+		transition: all 0.2s ease;
+		box-shadow: 0 4px 10px rgba(230, 57, 70, 0.2);
 	}
 
 	.cta-button-vibrant:hover {
-		opacity: 0.8;
-		text-decoration: underline;
+		transform: translateY(-2px);
+		box-shadow: 0 6px 15px rgba(230, 57, 70, 0.3);
+		color: white;
 	}
 
 	@media (max-width: 768px) {
+		.merchant-cta-banner {
+			padding: 0.3rem var(--spacing-sm);
+		}
 		.cta-content {
-			flex-direction: column;
+			flex-direction: row;
+			justify-content: space-between;
 			gap: 0.5rem;
-			text-align: center;
+			text-align: left;
+		}
+
+		.cta-text-side p {
+			font-size: 0.75rem;
+		}
+
+		.cta-button-vibrant {
+			padding: 5px 10px;
+			font-size: 0.7rem;
+			white-space: nowrap;
+			flex-shrink: 0;
 		}
 	}
 
@@ -389,19 +409,20 @@
 		width: 40px;
 		height: 40px;
 		border-radius: 50%;
-		background-color: var(--lightBg);
-		border: 1px solid var(--borderColor);
+		background-color: rgba(255, 255, 255, 0.1);
+		border: 1px solid rgba(255, 255, 255, 0.1);
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		color: var(--text);
+		color: white;
 		text-decoration: none;
-		transition: background-color var(--transition-fast);
+		transition: all var(--transition-fast);
 		flex-shrink: 0;
 	}
 
 	.btn-back:hover {
-		background-color: #eaeaea;
+		background-color: rgba(255, 255, 255, 0.2);
+		border-color: rgba(255, 255, 255, 0.3);
 	}
 
 	.icon-rotate {
@@ -420,7 +441,7 @@
 		font-family: var(--FFTitle);
 		font-size: clamp(1.5rem, 4vw, 2.2rem);
 		font-weight: 800;
-		color: var(--textDark);
+		color: white;
 		display: flex;
 		align-items: center;
 		gap: 10px;
@@ -431,10 +452,19 @@
 
 	.header-subtitle {
 		font-size: 0.85rem;
-		color: #666;
+		color: rgba(255, 255, 255, 0.7);
 		font-weight: 500;
 		letter-spacing: 0.05em;
 		margin-top: 5px;
+	}
+
+	@media (max-width: 768px) {
+		.carnet-header-container {
+			padding: var(--spacing-xl) var(--spacing-sm);
+		}
+		.header-title {
+			font-size: 2.6rem;
+		}
 	}
 
 	.header-icon-desktop {
