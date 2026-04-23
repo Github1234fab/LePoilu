@@ -127,12 +127,6 @@
 		<div class="carnet-header-container">
 			<div class="header-flex">
 				<div class="header-titles">
-					<a href="/" class="btn-back" aria-label="Retour à l'accueil">
-						<div class="icon-rotate">
-							<ChevronRightIcon />
-						</div>
-					</a>
-
 					<div>
 						<h1 class="header-title">
 							Les Vitrines
@@ -312,7 +306,7 @@
 
 	/* MERCHANT CTA BANNER - REJOINRE INSPIRED */
 	.merchant-cta-banner {
-		padding: 0.5rem var(--spacing-sm);
+		padding: 1.6rem var(--spacing-sm);
 		background: #fdfdfd;
 		border-bottom: 1px solid var(--border);
 		position: relative;
@@ -369,7 +363,7 @@
 
 	@media (max-width: 768px) {
 		.merchant-cta-banner {
-			padding: 0.3rem var(--spacing-sm);
+			padding: 1.2rem var(--spacing-sm);
 		}
 		.cta-content {
 			flex-direction: row;
@@ -393,7 +387,7 @@
 	.carnet-header-container {
 		max-width: var(--desktop);
 		margin: 0 auto;
-		padding: var(--spacing-md) var(--spacing-sm);
+		padding: var(--spacing-xl) var(--spacing-sm);
 		position: relative;
 	}
 
@@ -409,41 +403,11 @@
 		gap: 20px;
 	}
 
-	.btn-back {
-		width: 40px;
-		height: 40px;
-		border-radius: 50%;
-		background-color: rgba(255, 255, 255, 0.1);
-		border: 1px solid rgba(255, 255, 255, 0.1);
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		color: white;
-		text-decoration: none;
-		transition: all var(--transition-fast);
-		flex-shrink: 0;
-	}
 
-	.btn-back:hover {
-		background-color: rgba(255, 255, 255, 0.2);
-		border-color: rgba(255, 255, 255, 0.3);
-	}
-
-	.icon-rotate {
-		width: 20px;
-		height: 20px;
-		transform: rotate(180deg);
-		display: flex;
-	}
-
-	.icon-rotate :global(svg) {
-		width: 20px;
-		height: 20px;
-	}
 
 	.header-title {
 		font-family: var(--FFTitle);
-		font-size: clamp(1.5rem, 4vw, 2.2rem);
+		font-size: clamp(2.2rem, 10vw, 5rem);
 		font-weight: 800;
 		color: white;
 		display: flex;
@@ -455,11 +419,12 @@
 
 
 	.header-subtitle {
-		font-size: 0.85rem;
+		font-size: 1.1rem;
 		color: rgba(255, 255, 255, 0.7);
 		font-weight: 500;
-		letter-spacing: 0.05em;
-		margin-top: 5px;
+		letter-spacing: 0.1em;
+		margin-top: 10px;
+		text-transform: uppercase;
 	}
 
 	@media (max-width: 768px) {
@@ -467,7 +432,11 @@
 			padding: var(--spacing-xl) var(--spacing-sm);
 		}
 		.header-title {
-			font-size: 2.6rem;
+			font-size: 2.9rem;
+		}
+		.header-subtitle {
+			font-size: 0.8rem;
+			letter-spacing: 0.05em;
 		}
 	}
 
@@ -672,7 +641,7 @@
 		border-radius: var(--radius-lg);
 		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 		transition: all var(--transition-normal);
-		border: 1px solid #f3f4f6;
+		border: 1.5px solid #d1d5db;
 		overflow: hidden;
 		text-decoration: none;
 		height: 100%;
