@@ -85,15 +85,16 @@
 		font-size: 6rem;
 		font-family: var(--FFTitle);
 		font-weight: 900;
-		/* margin-top: var(--spacing-sm); */
 		text-align: center;
-		line-height: 1.1;
+		line-height: 0.5;
 	letter-spacing: -2px;
+	margin-bottom: 30px;
 	}
 	.hero-title span {
-		font-size: 3rem;
+		font-size: 2rem;
+			font-weight: 700;
+				letter-spacing: -1px;
 	}
-
 	.hero-description {
 		font-family: var(--FFTitle);
 		text-align: center;
@@ -261,7 +262,7 @@
 		.hero-title {
 			font-size: 4rem;
 			line-height: 36px;
-			margin-bottom: 40px;
+			margin-bottom: 20px;
 		}
 		.hero-title span {
 			font-size: 1.6rem;

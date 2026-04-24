@@ -1,8 +1,32 @@
 <script>
 	import { fade, fly } from 'svelte/transition';
+	import StarIcon from '$lib/Components/icons/StarIcon.svelte';
+	import GiftIcon from '$lib/Components/icons/GiftIcon.svelte';
 	import screenA from '$lib/assets/screen_sponsorA.webp';
 	import screenB from '$lib/assets/screen_sponsorB.webp';
 	import screenD from '$lib/assets/screen_sponsor_d.webp';
+	
+	// New screens
+	import maVitrine from '$lib/assets/screenShots/maVitrine.png';
+	import monOffre from '$lib/assets/screenShots/monOffre.png';
+	import monInterface from '$lib/assets/screenShots/monInterface.png';
+	
+	// Mock data for the visuals
+	const premiumData = {
+		businessName: "L'épicerie gourmande",
+		category: "Épicerie fine",
+		city: "Craponne",
+		postalCode: "69290",
+		images: [screenD] 
+	};
+
+	const basicData = {
+		businessName: "Imm-Ouest",
+		category: "Immobilier",
+		city: "Francheville",
+		postalCode: "69340",
+		images: ["/Poilu-village.png"]
+	};
 </script>
 
 <svelte:head>
@@ -26,27 +50,58 @@
 
 		<div class="hero-visual" in:fly={{ x: 50, duration: 800, delay: 300 }}>
 			<div class="comparison-grid">
-				<!-- OPTION 1: AVEC OFFRE (PREMIUM) -->
-				<div class="comparison-item premium" in:fly={{ y: 20, delay: 400 }}>
-					<div class="mini-phone-mockup">
-						<img src={screenD} alt="Exemple vitrine avec offre" />
-						<div class="badge-mini">RECOMMANDÉ</div>
+				<!-- OPTION 1: SANS OFFRE (ESSENTIEL) -->
+				<div class="comparison-item basic-col" in:fly={{ y: 20, delay: 400 }}>
+					<div class="phone-shell">
+						<div class="mockup-card">
+							<div class="card-image-box">
+								<img src={basicData.images[0]} alt="Exemple Basique" class="card-img placeholder-img" />
+								<div class="img-gradient-overlay"></div>
+							</div>
+							<div class="card-body">
+								<span class="card-category">{basicData.category}</span>
+								<h2 class="card-title">{basicData.businessName}</h2>
+								<div class="card-location">
+									{basicData.city} • {basicData.postalCode}
+								</div>
+							</div>
+						</div>
 					</div>
 					<div class="comparison-info">
-						<a href="/carnet/rejoindre/inscription?plan=premium" class="btn-choice primary pulse-button">
-							Crées ta vitrine avec offre <i class="fa-solid fa-star"></i>
+						<a href="/carnet/rejoindre/inscription?plan=basic" class="btn-choice secondary">
+							Crée ta vitrine sans offre <i class="fa-solid fa-arrow-right"></i>
 						</a>
 					</div>
 				</div>
 
-				<!-- OPTION 2: SANS OFFRE (ESSENTIEL) -->
-				<div class="comparison-item" in:fly={{ y: 20, delay: 600 }}>
-					<div class="mini-phone-mockup">
-						<img src={screenB} alt="Exemple vitrine simple" />
+				<!-- OPTION 2: AVEC OFFRE (PREMIUM) -->
+				<div class="comparison-item premium-col" in:fly={{ y: 20, delay: 600 }}>
+					<div class="phone-shell">
+						<div class="mockup-card">
+							<div class="card-image-box">
+								<div class="badge-premium">
+									<div class="icon-small"><StarIcon /></div>
+									Premium
+								</div>
+								<div class="badge-offer">
+									<div class="icon-small"><GiftIcon /></div>
+									OFFRE INCLUSE
+								</div>
+								<img src={premiumData.images[0]} alt="Exemple Premium" class="card-img" />
+								<div class="img-gradient-overlay"></div>
+							</div>
+							<div class="card-body">
+								<span class="card-category">{premiumData.category}</span>
+								<h2 class="card-title">{premiumData.businessName}</h2>
+								<div class="card-location">
+									{premiumData.city} • {premiumData.postalCode}
+								</div>
+							</div>
+						</div>
 					</div>
 					<div class="comparison-info">
-						<a href="/carnet/rejoindre/inscription?plan=basic" class="btn-choice secondary">
-							Crées ta vitrine sans offre <i class="fa-solid fa-arrow-right"></i>
+						<a href="/carnet/rejoindre/inscription?plan=premium" class="btn-choice primary pulse-button">
+							Crée ta vitrine avec offre <i class="fa-solid fa-star"></i>
 						</a>
 					</div>
 				</div>
@@ -96,15 +151,23 @@
 
 		<div class="app-screens">
 			<div class="screen-item" in:fly={{ y: 50, duration: 800 }}>
-				<img src={screenA} alt="Liste des commerces" />
+				<div class="phone-shell small-phone">
+					<img src={maVitrine} alt="Ta vitrine" class="mockup-full-img" />
+				</div>
 				<div class="screen-caption">Ta vitrine</div>
 			</div>
+			
 			<div class="screen-item center-screen" in:fly={{ y: 50, duration: 800, delay: 200 }}>
-				<img src={screenB} alt="Fiche commerce détaillée" />
+				<div class="phone-shell">
+					<img src={monOffre} alt="Ton offre" class="mockup-full-img" />
+				</div>
 				<div class="screen-caption">Ton offre</div>
 			</div>
+			
 			<div class="screen-item" in:fly={{ y: 50, duration: 800, delay: 400 }}>
-				<img src={screenD} alt="Offre promotionalle" />
+				<div class="phone-shell small-phone">
+					<img src={monInterface} alt="Ton interface de gestion" class="mockup-full-img" />
+				</div>
 				<div class="screen-caption">Ton interface de gestion</div>
 			</div>
 		</div>
@@ -284,50 +347,113 @@
 		gap: 15px;
 	}
 
-	.mini-phone-mockup {
-		position: relative;
+	/* --- Mockup Components --- */
+	.phone-shell {
 		width: 100%;
 		max-width: 200px;
-		border-radius: 20px;
+		background: #000;
+		border: 4px solid #1a1a1a;
+		border-radius: 36px;
 		overflow: hidden;
-		box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
-		border: 4px solid white;
-		transition: transform 0.3s ease;
+		box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+		position: relative;
 	}
 
-	.comparison-item:hover .mini-phone-mockup {
-		transform: translateY(-5px);
-	}
-
-	.mini-phone-mockup img {
-		width: 100%;
-		display: block;
-	}
-
-	.badge-mini {
-		position: absolute;
-		top: 10px;
-		right: 10px;
-		background: var(--cta);
-		color: white;
-		font-size: 0.5rem;
-		font-weight: 800;
-		padding: 3px 8px;
-		border-radius: 50px;
-	}
-
-	.comparison-info {
-		width: 100%;
-		text-align: center;
+	.mockup-card {
+		background: white;
 		display: flex;
 		flex-direction: column;
-		gap: 10px;
+		height: 380px; /* Aligned with a taller smartphone aspect ratio */
 	}
 
-	/* Re-using btn-choice from previous step but styling for this context */
+	.card-image-box {
+		height: 220px;
+		position: relative;
+		overflow: hidden;
+		flex-shrink: 0;
+	}
+
+	.card-img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	.badge-premium, .badge-offer {
+		position: absolute;
+		padding: 4px 8px;
+		border-radius: 4px;
+		font-size: 0.6rem;
+		font-weight: 800;
+		text-transform: uppercase;
+		display: flex;
+		align-items: center;
+		gap: 4px;
+		z-index: 2;
+	}
+
+	.badge-premium {
+		top: 10px;
+		left: 10px;
+		background: rgba(17, 24, 39, 0.9);
+		color: #facc15;
+	}
+
+	.badge-offer {
+		bottom: 10px;
+		right: 10px;
+		background: rgba(255, 255, 255, 0.95);
+		color: var(--primary);
+	}
+
+	.card-body {
+		padding: 15px;
+		display: flex;
+		flex-direction: column;
+		flex: 1;
+	}
+
+	.card-category {
+		color: var(--accent);
+		font-size: 0.55rem;
+		font-weight: 700;
+		text-transform: uppercase;
+		margin-bottom: 5px;
+	}
+
+	.card-title {
+		font-size: 1rem;
+		font-weight: 800;
+		color: var(--text);
+		margin-bottom: 5px;
+		line-height: 1.2;
+	}
+
+	.card-location {
+		font-size: 0.7rem;
+		color: #6c757d;
+	}
+
+	.img-gradient-overlay {
+		position: absolute;
+		inset: 0;
+		background: linear-gradient(to top, rgba(0,0,0,0.4), transparent);
+	}
+
+	.icon-small {
+		width: 12px;
+		height: 12px;
+	}
+	
+	.icon-small :global(svg) {
+		width: 100%;
+		height: 100%;
+	}
+
 	.comparison-info .btn-choice {
 		padding: 10px;
 		font-size: 0.85rem;
+		margin-top: 10px;
 	}
 
 	/* --- STEPS --- */
@@ -414,35 +540,37 @@
 		flex-direction: column;
 		align-items: center;
 		gap: 15px;
-		width: 220px;
+		width: 200px;
 	}
 
-	.screen-item img {
+	.small-phone {
+		transform: scale(0.9);
+		opacity: 0.9;
+	}
+
+	.mockup-full-img {
 		width: 100%;
-		border-radius: 20px;
-		box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
-		border: 6px solid #f8f9fa;
-		transition: transform 0.3s ease;
-	}
-
-	.screen-item:hover img {
-		transform: translateY(-10px);
+		height: 380px;
+		object-fit: cover;
+		object-position: top center;
+		display: block;
 	}
 
 	.center-screen {
 		z-index: 2;
-		width: 240px; /* Slightly bigger */
+		width: 210px;
 	}
 
-	.center-screen img {
-		box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
-		border: 8px solid white;
+	.center-screen .phone-shell {
+		border-color: #2a2a2a;
+		box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.5);
 	}
 
 	.screen-caption {
 		font-weight: 700;
 		color: var(--text);
-		font-size: 1.1rem;
+		font-size: 1rem;
+		margin-top: 5px;
 	}
 
 	/* --- EXAMPLES --- */

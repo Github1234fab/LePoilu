@@ -25,8 +25,11 @@
 	let selectedSector = 'all';
 	let userHasSponsor = false;
 	let favoriteSponsors = [];
+	let scrollY = 0; // Track scroll position
 	let authUnsubscribe;
 	let sponsorsUnsubscribe;
+
+	$: isScrolled = scrollY > 1; // Immediate trigger on first pixel of scroll
 
 	const sectors = [
 		{ id: 'all', label: 'Tous', icon: AppsIcon },
@@ -100,63 +103,66 @@
 	}
 </script>
 
+<svelte:window bind:scrollY />
+
 <svelte:head>
 	<title>Les Vitrines (Offres locales) - Le Poilu</title>
 </svelte:head>
 
 <div class="carnet-page">
-	<!-- Merchant CTA Banner (Moved to top) -->
-	<section class="merchant-cta-banner">
-		<div class="cta-content">
-			<div class="cta-text-side">
-				<p>
-					Tu es un commerce local ? <br>
-					<span class="highlight-vibrant">Crée ta vitrine</span> sur Le Poilu.
-				</p>
-			</div>
-			<a href="/carnet/rejoindre" class="cta-button-vibrant">
-				En savoir plus <i class="fa-solid fa-arrow-right"></i>
-			</a>
-		</div>
-	</section>
+	<!-- STICKY NAVIGATION BLOCK (Grouped for solid behavior) -->
+	<div class="sticky-nav-block {isScrolled ? 'scrolled' : ''}">
+		<!-- Header Area Premium (Main Title) -->
+		<header class="carnet-header">
+			<div class="header-bg-glow"></div>
 
-	<!-- Header Area Premium -->
-	<header class="carnet-header">
-		<div class="header-bg-glow"></div>
-
-		<div class="carnet-header-container">
-			<div class="header-flex">
-				<div class="header-titles">
-					<div>
-						<h1 class="header-title">
-							Les Vitrines
-						</h1>
-						<p class="header-subtitle">DÉCOUVRE LES COMMERCES & LES OFFRES LOCALES</p>
+			<div class="carnet-header-container">
+				<div class="header-flex">
+					<div class="header-titles">
+						<div>
+							<h1 class="header-title">Les Vitrines</h1>
+							<p class="header-subtitle">Découvre les commerces & les offres locales</p>
+						</div>
 					</div>
-				</div>
 
-				<div class="header-icon-desktop">
-					<div class="icon-circle">
-						<StorefrontIcon />
+					<div class="header-icon-desktop">
+						<div class="icon-circle">
+							<StorefrontIcon />
+						</div>
 					</div>
 				</div>
 			</div>
-		</div>
-	</header>
+		</header>
 
-	<!-- Categories Filter (Horizontal Scroll) -->
-	<div class="filter-bar">
-		<div class="filter-container">
-			<div class="filter-scroll">
-				{#each sectors as sector}
-					<button
-						on:click={() => (selectedSector = sector.id)}
-						class="filter-btn {selectedSector === sector.id ? 'active' : ''}"
-					>
-						<span class="filter-icon"><svelte:component this={sector.icon} /></span>
-						<span class="filter-label">{sector.label}</span>
-					</button>
-				{/each}
+		<!-- Merchant CTA Banner (Dynamic disappearance on scroll) -->
+		<section class="merchant-cta-banner">
+			<div class="cta-content">
+				<div class="cta-text-side">
+					<p>
+						Tu es un commerce local ? <br />
+						<span class="highlight-vibrant">Crée ta vitrine</span> sur Le Poilu.
+					</p>
+				</div>
+				<a href="/carnet/rejoindre" class="cta-button-vibrant">
+					En savoir plus <i class="fa-solid fa-arrow-right"></i>
+				</a>
+			</div>
+		</section>
+
+		<!-- Categories Filter (Horizontal Scroll) -->
+		<div class="filter-bar">
+			<div class="filter-container">
+				<div class="filter-scroll">
+					{#each sectors as sector}
+						<button
+							on:click={() => (selectedSector = sector.id)}
+							class="filter-btn {selectedSector === sector.id ? 'active' : ''}"
+						>
+							<span class="filter-icon"><svelte:component this={sector.icon} /></span>
+							<span class="filter-label">{sector.label}</span>
+						</button>
+					{/each}
+				</div>
 			</div>
 		</div>
 	</div>
@@ -198,15 +204,13 @@
 									OFFRE INCLUSE
 								</div>
 							{:else if sponsor.isModel}
-								<div class="badge-model">
-									MODÈLE
-								</div>
+								<div class="badge-model">MODÈLE</div>
 							{/if}
 
 							<div class="favorite-overlay">
-								<FavoriteHeart 
-									sponsorId={sponsor.id} 
-									isFavorite={favoriteSponsors.includes(sponsor.id)} 
+								<FavoriteHeart
+									sponsorId={sponsor.id}
+									isFavorite={favoriteSponsors.includes(sponsor.id)}
 								/>
 							</div>
 
@@ -281,17 +285,38 @@
 		position: relative;
 	}
 
-	/* Header */
-	.carnet-header {
-		background-color: #1B2E3C;
-		border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+	/* NEW STICKY BLOCK WRAPPER */
+	.sticky-nav-block {
 		position: sticky;
-		top: 0;
-		z-index: 10;
+		top: 130px; /* Aligned with global header bottom on desktop */
+		z-index: 50;
+		background-color: var(--background);
+		box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+		width: 100%;
+		overflow-x: hidden;
+	}
+
+	@media (max-width: 1024px) {
+		.sticky-nav-block {
+			top: 102px; /* Calé sur l'image 70px + padding tablette */
+		}
+	}
+
+	@media (max-width: 480px) {
+		.sticky-nav-block {
+			top: 76px; /* Calé sur l'image 60px + padding mobile small */
+		}
+	}
+
+	/* Inner Elements */
+	.carnet-header {
+		background-color: #1b2e3c;
+		border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 		overflow: hidden;
 		color: white;
 	}
 
+	
 	.header-bg-glow {
 		position: absolute;
 		top: -50px;
@@ -304,13 +329,21 @@
 		pointer-events: none;
 	}
 
-	/* MERCHANT CTA BANNER - REJOINRE INSPIRED */
 	.merchant-cta-banner {
 		padding: 1.6rem var(--spacing-sm);
 		background: #fdfdfd;
 		border-bottom: 1px solid var(--border);
-		position: relative;
-		z-index: 5;
+		max-height: 120px; /* Closer to real height to avoid transition delay */
+		opacity: 1;
+		overflow: hidden;
+		
+	}
+
+	
+	@media (max-width: 1024px) {
+		.merchant-cta-banner {
+			padding: 1rem var(--spacing-sm);
+		}
 	}
 
 	.cta-content {
@@ -387,8 +420,10 @@
 	.carnet-header-container {
 		max-width: var(--desktop);
 		margin: 0 auto;
-		padding: var(--spacing-xl) var(--spacing-sm);
+		padding: 10px var(--spacing-sm);
 		position: relative;
+		width: 100%;
+		box-sizing: border-box;
 	}
 
 	.header-flex {
@@ -400,10 +435,9 @@
 	.header-titles {
 		display: flex;
 		align-items: center;
-		gap: 20px;
+		/* gap: 20px; */
+		
 	}
-
-
 
 	.header-title {
 		font-family: var(--FFTitle);
@@ -412,31 +446,37 @@
 		color: white;
 		display: flex;
 		align-items: center;
-		gap: 10px;
 		flex-wrap: wrap;
+		letter-spacing: -2.5px;
 	}
-
-
 
 	.header-subtitle {
 		font-size: 1.1rem;
 		color: rgba(255, 255, 255, 0.7);
 		font-weight: 500;
 		letter-spacing: 0.1em;
-		margin-top: 10px;
 		text-transform: uppercase;
+		margin-top: -13px;
+		margin-bottom: 14px;
+			letter-spacing: -0.2px;
+
 	}
 
 	@media (max-width: 768px) {
 		.carnet-header-container {
-			padding: var(--spacing-xl) var(--spacing-sm);
+			padding: 10px;
 		}
 		.header-title {
-			font-size: 2.9rem;
+			font-size: 3rem;
+			letter-spacing: -1px;
 		}
 		.header-subtitle {
-			font-size: 0.8rem;
+			font-size: 0.6rem;
 			letter-spacing: 0.05em;
+			margin-top: -8px;
+			margin-bottom: 8px;
+			
+
 		}
 	}
 
@@ -471,8 +511,6 @@
 		background-color: var(--background);
 		border-bottom: 1px solid var(--borderColor);
 		box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
-		position: relative;
-		z-index: 0;
 	}
 
 	.filter-container {
@@ -661,6 +699,12 @@
 		flex-shrink: 0;
 	}
 
+	@media (max-width: 480px) {
+		.card-image-box {
+			height: 150px;
+		}
+	}
+
 	.badge-premium {
 		position: absolute;
 		top: 12px;
@@ -677,7 +721,7 @@
 		display: flex;
 		align-items: center;
 		gap: 6px;
-		z-index: 2;
+		z-index: 1;
 		border: 1px solid rgba(250, 204, 21, 0.2);
 	}
 
@@ -696,7 +740,7 @@
 		align-items: center;
 		gap: 4px;
 		box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-		z-index: 10;
+		z-index: 2;
 		border: 1px solid rgba(255, 183, 158, 0.3);
 	}
 
@@ -713,7 +757,7 @@
 		text-transform: uppercase;
 		letter-spacing: 0.05em;
 		box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-		z-index: 10;
+		z-index: 2;
 	}
 
 	.sponsor-card:hover .badge-offer {
@@ -724,7 +768,7 @@
 		position: absolute;
 		top: 12px;
 		right: 12px;
-		z-index: 30;
+		z-index: 3;
 	}
 
 	.icon-small {
@@ -788,6 +832,12 @@
 		flex: 1;
 	}
 
+	@media (max-width: 480px) {
+		.card-body {
+			padding: 16px;
+		}
+	}
+
 	.card-content {
 		flex: 1;
 	}
@@ -817,6 +867,13 @@
 		line-clamp: 2;
 		-webkit-box-orient: vertical;
 		transition: color var(--transition-normal);
+	}
+
+	@media (max-width: 480px) {
+		.card-title {
+			font-size: 1.1rem;
+			margin-bottom: 4px;
+		}
 	}
 
 	.sponsor-card:hover .card-title {
@@ -933,5 +990,4 @@
 		overflow: hidden;
 		text-overflow: ellipsis;
 	}
-
 </style>
