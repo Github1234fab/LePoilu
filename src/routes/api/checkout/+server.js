@@ -91,7 +91,7 @@ export async function POST({ request, url, cookies }) {
                 price_data: {
                     currency: 'eur',
                     product_data: { name: 'Pack 10 Évènements Premium' },
-                    unit_amount: 2499, // 24.99€
+                    unit_amount: 1990, // 19.90€
                 },
                 quantity: 1,
             }];
@@ -112,7 +112,7 @@ export async function POST({ request, url, cookies }) {
                 price_data: {
                     currency: 'eur',
                     product_data: { name: 'Pass Illimité 30 Jours' },
-                    unit_amount: 4999, // 49.99€
+                    unit_amount: 3990, // 39.90€
                 },
                 quantity: 1,
             }];

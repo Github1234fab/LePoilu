@@ -111,7 +111,7 @@
 		successMsg = '';
 
 		// Validation
-		if (!description.trim()) {
+		if (isPremium && !description.trim()) {
 			errorMsg = 'La description est requise.';
 			return;
 		}
@@ -251,6 +251,7 @@
 				</section>
 
 				<!-- Section: Description -->
+				{#if isPremium}
 				<section class="form-card">
 					<div class="card-title">
 						<span class="emoji">📝</span>
@@ -272,6 +273,7 @@
 						</div>
 					</div>
 				</section>
+				{/if}
 
 				<!-- Section: Contact -->
 				<section class="form-card">

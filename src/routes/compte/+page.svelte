@@ -356,263 +356,273 @@
 					</button>
 				</header>
 
-				<div class="stats-grid">
-					<!-- Credits Card -->
-					<div class="stat-card">
-						<div class="icon-bg">
-							<i class="fa-solid fa-coins"></i>
-						</div>
-						<div class="stat-content">
-							<h3>Mes Crédits</h3>
-							<p class="stat-number">
-								{#if userData?.subscription?.credits !== undefined}
-									{userData.subscription.credits}
-								{:else}
-									0
-								{/if}
-							</p>
-							<a href="/acheter-plan?plan=pack10" class="btn-sm">Recharger</a>
-						</div>
-					</div>
-
-					<!-- Subscription Card -->
-					<div class="stat-card">
-						<div class="icon-bg star">
-							<i class="fa-solid fa-star"></i>
-						</div>
-						<div class="stat-content">
-							<h3>Abonnement</h3>
-							{#if userData?.subscription?.planId === 'unlimited30' && userData.subscription.isActive}
-								<p class="stat-number active">Illimité</p>
-								<p class="stat-sub">
-									Expire le {userData.subscription.expiresAt
-										? new Date(userData.subscription.expiresAt.seconds * 1000).toLocaleDateString()
-										: '?'}
-								</p>
-							{:else}
-								<p class="stat-number inactive">Aucun</p>
-								<a href="/acheter-plan?plan=unlimited" class="btn-sm">S'abonner</a>
-							{/if}
-						</div>
-					</div>
-
-					<!-- Sponsor Header (Show if merchant) -->
-					{#if sponsorData}
-						<div class="stat-card pro-status-card">
-							<div class="icon-bg sponsor-icon">
-								<i class="fa-solid fa-store"></i>
+				{#if !sponsorData}
+					<div class="stats-grid">
+						<!-- Only show simple stats for standard users -->
+						<div class="stat-card">
+							<div class="icon-bg">
+								<i class="fa-solid fa-calendar-plus"></i>
 							</div>
 							<div class="stat-content">
-								<h3>Statut Professionnel</h3>
-								<p class="stat-number {statusInfo.color}">
-									{statusInfo.label}
+								<h3>Crédits Agenda</h3>
+								<p class="stat-number">
+									{userData?.subscription?.credits || 0}
 								</p>
-								<p class="stat-sub">{sponsorData.currentPlan?.name || 'Sponsor'}</p>
+								<a href="/acheter-plan?plan=pack10" class="btn-sm">Recharger</a>
 							</div>
 						</div>
-					{/if}
-				</div>
 
-				<!-- Tabs Navigation -->
-				<nav class="account-tabs">
-					<button
-						class="tab-btn {activeTab === 'merchant' ? 'active' : ''}"
-						on:click={() => (activeTab = 'merchant')}
-					>
-						{userData?.isMerchant ? 'Mon Espace Pro' : 'Devenir Pro'}
-					</button>
-					<button
-						class="tab-btn {activeTab === 'favorites' ? 'active' : ''}"
-						on:click={() => (activeTab = 'favorites')}
-					>
-						Mes Favoris
-					</button>
-				</nav>
-
-				{#if activeTab === 'merchant'}
-					<div class="tab-content" in:fade>
-						<!-- MERCHANT DASHBOARD INTEGRATION -->
-						{#if sponsorData}
-					<div class="merchant-dashboard-section" in:fade>
-						<div class="section-divider">
-							<span>MA VITRINE PROFESSIONNELLE</span>
-						</div>
-
-						<header class="merchant-hero">
-							<div class="hero-text">
-								<h2>{sponsorData.businessName}</h2>
-								<p class="category-tag">{sponsorData.category}</p>
+						<div class="stat-card">
+							<div class="icon-bg star">
+								<i class="fa-solid fa-bolt"></i>
 							</div>
-							{#if isPremium}
-								<div class="premium-tag">
-									<StarIcon class="star-icon" />
-									<span>PREMIUM</span>
-								</div>
-							{/if}
-						</header>
-
-						{#if sponsorData.status === 'approved' && isMerchantActive}
-							<div class="stats-mini-grid">
-								<div class="stat-mini-card">
-									<div class="mini-icon text-primary"><EyeIcon /></div>
-									<div class="mini-data">
-										<span class="value">{sponsorData.stats?.views || 0}</span>
-										<span class="label">Vues</span>
-									</div>
-								</div>
-								<div class="stat-mini-card">
-									<div class="mini-icon text-green"><CursorClickIcon /></div>
-									<div class="mini-data">
-										<span class="value">{sponsorData.stats?.clicks || 0}</span>
-										<span class="label">Clics</span>
-									</div>
-								</div>
-								<div class="stat-mini-card">
-									<div class="mini-icon text-orange"><GiftIcon /></div>
-									<div class="mini-data">
-										<span class="value">{sponsorData.stats?.offersShown || 0}</span>
-										<span class="label">Offres</span>
-									</div>
-								</div>
-							</div>
-						{/if}
-
-						{#if sponsorData.status === 'rejected'}
-							<div class="alert-box error">
-								<div class="alert-icon"><AlertCircleIcon /></div>
-								<div class="alert-content">
-									<h4>Fiche refusée</h4>
-									<p>{sponsorData.rejectionReason || 'Contactez-nous pour plus de détails.'}</p>
-								</div>
-							</div>
-						{/if}
-
-						<div class="pro-actions-grid">
-							<a href="/espace-commercant/modifier" class="pro-action-card">
-								<div class="card-icon edit"><EditIcon /></div>
-								<div class="card-text">
-									<h4>Modifier ma fiche</h4>
-									<p>Infos, adresse, horaires...</p>
-								</div>
-								<ChevronRightIcon class="chevron" />
-							</a>
-
-							<a href="/espace-commercant/offres" class="pro-action-card">
-								<div class="card-icon offer"><GiftIcon /></div>
-								<div class="card-text">
-									<h4>Mon Offre</h4>
-									<p>{sponsorData.specialOffer?.isActive ? 'Offre active' : 'Créer un bon plan'}</p>
-								</div>
-								<ChevronRightIcon class="chevron" />
-							</a>
-
-							<a href="/espace-commercant/photos" class="pro-action-card">
-								<div class="card-icon photo"><ImageIcon /></div>
-								<div class="card-text">
-									<h4>Mes Photos</h4>
-									<p>{sponsorData.images?.length || 0} / 5 photos</p>
-								</div>
-								<ChevronRightIcon class="chevron" />
-							</a>
-
-							{#if sponsorData.status === 'approved'}
-								<a href={`/carnet/${sponsorData.id}`} target="_blank" class="pro-action-card preview">
-									<div class="card-icon preview"><EyeIcon /></div>
-									<div class="card-text">
-										<h4>Voir ma vitrine</h4>
-										<p>Aperçu public</p>
-									</div>
-									<ChevronRightIcon class="chevron" />
-								</a>
-							{/if}
-						</div>
-					</div>
-				{:else}
-					<!-- Standard User / Non-Merchant CTA -->
-					<div class="become-pro-cta" in:fade>
-						<div class="pro-cta-card">
-							<div class="pro-badge">ESPACE PRO</div>
-							<div class="cta-inner">
-								<div class="cta-text">
-									<h3>Booste ton commerce local</h3>
-									<p>Rejoins Le Carnet et propose des offres exclusives à la tribu du Poilu.</p>
-								</div>
-								<a href="/carnet/rejoindre" class="btn-cta-pro">
-									En savoir plus <i class="fa-solid fa-arrow-right"></i>
-								</a>
+							<div class="stat-content">
+								<h3>Pass Agenda</h3>
+								{#if userData?.subscription?.planId === 'unlimited30' && userData.subscription.isActive}
+									<p class="stat-number active">Illimité</p>
+								{:else}
+									<p class="stat-number inactive">Aucun</p>
+									<a href="/acheter-plan?plan=unlimited" class="btn-sm">S'abonner</a>
+								{/if}
 							</div>
 						</div>
 					</div>
 				{/if}
 
-						<div class="menu-list">
-							<div class="section-divider">
-								<span>MES ÉVÉNEMENTS</span>
-							</div>
-							<a
-								href={userData?.subscription?.credits > 0 ? '/publier?plan=credit' : '/Tarifs'}
-								class="menu-item"
-							>
-								<i class="fa-solid fa-plus"></i>
-								<span>
-									{userData?.subscription?.credits > 0
-										? 'Publier une annonce (utiliser un crédit)'
-										: 'Publier une annonce'}
-								</span>
-								<i class="fa-solid fa-chevron-right arrow"></i>
-							</a>
-						</div>
-					</div>
-				{:else if activeTab === 'favorites'}
-					<div class="tab-content favorites-view" in:fade>
-						<div class="favorites-header">
-							<h3>Mes Vitrines locales</h3>
-							<p>Retrouve ici les commerces que tu as ajoutés en favoris sur le site.</p>
-						</div>
 
-						{#if loadingFavorites}
-							<div class="loading-mini">
-								<div class="spinner"></div>
-							</div>
-						{:else if favoriteSponsorsData.length === 0}
-							<div class="empty-favorites">
-								<div class="empty-icon-box">
-									<HeartIcon size={48} />
-								</div>
-								<h4>Aucun favori pour le moment</h4>
-								<p>Parcoure le carnet pour découvrir des pépites locales et ajoute-les à tes favoris.</p>
-								<a href="/carnet" class="btn-primary mini">Explorer le Carnet</a>
-							</div>
-						{:else}
-							<div class="favorites-grid">
-								{#each favoriteSponsorsData as fav}
-									<div class="fav-card">
-										<a href="/carnet/{fav.id}" class="fav-img-link">
-											{#if fav.images && fav.images.length > 0}
-												<img src={fav.images[0]} alt={fav.businessName} />
-											{:else}
-												<div class="img-placeholder">
-													<i class="fa-solid fa-store"></i>
+
+				<div class="dashboard-content" in:fade>
+					<div class="tab-content" in:fade>
+						{#if sponsorData}
+							<div class="merchant-dashboard-section" in:fade>
+								<!-- VITRINE SECTION -->
+								<section class="management-box pro-box">
+									<header class="box-header">
+										<div class="box-header-main">
+											<div class="header-text">
+												<span class="box-pill pro-pill">ESPACE PRO</span>
+												<h2>{sponsorData.businessName}</h2>
+												<div class="header-meta">
+													<span class="status-tag {statusInfo.color}">{statusInfo.label}</span>
+													<span class="meta-sep">•</span>
+													<span class="plan-tag">{sponsorData.currentPlan?.name || 'Sponsor'}</span>
+												</div>
+											</div>
+											{#if isPremium}
+												<div class="premium-badge">
+													<StarIcon class="star-icon" />
+													<span>PREMIUM</span>
 												</div>
 											{/if}
-										</a>
-										<div class="fav-info">
-											<div class="fav-top">
-												<span class="fav-cat">{fav.category || 'Commerce'}</span>
-												<FavoriteHeart 
-													sponsorId={fav.id} 
-													isFavorite={true} 
-													size={16} 
-												/>
+										</div>
+									</header>
+
+									<div class="box-content">
+										{#if sponsorData.status === 'approved' && isMerchantActive}
+											<div class="stats-mini-grid">
+												<div class="stat-mini-card">
+													<div class="mini-icon text-primary"><EyeIcon /></div>
+													<div class="mini-data">
+														<span class="value">{sponsorData.stats?.views || 0}</span>
+														<span class="label">Vues</span>
+													</div>
+												</div>
+												<div class="stat-mini-card">
+													<div class="mini-icon text-green"><CursorClickIcon /></div>
+													<div class="mini-data">
+														<span class="value">{sponsorData.stats?.clicks || 0}</span>
+														<span class="label">Clics</span>
+													</div>
+												</div>
+												<div class="stat-mini-card">
+													<div class="mini-icon text-orange"><GiftIcon /></div>
+													<div class="mini-data">
+														<span class="value">{sponsorData.stats?.offersShown || 0}</span>
+														<span class="label">Offres</span>
+													</div>
+												</div>
 											</div>
-											<h4>{fav.businessName}</h4>
-											<p>{fav.city}</p>
-											<a href="/carnet/{fav.id}" class="view-link">Voir la fiche</a>
+										{/if}
+
+										{#if sponsorData.status === 'rejected'}
+											<div class="alert-box error">
+												<div class="alert-icon"><AlertCircleIcon /></div>
+												<div class="alert-content">
+													<h4>Fiche refusée</h4>
+													<p>{sponsorData.rejectionReason || 'Contactez-nous pour plus de détails.'}</p>
+												</div>
+											</div>
+										{/if}
+
+										<div class="pro-actions-grid">
+											<a href="/espace-commercant/modifier" class="pro-action-card">
+												<div class="card-icon edit"><EditIcon /></div>
+												<div class="card-text">
+													<h4>Modifier ma fiche</h4>
+													<p>Infos, adresse, horaires...</p>
+												</div>
+												<ChevronRightIcon class="chevron" />
+											</a>
+
+											<a href="/espace-commercant/offres" class="pro-action-card">
+												<div class="card-icon offer"><GiftIcon /></div>
+												<div class="card-text">
+													<h4>Mon Offre</h4>
+													<p>{sponsorData.specialOffer?.isActive ? 'Offre active' : 'Créer un bon plan'}</p>
+												</div>
+												<ChevronRightIcon class="chevron" />
+											</a>
+
+											<a href="/espace-commercant/photos" class="pro-action-card">
+												<div class="card-icon photo"><ImageIcon /></div>
+												<div class="card-text">
+													<h4>Mes Photos</h4>
+													<p>{sponsorData.images?.length || 0} / 5 photos</p>
+												</div>
+												<ChevronRightIcon class="chevron" />
+											</a>
+
+											{#if sponsorData.status === 'approved'}
+												<a href={`/carnet/${sponsorData.id}`} target="_blank" class="pro-action-card preview">
+													<div class="card-icon preview"><EyeIcon /></div>
+													<div class="card-text">
+														<h4>Voir ma vitrine</h4>
+														<p>Aperçu public</p>
+													</div>
+													<ChevronRightIcon class="chevron" />
+												</a>
+											{/if}
 										</div>
 									</div>
-								{/each}
+								</section>
+
+								<!-- AGENDA SECTION -->
+								<section class="management-box agenda-box">
+									<header class="box-header">
+										<div class="header-text">
+											<span class="box-pill agenda-pill">PUBLICATION</span>
+											<h2>Agenda & Événements</h2>
+											<p class="box-subtitle">Gère tes annonces et ta visibilité locale</p>
+										</div>
+										
+										<div class="header-stats">
+											<div class="h-stat">
+												<span class="hs-label">Crédits</span>
+												<span class="hs-value">{userData?.subscription?.credits || 0}</span>
+											</div>
+											<div class="h-stat">
+												<span class="hs-label">Pass</span>
+												<span class="hs-value {userData?.subscription?.isActive ? 'active' : ''}">
+													{userData?.subscription?.isActive ? 'ACTIF' : 'AUCUN'}
+												</span>
+											</div>
+										</div>
+									</header>
+
+									<div class="box-content">
+										<div class="pro-actions-grid">
+											<a
+												href={userData?.subscription?.credits > 0 ? '/publier?plan=credit' : '/Tarifs'}
+												class="pro-action-card highlight"
+											>
+												<div class="card-icon publish"><i class="fa-solid fa-plus-circle"></i></div>
+												<div class="card-text">
+													<h4>Publier un événement</h4>
+													<p>Utiliser un crédit (Agenda)</p>
+												</div>
+												<ChevronRightIcon class="chevron" />
+											</a>
+											
+											<a href="/acheter-plan" class="pro-action-card">
+												<div class="card-icon shop"><i class="fa-solid fa-cart-shopping"></i></div>
+												<div class="card-text">
+													<h4>Boutique crédits</h4>
+													<p>Recharger mon compte</p>
+												</div>
+												<ChevronRightIcon class="chevron" />
+											</a>
+										</div>
+									</div>
+								</section>
+
+								<div class="section-divider bottom-spacing">
+									<span>FIN DE L'ESPACE DE GESTION</span>
+								</div>
+							</div>
+						{:else}
+							<!-- Standard User / Non-Merchant CTA -->
+							<div class="become-pro-cta" in:fade>
+								<div class="pro-cta-card">
+									<div class="pro-badge">ESPACE PRO</div>
+									<div class="cta-inner">
+										<div class="cta-text">
+											<h3>Booste ton commerce local</h3>
+											<p>Rejoins Le Carnet et propose des offres exclusives à la tribu du Poilu.</p>
+										</div>
+										<a href="/carnet/rejoindre" class="btn-cta-pro">
+											En savoir plus <i class="fa-solid fa-arrow-right"></i>
+										</a>
+									</div>
+								</div>
 							</div>
 						{/if}
+
+						<section class="management-box favorites-box">
+							<header class="box-header">
+								<div class="header-text">
+									<span class="box-pill fav-pill">MES FAVORIS</span>
+									<h2>Mes Vitrines locales</h2>
+									<p class="box-subtitle">Tes commerces coups de cœur</p>
+								</div>
+							</header>
+
+							<div class="box-content">
+								{#if loadingFavorites}
+									<div class="loading-mini">
+										<div class="spinner"></div>
+									</div>
+								{:else if favoriteSponsorsData.length === 0}
+									<div class="empty-favorites">
+										<div class="empty-icon-box">
+											<HeartIcon size={48} />
+										</div>
+										<h4>Aucun favori</h4>
+										<p>Ajoute des vitrines à tes favoris pour les retrouver ici.</p>
+										<a href="/carnet" class="btn-primary mini-btn">Explorer le Carnet</a>
+									</div>
+								{:else}
+									<div class="favorites-grid">
+										{#each favoriteSponsorsData as fav}
+											<div class="fav-card">
+												<a href="/carnet/{fav.id}" class="fav-img-link">
+													{#if fav.images && fav.images.length > 0}
+														<img src={fav.images[0]} alt={fav.businessName} />
+													{:else}
+														<div class="img-placeholder">
+															<i class="fa-solid fa-store"></i>
+														</div>
+													{/if}
+												</a>
+												<div class="fav-info">
+													<div class="fav-top">
+														<span class="fav-cat">{fav.category || 'Commerce'}</span>
+														<FavoriteHeart 
+															sponsorId={fav.id} 
+															isFavorite={true} 
+															size={16} 
+														/>
+													</div>
+													<h4>{fav.businessName}</h4>
+													<p>{fav.city}</p>
+													<a href="/carnet/{fav.id}" class="view-link">Voir la fiche</a>
+												</div>
+											</div>
+										{/each}
+									</div>
+								{/if}
+							</div>
+						</section>
+
 						<div class="apps-promo-card">
 							<div class="promo-content">
 								<div class="promo-text">
@@ -625,7 +635,7 @@
 							</div>
 						</div>
 					</div>
-				{/if}
+				</div>
 			</div>
 		{/if}
 	</div>
@@ -989,6 +999,37 @@
 		margin-bottom: var(--spacing-lg);
 	}
 
+	.header-meta {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		margin-top: 6px;
+	}
+
+	.status-tag {
+		font-size: 0.8rem;
+		font-weight: 700;
+	}
+
+	.status-tag.active { color: #10b981; }
+	.status-tag.pending { color: #f97316; }
+	.status-tag.error { color: #ef4444; }
+
+	.meta-sep { color: var(--border); }
+
+	.plan-tag {
+		font-size: 0.8rem;
+		color: var(--secondary);
+		font-weight: 600;
+	}
+
+	.box-header-main {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		width: 100%;
+	}
+
 	.user-info {
 		display: flex;
 		align-items: center;
@@ -1093,6 +1134,225 @@
 		font-size: 0.8rem;
 		color: var(--secondary);
 	}
+
+	/* Standardized Management Box UI */
+	.management-box {
+		background: white;
+		border-radius: var(--radius-lg);
+		border: 1px solid var(--border);
+		overflow: hidden;
+		box-shadow: var(--shadow);
+		margin-bottom: 2rem;
+	}
+
+	.box-header {
+		padding: 1.8rem 2rem;
+		border-bottom: 1px solid rgba(0,0,0,0.05);
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		position: relative;
+		color: white;
+	}
+
+	/* Bolder, distinct identities */
+	.pro-box .box-header { 
+		background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); 
+		border-left: 6px solid #f97316;
+	}
+	.agenda-box .box-header { 
+		background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%); 
+		border-left: 6px solid #bae6fd;
+	}
+	.favorites-box .box-header { 
+		background: linear-gradient(135deg, #be123c 0%, #9f1239 100%); 
+		border-left: 6px solid #fecdd3;
+	}
+
+
+
+	.box-pill {
+		font-size: 0.65rem;
+		font-weight: 800;
+		padding: 3px 10px;
+		border-radius: 50px;
+		text-transform: uppercase;
+		letter-spacing: 0.1em;
+		display: inline-block;
+		margin-bottom: 8px;
+	}
+
+	.pro-pill { background: #f97316; color: white; }
+	.agenda-pill { background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.3); }
+	.fav-pill { background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.3); }
+
+	.box-header h2 {
+		font-size: 1.4rem;
+		font-weight: 700;
+		color: #ffffff;
+		margin: 0;
+	}
+
+	.box-subtitle {
+		font-size: 0.85rem;
+		margin-top: 4px;
+		font-weight: 500;
+	}
+
+	.pro-box .box-subtitle { color: #cbd5e1; } /* Lighter gray for dark bg */
+	.agenda-box .box-subtitle { color: #e0f2fe; } /* Very light blue */
+	.favorites-box .box-subtitle { color: #fff1f2; } /* Very light pink */
+
+
+
+
+
+
+	.box-content {
+		padding: 2rem;
+		display: flex;
+		flex-direction: column;
+		gap: 1.5rem;
+	}
+
+	.premium-badge {
+		background: var(--text);
+		color: #facc15;
+		display: flex;
+		align-items: center;
+		gap: 6px;
+		padding: 6px 12px;
+		border-radius: 50px;
+		font-size: 0.75rem;
+		font-weight: 900;
+	}
+
+	.header-stats {
+		display: flex;
+		gap: 1.5rem;
+	}
+
+	.h-stat {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-end;
+	}
+
+	.hs-label {
+		font-size: 0.65rem;
+		color: rgba(255,255,255,0.7);
+		font-weight: 800;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+	}
+
+	.hs-value {
+		font-size: 1.2rem;
+		font-weight: 900;
+		color: #ffffff;
+	}
+
+	.hs-value.active { color: #4ade80; }
+
+	.card-icon.publish { background: #f0f9ff; color: #0284c7; }
+	.card-icon.shop { background: #f8fafc; color: #64748b; }
+
+	.pro-action-card.highlight {
+		border: 1px solid #bae6fd;
+		background: #f0f9ff;
+	}
+
+	.pro-action-card.highlight:hover {
+		border-color: #0284c7;
+	}
+
+	.plan-badge {
+		background: #f1f5f9;
+		color: var(--secondary);
+		padding: 2px 10px;
+		border-radius: 50px;
+		font-size: 0.7rem;
+		font-weight: 700;
+		text-transform: uppercase;
+	}
+
+	.event-stats-quick {
+		display: flex;
+		gap: 1.5rem;
+	}
+
+	.quick-stat {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-end;
+	}
+
+	.qs-label {
+		font-size: 0.65rem;
+		color: rgba(2, 132, 199, 0.6);
+		font-weight: 700;
+		text-transform: uppercase;
+	}
+
+	.qs-value {
+		font-size: 1.25rem;
+		font-weight: 900;
+		color: #0284c7;
+	}
+
+	.qs-value.active {
+		color: #10b981;
+	}
+
+	.events-hero {
+		background: #f0f9ff;
+		border: 1px solid #e0f2fe;
+		padding: 2rem;
+		border-radius: var(--radius-lg);
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		position: relative;
+		overflow: hidden;
+		margin-bottom: 1.5rem;
+	}
+
+	.events-hero::before {
+		content: '';
+		position: absolute;
+		top: -50%;
+		left: -50%;
+		width: 200%;
+		height: 200%;
+		background: radial-gradient(circle, rgba(2, 132, 199, 0.08) 0%, rgba(255, 255, 255, 0) 70%);
+		pointer-events: none;
+	}
+
+	.events-hero h2 {
+		font-size: 1.75rem;
+		font-weight: 900;
+		color: var(--text);
+		margin: 0;
+	}
+
+	.menu-item.highlight-item {
+		border: 1px solid var(--border);
+		background: white;
+		box-shadow: var(--shadow3);
+	}
+
+	.menu-text h4 {
+		font-size: 1rem;
+		font-weight: 700;
+		color: var(--text);
+	}
+
+	.menu-text p {
+		font-size: 0.8rem;
+		color: var(--secondary);
+		margin-top: 2px;
+	}
+
 
 	.btn-sm {
 		font-size: 0.8rem;
@@ -1388,11 +1648,11 @@
 	/* --- New Account Tabs & Favorites Styles --- */
 	.account-tabs {
 		display: flex;
-		gap: 10px;
+		gap: 12px;
 		margin-bottom: 2rem;
 		border-bottom: 1px solid var(--border);
 		padding-bottom: 15px;
-		margin-top: 2rem;
+		margin-top: 2.5rem;
 	}
 
 	.tab-btn {
@@ -1405,6 +1665,9 @@
 		cursor: pointer;
 		border-radius: 50px;
 		transition: all 0.2s;
+		display: flex;
+		align-items: center;
+		gap: 8px;
 	}
 
 	.tab-btn.active {

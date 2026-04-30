@@ -205,15 +205,15 @@
 								<h3>Visibilité Simple</h3>
 								<p class="plan-tagline">Pour être présent dans l'annuaire local.</p>
 								<div class="plan-price-box">
-									<span class="currency">29.90€</span>
+									<span class="currency">19.90€</span>
 									<span class="period">/mois</span>
 								</div>
 							</div>
 							<ul class="plan-features-list">
 								<li><CheckCircleIcon class="icon-v" /> Présence garantie sur le site</li>
-								<li><CheckCircleIcon class="icon-v" /> Coordonnées & Horaires</li>
-								<li class="disabled">❌ Pas de photos</li>
-								<li class="disabled">❌ Pas d'offres "Bon Plan"</li>
+								<li><CheckCircleIcon class="icon-v" /> Adresse & Téléphone</li>
+								<li class="disabled">❌ Pas de description</li>
+								<li class="disabled">❌ Pas de photos ni d'offres</li>
 							</ul>
 							<a href="/espace-commercant/rejoindre" class="btn-plan-select">Choisir Visibilité</a>
 						</div>
@@ -225,7 +225,7 @@
 								<h3 class="text-primary">Boost & Bons Plans</h3>
 								<p class="plan-tagline">L'atout majeur pour attirer du monde en boutique.</p>
 								<div class="plan-price-box text-primary">
-									<span class="currency">49.90€</span>
+									<span class="currency">39.90€</span>
 									<span class="period">/mois</span>
 								</div>
 							</div>

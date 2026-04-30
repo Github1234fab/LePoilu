@@ -25,23 +25,23 @@
 	const planDetails = {
 		basic: {
 			name: 'Essentiel',
-			price: '19€',
-			amount: '19,00 €',
+			price: '19,90 €',
+			amount: '19,90 €',
 			features: [
 				'Nom du commerce',
 				'Catégorie',
 				'Adresse',
-				"Pas d'offre promotionnelle pour tes clients (sur présentation de l'app)",
+				'Téléphone',
+				"Pas d'offre promotionnelle",
 				'Pas de photos',
 				'Pas de lien web',
-				"Pas d'horaires",
-				"Pas de bouton d'appel"
+				"Pas d'horaires"
 			]
 		},
 		premium: {
 			name: 'Premium',
-			price: '49€',
-			amount: '49,00 €',
+			price: '39,90 €',
+			amount: '39,90 €',
 			features: [
 				'Fiche complète',
 				'Nom du commerce',

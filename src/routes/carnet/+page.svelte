@@ -112,43 +112,6 @@
 <div class="carnet-page">
 	<!-- STICKY NAVIGATION BLOCK (Grouped for solid behavior) -->
 	<div class="sticky-nav-block {isScrolled ? 'scrolled' : ''}">
-		<!-- Header Area Premium (Main Title) -->
-		<header class="carnet-header">
-			<div class="header-bg-glow"></div>
-
-			<div class="carnet-header-container">
-				<div class="header-flex">
-					<div class="header-titles">
-						<div>
-							<h1 class="header-title">Les Vitrines</h1>
-							<p class="header-subtitle">Découvre les commerces & les offres locales</p>
-						</div>
-					</div>
-
-					<div class="header-icon-desktop">
-						<div class="icon-circle">
-							<StorefrontIcon />
-						</div>
-					</div>
-				</div>
-			</div>
-		</header>
-
-		<!-- Merchant CTA Banner (Dynamic disappearance on scroll) -->
-		<section class="merchant-cta-banner">
-			<div class="cta-content">
-				<div class="cta-text-side">
-					<p>
-						Tu es un commerce local ? <br />
-						<span class="highlight-vibrant">Crée ta vitrine</span> sur Le Poilu.
-					</p>
-				</div>
-				<a href="/carnet/rejoindre" class="cta-button-vibrant">
-					En savoir plus <i class="fa-solid fa-arrow-right"></i>
-				</a>
-			</div>
-		</section>
-
 		<!-- Categories Filter (Horizontal Scroll) -->
 		<div class="filter-bar">
 			<div class="filter-container">
@@ -166,6 +129,20 @@
 			</div>
 		</div>
 	</div>
+
+	<!-- Merchant CTA Banner (Scrolls away) -->
+	<section class="merchant-cta-banner">
+		<div class="cta-content">
+			<div class="cta-text-side">
+				<p>
+					Tu es un commerce local ? <span class="highlight-vibrant">Crée ta vitrine</span> sur Le Poilu.
+				</p>
+			</div>
+			<a href="/carnet/rejoindre" class="cta-button-vibrant">
+				En savoir plus <i class="fa-solid fa-arrow-right"></i>
+			</a>
+		</div>
+	</section>
 
 	<!-- Main Content List -->
 	<main class="carnet-main">
@@ -203,7 +180,9 @@
 									<div class="icon-small"><GiftIcon /></div>
 									OFFRE INCLUSE
 								</div>
-							{:else if sponsor.isModel}
+							{/if}
+
+							{#if sponsor.isModel}
 								<div class="badge-model">MODÈLE</div>
 							{/if}
 
@@ -309,26 +288,6 @@
 	}
 
 	/* Inner Elements */
-	.carnet-header {
-		background-color: #1b2e3c;
-		border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-		overflow: hidden;
-		color: white;
-	}
-
-	
-	.header-bg-glow {
-		position: absolute;
-		top: -50px;
-		right: -50px;
-		width: 250px;
-		height: 250px;
-		border-radius: 50%;
-		background-color: rgba(255, 255, 255, 0.05); /* very subtle light glow */
-		filter: blur(40px);
-		pointer-events: none;
-	}
-
 	.merchant-cta-banner {
 		padding: 1.6rem var(--spacing-sm);
 		background: #fdfdfd;
@@ -414,95 +373,6 @@
 			font-size: 0.7rem;
 			white-space: nowrap;
 			flex-shrink: 0;
-		}
-	}
-
-	.carnet-header-container {
-		max-width: var(--desktop);
-		margin: 0 auto;
-		padding: 10px var(--spacing-sm);
-		position: relative;
-		width: 100%;
-		box-sizing: border-box;
-	}
-
-	.header-flex {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-	}
-
-	.header-titles {
-		display: flex;
-		align-items: center;
-		/* gap: 20px; */
-		
-	}
-
-	.header-title {
-		font-family: var(--FFTitle);
-		font-size: clamp(2.2rem, 10vw, 5rem);
-		font-weight: 800;
-		color: white;
-		display: flex;
-		align-items: center;
-		flex-wrap: wrap;
-		letter-spacing: -2.5px;
-	}
-
-	.header-subtitle {
-		font-size: 1.1rem;
-		color: rgba(255, 255, 255, 0.7);
-		font-weight: 500;
-		letter-spacing: 0.1em;
-		text-transform: uppercase;
-		margin-top: -13px;
-		margin-bottom: 14px;
-			letter-spacing: -0.2px;
-
-	}
-
-	@media (max-width: 768px) {
-		.carnet-header-container {
-			padding: 10px;
-		}
-		.header-title {
-			font-size: 3rem;
-			letter-spacing: -1px;
-		}
-		.header-subtitle {
-			font-size: 0.6rem;
-			letter-spacing: 0.05em;
-			margin-top: -8px;
-			margin-bottom: 8px;
-			
-
-		}
-	}
-
-	.header-icon-desktop {
-		display: none;
-	}
-
-	.icon-circle {
-		width: 48px;
-		height: 48px;
-		background-color: rgba(255, 183, 158, 0.15);
-		border-radius: 50%;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		color: var(--primary);
-	}
-
-	.icon-circle > :global(svg) {
-		width: 24px;
-		height: 24px;
-	}
-
-	@media (min-width: 768px) {
-		.header-icon-desktop {
-			display: block;
 		}
 	}
 
@@ -729,25 +599,23 @@
 		position: absolute;
 		bottom: 12px;
 		right: 12px;
-		background-color: rgba(255, 255, 255, 0.95);
-		backdrop-filter: blur(4px);
+		background: linear-gradient(135deg, #10b981, #059669);
+		color: white;
 		padding: 4px 10px;
 		border-radius: 6px;
 		font-size: 0.65rem;
 		font-weight: 800;
-		color: var(--primary);
 		display: flex;
 		align-items: center;
 		gap: 4px;
-		box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+		box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 		z-index: 2;
-		border: 1px solid rgba(255, 183, 158, 0.3);
 	}
 
 	.badge-model {
 		position: absolute;
 		bottom: 12px;
-		right: 12px;
+		left: 12px;
 		background-color: #6366f1; /* Indigo */
 		color: white;
 		padding: 4px 10px;
@@ -826,7 +694,7 @@
 	} */
 
 	.card-body {
-		padding: 24px;
+		padding: 20px 20px 16px 20px;
 		display: flex;
 		flex-direction: column;
 		flex: 1;
@@ -886,7 +754,7 @@
 		display: flex;
 		align-items: center;
 		gap: 6px;
-		margin-bottom: 16px;
+		margin-bottom: 12px;
 	}
 
 	.icon-tiny {
@@ -905,7 +773,7 @@
 	}
 
 	.card-action {
-		padding-top: 16px;
+		padding-top: 8px;
 		border-top: 1px solid #f3f4f6;
 		display: flex;
 		align-items: center;
@@ -914,9 +782,11 @@
 	}
 
 	.action-text {
-		font-size: 0.875rem;
-		font-weight: 600;
+		font-size: 0.75rem;
+		font-weight: 700;
 		color: #9ca3af;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
 		transition: color var(--transition-normal);
 	}
 
@@ -925,8 +795,8 @@
 	}
 
 	.action-btn {
-		width: 32px;
-		height: 32px;
+		width: 28px;
+		height: 28px;
 		border-radius: 50%;
 		background-color: #f9fafb;
 		display: flex;
@@ -958,31 +828,41 @@
 	}
 
 	.card-offer-footer {
-		background: linear-gradient(to right, #f0fdf4, #ecfdf5);
-		border-top: 1px solid rgba(209, 250, 229, 0.5);
-		padding: 14px 24px;
+		background: linear-gradient(135deg, #10b981, #059669);
+		padding: 20px 24px;
 		display: flex;
 		align-items: center;
-		gap: 10px;
+		gap: 16px;
 	}
 
 	.offer-icon-box {
-		background-color: #d1fae5;
-		padding: 6px;
-		border-radius: 6px;
-		color: #059669;
+		background-color: rgba(255, 255, 255, 0.25);
+		padding: 10px;
+		border-radius: 10px;
+		color: white;
 		flex-shrink: 0;
-		box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+	}
+
+	.offer-icon-box .icon-small {
+		width: 18px;
+		height: 18px;
+	}
+
+	.offer-icon-box .icon-small :global(svg) {
+		width: 18px;
+		height: 18px;
 	}
 
 	.offer-text {
-		font-size: 0.875rem;
-		font-weight: 700;
-		color: #065f46;
+		font-size: 0.95rem;
+		font-weight: 800;
+		color: white;
 		flex: 1;
 		white-space: nowrap;
 		overflow: hidden;
 		text-overflow: ellipsis;
+		letter-spacing: 0.01em;
 	}
 
 	.truncate {
