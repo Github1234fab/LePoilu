@@ -274,13 +274,13 @@
 </script>
 
 <svelte:head>
-	<title>Rejoindre le Carnet - Le Poilu</title>
+	<title>Crée ta vitrine - Le Poilu</title>
 </svelte:head>
 
 <div class="page-wrapper">
 	<div class="form-container-centered">
 		<div class="form-header-centered">
-			<h1>Finalise ton inscription</h1>
+			<h1>Crée ta vitrine sur Le Poilu</h1>
 			<p>Rejoins le réseau des commerçants du Poilu en quelques clics.</p>
 		</div>
 
@@ -499,10 +499,8 @@
 				>
 					{#if loading}
 						<i class="fa-solid fa-spinner fa-spin"></i> Redirection vers le paiement...
-					{:else if selectedPlan === 'premium'}
-						Valider mon inscription <i class="fa-solid fa-check"></i>
 					{:else}
-						Rejoindre en Essentiel <i class="fa-solid fa-arrow-right"></i>
+						Payer {planDetails[selectedPlan].price} <i class="fa-solid fa-lock"></i>
 					{/if}
 				</button>
 				{#if error}

@@ -1,9 +1,11 @@
 <script>
 	import { onMount } from 'svelte';
 	import { fade, slide } from 'svelte/transition';
-	import { auth, db } from '$lib/firebase';
-	import { collection, query, orderBy, getDocs, addDoc, Timestamp } from 'firebase/firestore';
+	import { goto } from '$app/navigation';
+	import { auth, db, storage } from '$lib/firebase';
+	import { collection, query, orderBy, getDocs, addDoc, Timestamp, updateDoc, doc } from 'firebase/firestore';
 	import { onAuthStateChanged } from 'firebase/auth';
+	import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 	// Icons
 	import EyeIcon from '$lib/Components/icons/EyeIcon.svelte';
@@ -21,8 +23,8 @@
 	import ChevronRightIcon from '$lib/Components/icons/ChevronRightIcon.svelte';
 	import GlobeOutlineIcon from '$lib/Components/icons/GlobeOutlineIcon.svelte';
 	import AlertCircleIcon from '$lib/Components/icons/AlertCircleIcon.svelte';
+	import ImageIcon from '$lib/Components/icons/ImageIcon.svelte';
 
-	const CF_URL = 'https://us-central1-bddjson.cloudfunctions.net/createSponsorCheckoutSession';
 
 	let user = null;
 	let loading = true;
@@ -43,6 +45,58 @@
 	let city = '';
 	let category = '';
 	let description = '';
+	let siret = '';
+	let promoOffer = '';
+	let openingHours = '';
+	let website1 = '';
+	let website2 = '';
+	let website3 = '';
+	let website4 = '';
+	let photos = [];
+	let uploadProgress = '';
+
+	function isLuhnValid(val) {
+		const clean = val.replace(/\s+/g, '');
+		if (clean.length !== 14 || isNaN(clean)) return false;
+		let bal = 0;
+		let total = 0;
+		for (let i = 13; i >= 0; i--) {
+			let step = clean.charCodeAt(i) - 48;
+			if (bal === 1) {
+				step *= 2;
+				if (step > 9) step -= 9;
+			}
+			total += step;
+			bal = 1 - bal;
+		}
+		return total % 10 === 0;
+	}
+
+	function handlePhotos(e) {
+		if (e.target.files) {
+			photos = Array.from(e.target.files).slice(0, 6);
+		}
+	}
+
+	async function uploadImages(files, sponsorId) {
+		if (!storage) return [];
+		const uploadedUrls = [];
+		for (let i = 0; i < files.length; i++) {
+			try {
+				const file = files[i];
+				const filename = `${Date.now()}_${i}_${file.name}`;
+				const storageRef = ref(storage, `sponsors/${sponsorId}/${filename}`);
+				uploadProgress = `Photo ${i + 1}/${files.length}...`;
+				await uploadBytes(storageRef, file);
+				const url = await getDownloadURL(storageRef);
+				uploadedUrls.push(url);
+			} catch (err) {
+				console.error('Upload error:', err);
+			}
+		}
+		uploadProgress = '';
+		return uploadedUrls;
+	}
 
 	const categories = [
 		'Restaurant',
@@ -93,6 +147,15 @@
 				id: doc.id,
 				...doc.data()
 			}));
+
+			// Pre-select plan if in URL
+			const urlParams = new URLSearchParams(window.location.search);
+			const planParam = urlParams.get('plan');
+			if (planParam && plans.length > 0) {
+				const targetId = planParam === 'premium' ? 'visibility-monthly' : 'essential-monthly';
+				const foundPlan = plans.find((p) => p.planId === targetId);
+				if (foundPlan) selectedPlan = foundPlan;
+			}
 		} catch (error) {
 			console.error('Error fetching plans:', error);
 			errorMsg = "Impossible de récupérer les formules d'abonnement.";
@@ -114,6 +177,26 @@
 		selectedPlan = null;
 		errorMsg = '';
 		window.scrollTo({ top: 0, behavior: 'smooth' });
+	}
+
+	function togglePlanInForm(type) {
+		// Trouver le plan par prix pour être plus robuste que par ID technique
+		const foundPlan = plans.find((p) => {
+			if (type === 'premium') return p.price > 30;
+			return p.price < 30;
+		});
+		
+		if (foundPlan) {
+			selectedPlan = foundPlan;
+			// Vider la description si on repasse en basic
+			if (type === 'basic') description = '';
+		}
+	}
+
+	function handlePlanSelection(plan) {
+		const isPremium = plan.planId === 'visibility-monthly';
+		const planType = isPremium ? 'premium' : 'basic';
+		goto(`/carnet/rejoindre/inscription?plan=${planType}`);
 	}
 
 	const getCategorySection = (cat) => {
@@ -157,7 +240,7 @@
 		if (!postalCode.trim()) return 'Le code postal est requis.';
 		if (!city.trim()) return 'La ville est requise.';
 		if (!category) return 'Veuillez sélectionner une catégorie.';
-		return null; // No errors
+		return null;
 	}
 
 	async function handleSubmit() {
@@ -168,95 +251,113 @@
 			return;
 		}
 
+		if (!isLuhnValid(siret)) {
+			errorMsg = 'Le numéro SIRET est invalide.';
+			return;
+		}
+
 		if (!user) {
 			errorMsg = 'Vous devez être connecté pour continuer.';
 			return;
 		}
 
 		if (!selectedPlan || !selectedPlan.stripePriceId) {
-			errorMsg = 'Le plan sélectionné est invalide ou expiré.';
+			errorMsg = 'Le plan sélectionné est invalide.';
 			return;
 		}
 
 		isProcessing = true;
 
 		try {
-			// 1. Create Sponsor doc with status: pending_payment
 			const now = new Date();
-			const endDate = new Date(now.getTime() + (selectedPlan.duration || 30) * 24 * 60 * 60 * 1000);
-
 			const isPremium = selectedPlan.planId === 'visibility-monthly';
 
+			// 1. Create Sponsor doc
 			const sponsorData = {
 				businessName: businessName.trim(),
 				ownerName: ownerName.trim(),
 				email: email.trim().toLowerCase(),
 				phone: phone.trim(),
-
 				address: address.trim(),
 				postalCode: postalCode.trim(),
 				city: city.trim(),
-
+				siret: siret.trim(),
 				category: category,
 				sector: getCategorySection(category),
-				description: description.trim() || '',
-
-				currentPlan: {
-					planId: selectedPlan.id,
-					type: isPremium ? 'premium' : 'basic',
-					price: selectedPlan.price,
-					startDate: Timestamp.fromDate(now),
-					endDate: Timestamp.fromDate(endDate),
-					isActive: false, // Activated by Stripe webhook
-					autoRenew: true,
-					lastPaymentDate: null,
-					stripeSubscriptionId: null,
-					paymentFailed: false
+				description: description.trim(),
+				promoOffer: promoOffer.trim(),
+				openingHours: openingHours.trim(),
+				website: website1.trim(),
+				socials: {
+					facebook: website2.trim(),
+					instagram: website3.trim(),
+					other: website4.trim()
 				},
-
+				currentPlan: {
+					planId: selectedPlan.planId,
+					type: isPremium ? 'premium' : 'basic',
+					isActive: false,
+					startDate: null,
+					renewalDate: null
+				},
 				stats: { views: 0, clicks: 0, offersShown: 0 },
 				images: [],
-				specialOffer: null,
-				status: 'pending_payment',
+				status: 'pending',
 				createdAt: Timestamp.fromDate(now),
-				updatedAt: Timestamp.fromDate(now),
 				userId: user.uid
 			};
 
 			const docRef = await addDoc(collection(db, 'Sponsors'), sponsorData);
 			const sponsorDocId = docRef.id;
 
-			// 2. Call Cloud Function to get Stripe Checkout session
-			const returnUrl = window.location.origin + '/espace-commercant'; // Redirects to dashboard
+			// 2. Upload Photos if Premium
+			if (isPremium && photos.length > 0) {
+				const imageUrls = await uploadImages(photos, sponsorDocId);
+				if (imageUrls.length > 0) {
+					await updateDoc(doc(db, 'Sponsors', sponsorDocId), {
+						images: imageUrls,
+						image: imageUrls[0]
+					});
+				}
+			}
 
-			const response = await fetch(CF_URL, {
+			// 3. Call local API Checkout
+			const response = await fetch('/api/checkout', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({
-					sponsorDocId: sponsorDocId,
-					userId: user.uid,
-					planId: selectedPlan.id,
-					stripePriceId: selectedPlan.stripePriceId,
-					businessName: businessName.trim(),
-					email: email.trim(),
-					returnUrl: returnUrl
+					type: 'sponsor',
+					planId: isPremium ? 'premium' : 'basic',
+					submissionId: sponsorDocId,
+					data: {
+						companyName: businessName.trim(),
+						contactName: ownerName.trim(),
+						email: email.trim(),
+						phone: phone.trim(),
+						address: address.trim(),
+						zip: postalCode.trim(),
+						city: city.trim(),
+						category: category,
+						description: description.trim(),
+						promoOffer: promoOffer.trim(),
+						openingHours: openingHours.trim(),
+						website1: website1.trim(),
+						website2: website2.trim(),
+						userId: user.uid
+					}
 				})
 			});
 
-			const data = await response.json();
-
-			if (data.error || !data.url) {
-				console.error('Stripe Checkout Error:', data.error);
-				errorMsg = data.error || "Impossible d'initialiser le paiement.";
-				isProcessing = false;
-				return;
+			const result = await response.json();
+			if (result.url) {
+				window.location.href = result.url;
+			} else {
+				throw new Error(result.error || "Erreur lors de l'initialisation du paiement.");
 			}
-
-			// 3. Redirect to Stripe
-			window.location.href = data.url;
-		} catch (error) {
-			console.error('Checkout process error:', error);
-			errorMsg = 'Une erreur est survenue lors du processus. Réessaie un peu plus tard.';
+		} catch (err) {
+			console.error('Error:', err);
+			errorMsg = err.message;
+		} finally {
 			isProcessing = false;
 		}
 	}
@@ -266,94 +367,75 @@
 	<title>{selectedPlan ? 'Finalise ton inscription' : 'Rejoins Le Carnet'} - Le Poilu</title>
 </svelte:head>
 
-<div class="min-h-screen bg-gray-50 pb-20 pt-6">
-	<main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="page-container">
+	<main class="main-content">
 		{#if loading}
-			<div class="flex justify-center flex-col items-center py-20">
-				<div class="animate-spin rounded-full h-10 w-10 border-b-2 border-primary mb-4"></div>
-				<p class="text-gray-500 font-medium">Chargement des formules d'abonnement...</p>
+			<div class="loader-container">
+				<div class="spinner"></div>
+				<p>Chargement des formules d'abonnement...</p>
 			</div>
 		{:else if !selectedPlan}
 			<!-- STEP 1: SELECT PLAN -->
 			<div in:fade>
-				<a
-					href="/espace-commercant"
-					class="inline-flex items-center text-sm font-medium text-gray-500 hover:text-gray-900 mb-6 transition-colors"
-				>
-					<ChevronRightIcon class="h-4 w-4 mr-1 rotate-180" />
-					Retour à mon espace vitrine
-				</a>
 
 				<!-- Header -->
-				<div class="bg-[#FFF8F0] p-8 rounded-2xl border border-orange-100 mb-10 text-center">
-					<h1 class="text-3xl md:text-4xl font-bold text-gray-900 font-poppins mb-3">
-						Rejoins Le Carnet du Poilu
-					</h1>
-					<p class="text-lg text-gray-700 max-w-2xl mx-auto">
+				<div class="banner-header">
+					<h1>Crée ta vitrine sur Le Poilu</h1>
+					<p>
 						Gagne en visibilité auprès de milliers d'utilisateurs locaux de l'ouest Lyonnais et
 						propulse ton commerce.
 					</p>
 				</div>
 
 				<!-- Benefits -->
-				<div class="mb-14">
-					<h2 class="text-2xl font-bold text-center text-gray-900 mb-8">
-						Pourquoi rejoindre Le Carnet ?
-					</h2>
+				<div class="section-container">
+					<h2 class="section-title">Pourquoi créer ta vitrine sur Le Poilu?</h2>
 
-					<div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-						<div
-							class="bg-white p-6 rounded-xl border border-gray-100 shadow-sm flex items-start gap-4 hover:shadow-md transition-shadow"
-						>
-							<div class="bg-orange-50 text-primary p-3 rounded-full shrink-0">
+					<div class="benefits-grid">
+						<div class="benefit-card">
+							<div class="benefit-icon">
 								<EyeIcon class="h-6 w-6" />
 							</div>
-							<div>
-								<h3 class="text-lg font-bold text-gray-900 mb-1">Visibilité locale ciblée</h3>
-								<p class="text-gray-600">
+							<div class="benefit-content">
+								<h3>Visibilité locale ciblée</h3>
+								<p>
 									Touchez directement les habitants de la région qui cherchent activement tes
 									services.
 								</p>
 							</div>
 						</div>
 
-						<div
-							class="bg-white p-6 rounded-xl border border-gray-100 shadow-sm flex items-start gap-4 hover:shadow-md transition-shadow"
-						>
-							<div class="bg-orange-50 text-primary p-3 rounded-full shrink-0">
+						<div class="benefit-card">
+							<div class="benefit-icon">
 								<GiftIcon class="h-6 w-6" />
 							</div>
-							<div>
-								<h3 class="text-lg font-bold text-gray-900 mb-1">Offres exclusives</h3>
-								<p class="text-gray-600">
+							<div class="benefit-content">
+								<h3>Offres exclusives</h3>
+								<p>
 									Propose des réductions ou avantages aux utilisateurs de l'app pour les fidéliser.
 								</p>
 							</div>
 						</div>
 
-						<div
-							class="bg-white p-6 rounded-xl border border-gray-100 shadow-sm flex items-start gap-4 hover:shadow-md transition-shadow"
-						>
-							<div class="bg-orange-50 text-primary p-3 rounded-full shrink-0">
+						<div class="benefit-card">
+							<div class="benefit-icon">
 								<StatsChartIcon class="h-6 w-6" />
 							</div>
-							<div>
-								<h3 class="text-lg font-bold text-gray-900 mb-1">Statistiques en direct</h3>
-								<p class="text-gray-600">
+							<div class="benefit-content">
+								<h3>Statistiques en direct</h3>
+								<p>
 									Suis tes vues de profil, les clics et l'engagement global des utilisateurs.
 								</p>
 							</div>
 						</div>
 
-						<div
-							class="bg-white p-6 rounded-xl border border-gray-100 shadow-sm flex items-start gap-4 hover:shadow-md transition-shadow"
-						>
-							<div class="bg-orange-50 text-primary p-3 rounded-full shrink-0">
+						<div class="benefit-card">
+							<div class="benefit-icon">
 								<PricetagIcon class="h-6 w-6" />
 							</div>
-							<div>
-								<h3 class="text-lg font-bold text-gray-900 mb-1">Kit vitrine inclus</h3>
-								<p class="text-gray-600">
+							<div class="benefit-content">
+								<h3>Kit vitrine inclus</h3>
+								<p>
 									Reçois un autocollant et une belle affiche Le Poilu pour ton établissement
 									physique.
 								</p>
@@ -363,58 +445,45 @@
 				</div>
 
 				<!-- Plans -->
-				<div class="mb-16">
-					<h2 class="text-2xl font-bold text-center text-gray-900 mb-8">
-						Nos formules d'abonnement
-					</h2>
+				<div class="section-container">
+					<h2 class="section-title">Nos formules d'abonnement</h2>
 
-					<div class="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-5xl mx-auto">
+					<div class="pricing-grid">
 						{#each plans as plan}
 							{@const isPremium = plan.planId === 'visibility-monthly'}
-							<div
-								class={`relative bg-white rounded-2xl p-8 border-2 transition-shadow shadow-sm hover:shadow-lg flex flex-col h-full ${isPremium ? 'border-primary' : 'border-gray-200'}`}
-							>
+							<div class="plan-card" class:premium={isPremium}>
 								{#if isPremium}
-									<div
-										class="absolute -top-4 right-6 bg-gray-900 text-yellow-400 font-bold text-xs px-4 py-1.5 rounded-full uppercase tracking-wider flex items-center gap-1 shadow-md"
-									>
+									<div class="premium-badge">
 										<StarIcon class="h-3 w-3 fill-yellow-400" />
 										Recommandé
 									</div>
 								{/if}
 
-								<div class="mb-6 flex-1">
-									<h3
-										class={`text-2xl font-bold mb-2 ${isPremium ? 'text-primary' : 'text-gray-900'}`}
-									>
+								<div class="plan-info">
+									<h3 class:premium-text={isPremium}>
 										{plan.name}
 									</h3>
-									<p class="text-gray-600 mb-6">{plan.description}</p>
+									<p class="plan-desc">{plan.description}</p>
 
-									<div class="flex items-end gap-1 mb-8">
-										<span class="text-4xl font-bold text-gray-900">{plan.price.toFixed(2)}€</span>
-										<span class="text-gray-500 font-medium mb-1">/mois</span>
+									<div class="price-container">
+										<span class="price-amount">{plan.price.toFixed(2)}€</span>
+										<span class="price-period">/mois</span>
 									</div>
 
-									<div class="space-y-3">
+									<div class="features-list">
 										{#each plan.included || [] as feature}
-											<div class="flex items-start gap-3">
-												<CheckCircleIcon
-													class={`h-5 w-5 shrink-0 ${isPremium ? 'text-primary' : 'text-green-500'}`}
-												/>
-												<span class="text-gray-700">{feature}</span>
+											<div class="feature-item">
+												<CheckCircleIcon class={`feature-check ${isPremium ? 'premium-check' : ''}`} />
+												<span>{feature}</span>
 											</div>
 										{/each}
 									</div>
 								</div>
 
 								<button
-									on:click={() => selectPlan(plan)}
-									class={`w-full py-4 px-6 rounded-xl font-bold text-lg flex items-center justify-center gap-2 transition-colors ${
-										isPremium
-											? 'bg-primary hover:bg-primary-dark text-white'
-											: 'bg-gray-100 hover:bg-gray-200 text-gray-900'
-									}`}
+									on:click={() => handlePlanSelection(plan)}
+									class="plan-button"
+									class:premium-btn={isPremium}
 								>
 									Choisir {plan.shortName || plan.name}
 									<ArrowForwardIcon class="h-5 w-5" />
@@ -425,43 +494,34 @@
 				</div>
 
 				<!-- Guarantees -->
-				<div class="bg-green-50 rounded-2xl p-8 mb-12 border border-green-100">
-					<h2
-						class="text-xl font-bold text-center text-gray-900 mb-6 flex items-center justify-center gap-2"
-					>
-						<span>🛡️</span> Nos garanties professionnelles
-					</h2>
+				<div class="guarantee-banner">
+					<h2><span>🛡️</span> Nos garanties professionnelles</h2>
 
-					<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-						<div class="text-center">
-							<LockClosedIcon class="h-8 w-8 text-green-600 mx-auto mb-2" />
-							<p class="text-sm font-medium text-green-900">Paiement 100% sécurisé via Stripe</p>
+					<div class="guarantee-grid">
+						<div class="guarantee-item">
+							<LockClosedIcon class="guarantee-icon" />
+							<p>Paiement 100% sécurisé via Stripe</p>
 						</div>
-						<div class="text-center">
-							<CloseCircleIcon class="h-8 w-8 text-green-600 mx-auto mb-2" />
-							<p class="text-sm font-medium text-green-900">Sans engagement de durée</p>
+						<div class="guarantee-item">
+							<CloseCircleIcon class="guarantee-icon" />
+							<p>Sans engagement de durée</p>
 						</div>
-						<div class="text-center">
-							<ShieldCheckmarkIcon class="h-8 w-8 text-green-600 mx-auto mb-2" />
-							<p class="text-sm font-medium text-green-900">Modération qualité assurée</p>
+						<div class="guarantee-item">
+							<ShieldCheckmarkIcon class="guarantee-icon" />
+							<p>Modération qualité assurée</p>
 						</div>
-						<div class="text-center">
-							<ReceiptIcon class="h-8 w-8 text-green-600 mx-auto mb-2" />
-							<p class="text-sm font-medium text-green-900">Factures par e-mail automatiques</p>
+						<div class="guarantee-item">
+							<ReceiptIcon class="guarantee-icon" />
+							<p>Factures par e-mail automatiques</p>
 						</div>
 					</div>
 				</div>
 
 				<!-- Contact -->
-				<div class="text-center">
-					<h3 class="text-lg font-bold text-gray-900 mb-2">Une question avant de te lancer ?</h3>
-					<p class="text-gray-600 mb-6">
-						Notre équipe est là pour t'accompagner dans la numérisation de ton commerce.
-					</p>
-					<a
-						href="/contact"
-						class="inline-flex items-center gap-2 border-2 border-gray-300 hover:border-gray-400 text-gray-700 font-bold py-3 px-6 rounded-xl transition-colors"
-					>
+				<div class="contact-footer">
+					<h3>Une question avant de te lancer ?</h3>
+					<p>Notre équipe est là pour t'accompagner dans la numérisation de ton commerce.</p>
+					<a href="/Contact" class="contact-button">
 						<MailIcon class="h-5 w-5" />
 						Nous contacter
 					</a>
@@ -470,138 +530,105 @@
 		{:else}
 			<!-- STEP 2: CHECKOUT FORM -->
 			<div in:slide>
-				<button
-					on:click={goBackToPlans}
-					class="inline-flex items-center text-sm font-medium text-gray-500 hover:text-gray-900 mb-6 transition-colors"
-				>
+				<button on:click={goBackToPlans} class="back-link">
 					<ChevronRightIcon class="h-4 w-4 mr-1 rotate-180" />
 					Modifier mon abonnement
 				</button>
 
-				<div class="flex flex-col lg:flex-row gap-8 items-start">
+				<div class="checkout-layout">
 					<!-- Left: Form -->
-					<div class="flex-1 w-full order-2 lg:order-1">
+					<div class="checkout-form-container">
 						{#if errorMsg}
-							<div class="bg-red-50 border-l-4 border-red-500 p-4 rounded-md mb-6">
-								<div class="flex">
-									<div class="flex-shrink-0"><AlertCircleIcon class="h-5 w-5 text-red-500" /></div>
-									<div class="ml-3"><p class="text-sm text-red-700">{errorMsg}</p></div>
-								</div>
+							<div class="alert-error">
+								<AlertCircleIcon class="alert-icon" />
+								<p>{errorMsg}</p>
 							</div>
 						{/if}
 
-						<div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 sm:p-8">
-							<h2 class="text-xl font-bold text-gray-900 mb-6">Informations du commerce</h2>
-
-							<div class="space-y-5">
-								<div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-									<div>
-										<label for="businessName" class="block text-sm font-bold text-gray-700 mb-2"
-											>Nom du commerce <span class="text-red-500">*</span></label
-										>
-										<input
-											id="businessName"
-											type="text"
-											bind:value={businessName}
-											placeholder="Ex: La Belle Époque"
-											class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary"
-										/>
-									</div>
-									<div>
-										<label for="ownerName" class="block text-sm font-bold text-gray-700 mb-2"
-											>Nom du gérant <span class="text-red-500">*</span></label
-										>
-										<input
-											id="ownerName"
-											type="text"
-											bind:value={ownerName}
-											placeholder="Ex: Jean Dupont"
-											class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary"
-										/>
-									</div>
-								</div>
-
-								<div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-									<div>
-										<label for="email" class="block text-sm font-bold text-gray-700 mb-2"
-											>Email public <span class="text-red-500">*</span></label
-										>
-										<input
-											id="email"
-											type="email"
-											bind:value={email}
-											placeholder="contact@commerce.fr"
-											class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary"
-										/>
-									</div>
-									<div>
-										<label for="phone" class="block text-sm font-bold text-gray-700 mb-2"
-											>Téléphone public <span class="text-red-500">*</span></label
-										>
-										<input
-											id="phone"
-											type="tel"
-											bind:value={phone}
-											placeholder="04 78 00 00 00"
-											class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary"
-										/>
-									</div>
-								</div>
-
-								<div>
-									<label for="address" class="block text-sm font-bold text-gray-700 mb-2"
-										>Adresse postale <span class="text-red-500">*</span></label
+						<div class="form-card">
+							<div class="form-header-inline">
+								<h2 class="form-title">Informations du commerce</h2>
+								<div class="plan-toggle">
+									<button 
+										class="toggle-opt" 
+										class:active={selectedPlan.price < 30}
+										on:click={() => togglePlanInForm('basic')}
 									>
-									<input
-										id="address"
-										type="text"
-										bind:value={address}
-										placeholder="12 rue de la République"
-										class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary"
-									/>
-								</div>
-
-								<div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-									<div>
-										<label for="postalCode" class="block text-sm font-bold text-gray-700 mb-2"
-											>Code Postal <span class="text-red-500">*</span></label
-										>
-										<input
-											id="postalCode"
-											type="text"
-											bind:value={postalCode}
-											placeholder="69002"
-											maxlength="5"
-											class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary"
-										/>
-									</div>
-									<div>
-										<label for="city" class="block text-sm font-bold text-gray-700 mb-2"
-											>Ville <span class="text-red-500">*</span></label
-										>
-										<input
-											id="city"
-											type="text"
-											bind:value={city}
-											placeholder="Lyon"
-											class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary"
-										/>
-									</div>
-								</div>
-
-								<div>
-									<span class="block text-sm font-bold text-gray-700 mb-3"
-										>Catégorie <span class="text-red-500">*</span></span
+										Essentiel
+									</button>
+									<button 
+										class="toggle-opt" 
+										class:active={selectedPlan.price > 30}
+										on:click={() => togglePlanInForm('premium')}
 									>
-									<div class="flex flex-wrap gap-2">
+										Premium
+									</button>
+								</div>
+							</div>
+
+							<div class="form-fields">
+								<div class="form-row">
+									<div class="form-group">
+										<label for="businessName">Nom du commerce <span>*</span></label>
+										<input id="businessName" type="text" bind:value={businessName} placeholder="Ex: La Belle Époque" />
+									</div>
+									<div class="form-group">
+										<label for="ownerName">Nom du gérant <span>*</span></label>
+										<input id="ownerName" type="text" bind:value={ownerName} placeholder="Ex: Jean Dupont" />
+									</div>
+								</div>
+
+								<div class="form-row">
+									<div class="form-group">
+										<label for="email">Email public <span>*</span></label>
+										<input id="email" type="email" bind:value={email} placeholder="contact@commerce.fr" />
+									</div>
+									<div class="form-group">
+										<label for="phone">Téléphone public <span>*</span></label>
+										<input id="phone" type="tel" bind:value={phone} placeholder="04 78 00 00 00" />
+									</div>
+								</div>
+
+								<div class="form-group">
+									<label for="address">Adresse postale <span>*</span></label>
+									<input id="address" type="text" bind:value={address} placeholder="12 rue de la République" />
+								</div>
+
+								<div class="form-row">
+									<div class="form-group">
+										<label for="siret">Numéro SIRET (14 chiffres) <span>*</span></label>
+										<input id="siret" type="text" bind:value={siret} placeholder="12345678901234" maxlength="14" />
+									</div>
+									<div class="form-group">
+										<label for="category">Catégorie <span>*</span></label>
+										<select id="category" bind:value={category} class="select-field">
+											<option value="">Choisir une catégorie...</option>
+											{#each categories as cat}
+												<option value={cat}>{cat}</option>
+											{/each}
+										</select>
+									</div>
+								</div>
+
+								<div class="form-row">
+									<div class="form-group">
+										<label for="postalCode">Code Postal <span>*</span></label>
+										<input id="postalCode" type="text" bind:value={postalCode} placeholder="69002" maxlength="5" />
+									</div>
+									<div class="form-group">
+										<label for="city">Ville <span>*</span></label>
+										<input id="city" type="text" bind:value={city} placeholder="Lyon" />
+									</div>
+								</div>
+
+								<div class="form-group">
+									<span class="label-text">Catégorie <span>*</span></span>
+									<div class="categories-list">
 										{#each categories as cat}
 											<button
 												on:click={() => (category = cat)}
-												class={`px-4 py-2 rounded-full text-sm font-medium border transition-colors ${
-													category === cat
-														? 'bg-primary border-primary text-white'
-														: 'bg-white border-gray-300 text-gray-700 hover:border-primary hover:text-primary'
-												}`}
+												class="category-chip"
+												class:active={category === cat}
 											>
 												{cat}
 											</button>
@@ -609,87 +636,800 @@
 									</div>
 								</div>
 
-								<div>
-									<label for="description" class="block text-sm font-bold text-gray-700 mb-2"
-										>Petite présentation de ton établissement</label
-									>
-									<textarea
-										id="description"
-										bind:value={description}
-										rows="3"
-										placeholder="Décris ta boutique, tes spécialités, pour donner envie..."
-										class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary resize-none"
-									></textarea>
-								</div>
+								{#if selectedPlan.planId === 'visibility-monthly'}
+									<div class="premium-fields-section" transition:slide>
+										<h3 class="section-subtitle-form">Options Premium</h3>
+										
+										<div class="form-group">
+											<label for="description">Présentation de ton établissement</label>
+											<textarea id="description" bind:value={description} rows="3" placeholder="Décris ta boutique, tes spécialités..."></textarea>
+										</div>
+
+										<div class="form-group">
+											<label for="promo">Ton offre promotionnelle (Exclusive Le Poilu)</label>
+											<textarea id="promo" bind:value={promoOffer} rows="2" placeholder="Ex: -10% sur toute la boutique..."></textarea>
+										</div>
+
+										<div class="form-group">
+											<label for="hours">Horaires d'ouverture</label>
+											<textarea id="hours" bind:value={openingHours} rows="3" placeholder="Lundi: 9h-12h, 14h-18h..."></textarea>
+										</div>
+
+										<div class="form-row">
+											<div class="form-group">
+												<label for="web1">Site internet</label>
+												<input id="web1" type="url" bind:value={website1} placeholder="https://..." />
+											</div>
+											<div class="form-group">
+												<label for="web2">Lien Facebook</label>
+												<input id="web2" type="url" bind:value={website2} placeholder="https://facebook.com/..." />
+											</div>
+										</div>
+
+										<div class="form-group">
+											<label for="photos">Photos de ta vitrine (Max 6)</label>
+											<div class="photo-upload-box">
+												<input type="file" id="photos" multiple accept="image/*" on:change={handlePhotos} />
+												<div class="upload-placeholder">
+													<ImageIcon class="h-8 w-8" />
+													<span>{photos.length > 0 ? `${photos.length} photo(s) sélectionnée(s)` : "Ajouter des photos"}</span>
+												</div>
+											</div>
+											{#if uploadProgress}
+												<p class="upload-status">{uploadProgress}</p>
+											{/if}
+										</div>
+									</div>
+								{:else}
+									<div class="disabled-info-box">
+										<div class="info-header">
+											<StarIcon class="h-5 w-5 text-yellow-500" />
+											<h4>Boostez votre vitrine !</h4>
+										</div>
+										<p>L'offre Essentiel est limitée aux informations de base. Passez en <strong>Premium</strong> pour débloquer la description, les offres, les horaires et les photos.</p>
+										<button class="upgrade-link" on:click={() => togglePlanInForm('premium')}>Découvrir l'offre Premium</button>
+									</div>
+								{/if}
 							</div>
 						</div>
 					</div>
 
 					<!-- Right: Sticky Order Summary -->
-					<div class="w-full lg:w-96 order-1 lg:order-2 lg:sticky lg:top-8">
-						<div class="bg-[#FFF8F0] border border-[#FFE8D6] rounded-2xl p-6 shadow-sm">
-							<h3
-								class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2 border-b border-[#FFE8D6] pb-4"
-							>
-								<PricetagIcon class="h-5 w-5 text-primary" />
+					<aside class="sidebar">
+						<div class="summary-card">
+							<h3 class="summary-title">
+								<PricetagIcon class="h-5 w-5" />
 								Récapitulatif
 							</h3>
 
-							<div class="space-y-3 mb-6">
-								<div class="flex justify-between items-center text-gray-700">
-									<span class="font-medium">Formule</span>
-									<span class="font-bold">{selectedPlan.name}</span>
+							<div class="summary-details">
+								<div class="summary-row">
+									<span class="label">Formule</span>
+									<span class="value">{selectedPlan.name}</span>
 								</div>
-								<div class="flex justify-between items-center text-gray-700">
+								<div class="summary-row">
 									<span>Période</span>
 									<span>{selectedPlan.duration || 30} jours</span>
 								</div>
-								<div class="border-t border-[#FFE8D6] pt-3 mt-3 flex justify-between items-center">
-									<span class="text-lg font-bold text-gray-900">Total à payer</span>
-									<span class="text-2xl font-bold text-primary"
-										>{selectedPlan.price.toFixed(2)}€</span
-									>
+								<div class="summary-total">
+									<span class="total-label">Total à payer</span>
+									<span class="total-amount">{selectedPlan.price.toFixed(2)}€</span>
 								</div>
 							</div>
 
-							<div
-								class="bg-green-50 rounded-xl p-4 mb-6 border border-green-100 flex flex-col gap-3"
-							>
-								<div class="flex items-start gap-2">
-									<GlobeOutlineIcon class="h-4 w-4 text-green-600 shrink-0 mt-0.5" />
-									<p class="text-xs text-green-800 font-medium leading-tight">
-										Tu seras redirigé vers Stripe pour un paiement sécurisé 3D Secure.
-									</p>
+							<div class="trust-badges">
+								<div class="trust-badge">
+									<GlobeOutlineIcon class="trust-icon" />
+									<p>Tu seras redirigé vers Stripe pour un paiement sécurisé 3D Secure.</p>
 								</div>
-								<div class="flex items-start gap-2">
-									<ShieldCheckmarkIcon class="h-4 w-4 text-green-600 shrink-0 mt-0.5" />
-									<p class="text-xs text-green-800 font-medium leading-tight">
-										Ta fiche sera modérée et publiée sous 24-48h.
-									</p>
+								<div class="trust-badge">
+									<ShieldCheckmarkIcon class="trust-icon" />
+									<p>Ta fiche sera modérée et publiée sous 24-48h.</p>
 								</div>
 							</div>
 
-							<button
-								on:click={handleSubmit}
-								disabled={isProcessing}
-								class="w-full py-4 lg:py-5 px-6 rounded-xl font-bold text-lg text-white bg-green-500 hover:bg-green-600 shadow-sm transition-colors flex items-center justify-center gap-2 disabled:bg-gray-400 disabled:cursor-not-allowed"
-							>
+							<button on:click={handleSubmit} disabled={isProcessing} class="pay-button">
 								{#if isProcessing}
-									<div class="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+									<div class="spinner-small"></div>
 									<span>Redirection...</span>
 								{:else}
 									<LockClosedIcon class="h-5 w-5" />
 									Payer {selectedPlan.price.toFixed(2)}€
 								{/if}
 							</button>
-							<p class="text-center text-xs text-gray-500 mt-4 leading-relaxed">
-								En cliquant sur "Payer", tu acceptes nos CGV et notre politique de
-								confidentialité.
+							<p class="terms-text">
+								En cliquant sur "Payer", tu acceptes nos CGV et notre politique de confidentialité.
 							</p>
 						</div>
-					</div>
+					</aside>
 				</div>
 			</div>
 		{/if}
 	</main>
 </div>
+
+<style>
+	.page-container {
+		min-height: 100vh;
+		background-color: var(--lightBg, #f9fafb);
+		padding-bottom: 5rem;
+		padding-top: 1.5rem;
+	}
+
+	.main-content {
+		max-width: 900px;
+		margin: 0 auto;
+		padding: 0 1rem;
+	}
+
+	.back-link {
+		display: inline-flex;
+		align-items: center;
+		font-size: 0.875rem;
+		font-weight: 500;
+		color: #6b7280;
+		text-decoration: none;
+		margin-bottom: 1.5rem;
+		transition: color 0.2s;
+	}
+
+	.back-link:hover {
+		color: #111827;
+	}
+
+	.banner-header {
+		background-color: #fff8f0;
+		padding: 2rem;
+		border-radius: 1rem;
+		border: 1px solid #ffe8d6;
+		margin-bottom: 2.5rem;
+		text-align: center;
+	}
+
+	.banner-header h1 {
+		font-size: 2rem;
+		font-weight: 700;
+		color: #111827;
+		margin-bottom: 0.75rem;
+	}
+
+	.banner-header p {
+		font-size: 1.125rem;
+		color: #4b5563;
+		max-width: 600px;
+		margin: 0 auto;
+	}
+
+	.section-container {
+		margin-bottom: 3.5rem;
+	}
+
+	.section-title {
+		font-size: 1.5rem;
+		font-weight: 700;
+		text-align: center;
+		color: #111827;
+		margin-bottom: 2rem;
+	}
+
+	.benefits-grid {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: 1.5rem;
+	}
+
+	@media (min-width: 640px) {
+		.benefits-grid {
+			grid-template-columns: repeat(2, 1fr);
+		}
+	}
+
+	.benefit-card {
+		background-color: white;
+		padding: 1.5rem;
+		border-radius: 0.75rem;
+		border: 1px solid #f3f4f6;
+		box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+		display: flex;
+		align-items: flex-start;
+		gap: 1rem;
+	}
+
+	.benefit-icon {
+		background-color: #fff7ed;
+		color: #f97316;
+		padding: 0.75rem;
+		border-radius: 50%;
+		display: flex;
+	}
+
+	.benefit-content h3 {
+		font-size: 1.125rem;
+		font-weight: 700;
+		color: #111827;
+		margin-bottom: 0.25rem;
+	}
+
+	.benefit-content p {
+		color: #4b5563;
+		font-size: 0.95rem;
+	}
+
+	.pricing-grid {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: 2rem;
+		max-width: 800px;
+		margin: 0 auto;
+	}
+
+	@media (min-width: 1024px) {
+		.pricing-grid {
+			grid-template-columns: repeat(2, 1fr);
+		}
+	}
+
+	.plan-card {
+		position: relative;
+		background-color: white;
+		border-radius: 1rem;
+		padding: 2rem;
+		border: 2px solid #e5e7eb;
+		display: flex;
+		flex-direction: column;
+		height: 100%;
+	}
+
+	.plan-card.premium {
+		border-color: #f97316;
+	}
+
+	.premium-badge {
+		position: absolute;
+		top: -1rem;
+		right: 1.5rem;
+		background-color: #111827;
+		color: #facc15;
+		font-weight: 700;
+		font-size: 0.75rem;
+		padding: 0.375rem 1rem;
+		border-radius: 9999px;
+		text-transform: uppercase;
+		display: flex;
+		align-items: center;
+		gap: 0.25rem;
+	}
+
+	.plan-info {
+		flex: 1;
+		margin-bottom: 1.5rem;
+	}
+
+	.plan-info h3 {
+		font-size: 1.5rem;
+		font-weight: 700;
+		margin-bottom: 0.5rem;
+		color: #111827;
+	}
+
+	.premium-text {
+		color: #f97316;
+	}
+
+	.plan-desc {
+		color: #4b5563;
+		margin-bottom: 1.5rem;
+	}
+
+	.price-container {
+		display: flex;
+		align-items: baseline;
+		gap: 0.25rem;
+		margin-bottom: 2rem;
+	}
+
+	.price-amount {
+		font-size: 2.25rem;
+		font-weight: 700;
+		color: #111827;
+	}
+
+	.price-period {
+		color: #6b7280;
+		font-weight: 500;
+	}
+
+	.features-list {
+		display: flex;
+		flex-direction: column;
+		gap: 0.75rem;
+	}
+
+	.feature-item {
+		display: flex;
+		align-items: flex-start;
+		gap: 0.75rem;
+	}
+
+	:global(.feature-check) {
+		height: 1.25rem;
+		width: 1.25rem;
+		flex-shrink: 0;
+		color: #22c55e;
+	}
+
+	:global(.premium-check) {
+		color: #f97316;
+	}
+
+	.plan-button {
+		text-decoration: none;
+		width: 100%;
+		padding: 1rem;
+		border-radius: 0.75rem;
+		font-weight: 700;
+		font-size: 1.125rem;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 0.5rem;
+		cursor: pointer;
+		border: none;
+		background-color: #f3f4f6;
+		color: #111827;
+	}
+
+	.premium-btn {
+		background-color: #f97316;
+		color: white;
+	}
+
+	.guarantee-banner {
+		background-color: #f0fdf4;
+		border-radius: 1rem;
+		padding: 2rem;
+		margin-bottom: 3rem;
+		border: 1px solid #dcfce7;
+	}
+
+	.guarantee-banner h2 {
+		font-size: 1.25rem;
+		font-weight: 700;
+		text-align: center;
+		color: #111827;
+		margin-bottom: 1.5rem;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 0.5rem;
+	}
+
+	.guarantee-grid {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: 1.5rem;
+	}
+
+	@media (min-width: 640px) {
+		.guarantee-grid {
+			grid-template-columns: repeat(2, 1fr);
+		}
+	}
+
+	@media (min-width: 768px) {
+		.guarantee-grid {
+			grid-template-columns: repeat(4, 1fr);
+		}
+	}
+
+	.guarantee-item {
+		text-align: center;
+	}
+
+	:global(.guarantee-icon) {
+		height: 2rem;
+		width: 2rem;
+		color: #16a34a;
+		margin: 0 auto 0.5rem;
+	}
+
+	.guarantee-item p {
+		font-size: 0.875rem;
+		font-weight: 500;
+		color: #14532d;
+	}
+
+	.contact-footer {
+		text-align: center;
+	}
+
+	.contact-footer h3 {
+		font-size: 1.125rem;
+		font-weight: 700;
+		color: #111827;
+		margin-bottom: 0.5rem;
+	}
+
+	.contact-footer p {
+		color: #4b5563;
+		margin-bottom: 1.5rem;
+	}
+
+	.contact-button {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.5rem;
+		border: 2px solid #d1d5db;
+		color: #374151;
+		font-weight: 700;
+		padding: 0.75rem 1.5rem;
+		border-radius: 0.75rem;
+		text-decoration: none;
+	}
+
+	.checkout-layout {
+		display: flex;
+		flex-direction: column;
+		gap: 2rem;
+		align-items: flex-start;
+	}
+
+	@media (min-width: 1024px) {
+		.checkout-layout {
+			flex-direction: row;
+		}
+	}
+
+	.checkout-form-container {
+		flex: 1;
+		width: 100%;
+	}
+
+	.alert-error {
+		background-color: #fef2f2;
+		border-left: 4px solid #ef4444;
+		padding: 1rem;
+		border-radius: 0.375rem;
+		margin-bottom: 1.5rem;
+		display: flex;
+		gap: 0.75rem;
+	}
+
+	:global(.alert-icon) {
+		height: 1.25rem;
+		width: 1.25rem;
+		color: #ef4444;
+	}
+
+	.form-card {
+		background-color: white;
+		border-radius: 1rem;
+		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+		border: 1px solid #f3f4f6;
+		padding: 1.5rem;
+	}
+
+	.form-title {
+		font-size: 1.25rem;
+		font-weight: 800;
+		color: var(--text);
+		margin-bottom: 0;
+	}
+
+	.form-header-inline {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin-bottom: 2rem;
+		flex-wrap: wrap;
+		gap: 1rem;
+	}
+
+	.plan-toggle {
+		display: flex;
+		background: #f3f4f6;
+		padding: 4px;
+		border-radius: 9999px;
+		border: 1px solid #e5e7eb;
+	}
+
+	.toggle-opt {
+		padding: 6px 16px;
+		border-radius: 9999px;
+		border: none;
+		background: transparent;
+		font-size: 0.875rem;
+		font-weight: 700;
+		color: #6b7280;
+		cursor: pointer;
+		transition: all 0.2s;
+	}
+
+	.toggle-opt.active {
+		background: white;
+		color: var(--accent);
+		box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+	}
+
+
+	.premium-fields-section {
+		margin-top: 2rem;
+		padding-top: 2rem;
+		border-top: 1px solid #e5e7eb;
+		display: flex;
+		flex-direction: column;
+		gap: 1.25rem;
+	}
+
+	.section-subtitle-form {
+		font-size: 1rem;
+		font-weight: 700;
+		color: var(--accent);
+		margin-bottom: 0.5rem;
+		text-transform: uppercase;
+		letter-spacing: 0.025em;
+	}
+
+	.select-field {
+		width: 100%;
+		padding: 0.75rem;
+		border-radius: 0.5rem;
+		border: 1px solid #d1d5db;
+		background-color: white;
+		font-family: inherit;
+		font-size: 0.875rem;
+		cursor: pointer;
+	}
+
+	.photo-upload-box {
+		position: relative;
+		border: 2px dashed #d1d5db;
+		border-radius: 0.75rem;
+		padding: 2rem;
+		text-align: center;
+		background-color: #f9fafb;
+		cursor: pointer;
+		transition: all 0.2s;
+	}
+
+	.photo-upload-box:hover {
+		border-color: var(--accent);
+		background-color: #fff7ed;
+	}
+
+	.photo-upload-box input {
+		position: absolute;
+		inset: 0;
+		opacity: 0;
+		cursor: pointer;
+	}
+
+	.upload-placeholder {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 0.5rem;
+		color: #6b7280;
+	}
+
+	.upload-status {
+		font-size: 0.875rem;
+		color: var(--accent);
+		margin-top: 0.5rem;
+		font-weight: 500;
+	}
+
+	.disabled-info-box {
+		margin-top: 2rem;
+		background-color: #fefce8;
+		border: 1px solid #fef08a;
+		border-radius: 0.75rem;
+		padding: 1.5rem;
+	}
+
+	.info-header {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		margin-bottom: 0.5rem;
+	}
+
+	.info-header h4 {
+		font-size: 1rem;
+		font-weight: 700;
+		color: #854d0e;
+	}
+
+	.disabled-info-box p {
+		font-size: 0.875rem;
+		color: #713f12;
+		line-height: 1.5;
+		margin-bottom: 1rem;
+	}
+
+	.upgrade-link {
+		background: none;
+		border: none;
+		color: var(--accent);
+		font-weight: 700;
+		font-size: 0.875rem;
+		padding: 0;
+		cursor: pointer;
+		text-decoration: underline;
+	}
+
+
+	.form-fields {
+		display: flex;
+		flex-direction: column;
+		gap: 1.25rem;
+	}
+
+	.form-row {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: 1.25rem;
+	}
+
+	@media (min-width: 768px) {
+		.form-row {
+			grid-template-columns: repeat(2, 1fr);
+		}
+	}
+
+	.form-group {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+	}
+
+	.form-group label, .label-text {
+		font-size: 0.875rem;
+		font-weight: 700;
+		color: #374151;
+	}
+
+	input, textarea {
+		width: 100%;
+		padding: 0.75rem 1rem;
+		border-radius: 0.5rem;
+		border: 1px solid #d1d5db;
+		font-size: 1rem;
+	}
+
+	.categories-list {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem;
+	}
+
+	.category-chip {
+		padding: 0.5rem 1rem;
+		border-radius: 9999px;
+		font-size: 0.875rem;
+		font-weight: 500;
+		border: 1px solid #d1d5db;
+		background-color: white;
+		cursor: pointer;
+	}
+
+	.category-chip.active {
+		background-color: #f97316;
+		border-color: #f97316;
+		color: white;
+	}
+
+	.sidebar {
+		width: 100%;
+	}
+
+	@media (min-width: 1024px) {
+		.sidebar {
+			width: 24rem;
+			position: sticky;
+			top: 2rem;
+		}
+	}
+
+	.summary-card {
+		background-color: #fff8f0;
+		border: 1px solid #ffe8d6;
+		border-radius: 1rem;
+		padding: 1.5rem;
+	}
+
+	.summary-title {
+		font-size: 1.125rem;
+		font-weight: 700;
+		color: #111827;
+		margin-bottom: 1rem;
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		border-bottom: 1px solid #ffe8d6;
+		padding-bottom: 1rem;
+	}
+
+	.summary-row {
+		display: flex;
+		justify-content: space-between;
+		color: #374151;
+		margin-bottom: 0.75rem;
+	}
+
+	.summary-total {
+		border-top: 1px solid #ffe8d6;
+		padding-top: 0.75rem;
+		margin-top: 0.75rem;
+		display: flex;
+		justify-content: space-between;
+	}
+
+	.total-amount {
+		font-size: 1.5rem;
+		font-weight: 700;
+		color: #f97316;
+	}
+
+	.trust-badges {
+		background-color: #f0fdf4;
+		border-radius: 0.75rem;
+		padding: 1rem;
+		margin: 1.5rem 0;
+		border: 1px solid #dcfce7;
+	}
+
+	.trust-badge {
+		display: flex;
+		align-items: flex-start;
+		gap: 0.5rem;
+		font-size: 0.75rem;
+		color: #14532d;
+	}
+
+	.pay-button {
+		width: 100%;
+		padding: 1rem;
+		border-radius: 0.75rem;
+		font-weight: 700;
+		font-size: 1.125rem;
+		color: white;
+		background-color: #22c55e;
+		border: none;
+		cursor: pointer;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 0.5rem;
+	}
+
+	.terms-text {
+		text-align: center;
+		font-size: 0.75rem;
+		color: #6b7280;
+		margin-top: 1rem;
+	}
+
+	.spinner {
+		width: 2.5rem;
+		height: 2.5rem;
+		border: 2px solid #e5e7eb;
+		border-bottom-color: #f97316;
+		border-radius: 50%;
+		animation: spin 1s linear infinite;
+		margin-bottom: 1rem;
+	}
+
+	.spinner-small {
+		width: 1.25rem;
+		height: 1.25rem;
+		border: 2px solid white;
+		border-bottom-color: transparent;
+		border-radius: 50%;
+		animation: spin 1s linear infinite;
+	}
+
+	@keyframes spin {
+		to { transform: rotate(360deg); }
+	}
+</style>

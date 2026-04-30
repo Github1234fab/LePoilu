@@ -112,7 +112,7 @@
 	<!-- QUICK ACTION SECTION (REMOVED FINAL CTA DOWN, MOVED UP) -->
 	<section class="final-cta">
 		<h2>Prêt à booster ton activité ?</h2>
-		<a href="/carnet/rejoindre/inscription" class="cta-button">
+		<a href="/espace-commercant/rejoindre" class="cta-button">
 			Crées ta vitrine <i class="fa-solid fa-star"></i>
 		</a>
 		<p class="sub-cta">Sans engagement. Annulable à tout moment.</p>

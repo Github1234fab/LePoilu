@@ -1,5 +1,7 @@
 import { json } from '@sveltejs/kit';
 import { stripe } from '$lib/server/stripe';
+import { STRIPE_PRICE_ESSENTIAL, STRIPE_PRICE_PREMIUM } from '$env/static/private';
+
 // However, standard practice for Stripe integration: 
 // 1. Create Checkout Session with 'metadata' containing the ad/sponsor details.
 // 2. Stripe Webhook (already existing cloud function) receives 'checkout.session.completed', reads metadata, and writes to Firebase.
@@ -52,11 +54,9 @@ export async function POST({ request, url, cookies }) {
         } else if (type === 'sponsor') {
             // === SPONSOR SUBSCRIPTION ===
             
-            // Using IDs provided by USER from SponsorPlans collection
+            // Using IDs provided by USER from environment variables
             const isPremium = planId === 'premium';
-            const stripePriceId = isPremium 
-                ? 'price_1SZH5wPfye1CgJxxSmxi0j5J'  // visibility-monthly
-                : 'price_1SZH4YPfye1CgJxxudmSxxuG'; // essential-monthly
+            const stripePriceId = isPremium ? STRIPE_PRICE_PREMIUM : STRIPE_PRICE_ESSENTIAL;
             
             sessionConfig.mode = 'subscription';
             sessionConfig.line_items = [{
