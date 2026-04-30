@@ -1,6 +1,6 @@
 import { json } from '@sveltejs/kit';
 import { stripe } from '$lib/server/stripe';
-import { STRIPE_PRICE_ESSENTIAL, STRIPE_PRICE_PREMIUM } from '$env/static/private';
+import { env } from '$env/dynamic/private';
 
 // However, standard practice for Stripe integration: 
 // 1. Create Checkout Session with 'metadata' containing the ad/sponsor details.
@@ -56,11 +56,11 @@ export async function POST({ request, url, cookies }) {
             
             // Using IDs provided by USER from environment variables
             const isPremium = planId === 'premium';
-            const stripePriceId = isPremium ? STRIPE_PRICE_PREMIUM : STRIPE_PRICE_ESSENTIAL;
+            const priceId = isPremium ? env.STRIPE_PRICE_PREMIUM : env.STRIPE_PRICE_ESSENTIAL;
             
             sessionConfig.mode = 'subscription';
             sessionConfig.line_items = [{
-                price: stripePriceId,
+                price: priceId,
                 quantity: 1,
             }];
 
