@@ -69,7 +69,7 @@
 					</div>
 					<div class="comparison-info">
 						<a href="/carnet/rejoindre/inscription?plan=basic" class="btn-choice secondary">
-							Crée ta vitrine sans offre <i class="fa-solid fa-arrow-right"></i>
+							Crées ta vitrine sans offre <i class="fa-solid fa-arrow-right"></i>
 						</a>
 					</div>
 				</div>
@@ -101,7 +101,7 @@
 					</div>
 					<div class="comparison-info">
 						<a href="/carnet/rejoindre/inscription?plan=premium" class="btn-choice primary pulse-button">
-							Crée ta vitrine avec offre <i class="fa-solid fa-star"></i>
+							Crées ta vitrine avec offre <i class="fa-solid fa-star"></i>
 						</a>
 					</div>
 				</div>
