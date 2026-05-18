@@ -6,6 +6,7 @@
 	import { onAuthStateChanged } from 'firebase/auth';
 	import FavoriteHeart from '$lib/Components/FavoriteHeart.svelte';
 	import { getFavoriteSponsors } from '$lib/favorites';
+	import poiluPromos from '$lib/assets/poilu_promos.png';
 
 	import AppsIcon from '$lib/Components/icons/AppsIcon.svelte';
 	import RestaurantIcon from '$lib/Components/icons/RestaurantIcon.svelte';
@@ -203,7 +204,7 @@
 								<div class="img-gradient-overlay"></div>
 							{:else}
 								<img
-									src="/Poilu-village.png"
+									src={poiluPromos}
 									alt="Découvrir ce commerce"
 									class="card-img placeholder-img"
 									loading="lazy"
@@ -216,15 +217,15 @@
 						<div class="card-body">
 							<div class="card-content">
 								<span class="card-category">
-									{sponsor.category || 'Non classé'}
+									{sponsor.category || sponsor.sector || 'Non classé'}
 								</span>
 								<h2 class="card-title">
-									{sponsor.businessName}
+									{sponsor.businessName || sponsor.ownerName || sponsor.name}
 								</h2>
 								<div class="card-location">
 									<div class="icon-tiny"><AppsIcon /></div>
-									{sponsor.city} <span class="dot">•</span>
-									{sponsor.postalCode}
+									{sponsor.city || 'Ville inconnue'} <span class="dot">•</span>
+									{sponsor.postalCode || ''}
 								</div>
 							</div>
 

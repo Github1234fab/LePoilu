@@ -126,7 +126,7 @@
 
 	function handlePhotos(e) {
 		if (e.target.files) {
-			form.photos = Array.from(e.target.files).slice(0, 6);
+			form.photos = Array.from(e.target.files).slice(0, 7);
 		}
 	}
 
@@ -463,7 +463,7 @@
 
 						<div class="form-row">
 							<div class="input-group">
-								<label for="photos">Photos (Max 6)</label>
+								<label for="photos">Photos (Max 7)</label>
 								<div class="file-upload">
 									<input
 										type="file"

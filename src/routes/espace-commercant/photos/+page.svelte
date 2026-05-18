@@ -19,7 +19,7 @@
 	import ChevronRightIcon from '$lib/Components/icons/ChevronRightIcon.svelte';
 	import AlertCircleIcon from '$lib/Components/icons/AlertCircleIcon.svelte';
 
-	const MAX_PHOTOS = 5;
+	const MAX_PHOTOS = 7;
 
 	let user = null;
 	let authUnsubscribe;
@@ -301,7 +301,7 @@
 							</p>
 
 							<div class="pro-benefits">
-								<div class="benefit-tag"><CheckCircleIcon /> <span>5 Photos HD</span></div>
+								<div class="benefit-tag"><CheckCircleIcon /> <span>7 Photos HD</span></div>
 								<div class="benefit-tag"><CheckCircleIcon /> <span>Lien Site Web</span></div>
 								<div class="benefit-tag"><CheckCircleIcon /> <span>Priorité de tri</span></div>
 							</div>

@@ -418,31 +418,29 @@
 									</header>
 
 									<div class="box-content">
-										{#if sponsorData.status === 'approved' && isMerchantActive}
-											<div class="stats-mini-grid">
-												<div class="stat-mini-card">
-													<div class="mini-icon text-primary"><EyeIcon /></div>
-													<div class="mini-data">
-														<span class="value">{sponsorData.stats?.views || 0}</span>
-														<span class="label">Vues</span>
-													</div>
-												</div>
-												<div class="stat-mini-card">
-													<div class="mini-icon text-green"><CursorClickIcon /></div>
-													<div class="mini-data">
-														<span class="value">{sponsorData.stats?.clicks || 0}</span>
-														<span class="label">Clics</span>
-													</div>
-												</div>
-												<div class="stat-mini-card">
-													<div class="mini-icon text-orange"><GiftIcon /></div>
-													<div class="mini-data">
-														<span class="value">{sponsorData.stats?.offersShown || 0}</span>
-														<span class="label">Offres</span>
-													</div>
+										<div class="stats-mini-grid">
+											<div class="stat-mini-card">
+												<div class="mini-icon text-primary"><EyeIcon /></div>
+												<div class="mini-data">
+													<span class="value">{sponsorData.stats?.views || 0}</span>
+													<span class="label">Vues</span>
 												</div>
 											</div>
-										{/if}
+											<div class="stat-mini-card">
+												<div class="mini-icon text-green"><CursorClickIcon /></div>
+												<div class="mini-data">
+													<span class="value">{sponsorData.stats?.clicks || 0}</span>
+													<span class="label">Clics</span>
+												</div>
+											</div>
+											<div class="stat-mini-card">
+												<div class="mini-icon text-orange"><GiftIcon /></div>
+												<div class="mini-data">
+													<span class="value">{sponsorData.stats?.offersShown || 0}</span>
+													<span class="label">Offres</span>
+												</div>
+											</div>
+										</div>
 
 										{#if sponsorData.status === 'rejected'}
 											<div class="alert-box error">
@@ -477,7 +475,7 @@
 												<div class="card-icon photo"><ImageIcon /></div>
 												<div class="card-text">
 													<h4>Mes Photos</h4>
-													<p>{sponsorData.images?.length || 0} / 5 photos</p>
+													<p>{sponsorData.images?.length || 0} / 7 photos</p>
 												</div>
 												<ChevronRightIcon class="chevron" />
 											</a>

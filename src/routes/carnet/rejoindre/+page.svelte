@@ -7,9 +7,10 @@
 	import screenD from '$lib/assets/screen_sponsor_d.webp';
 	
 	// New screens
-	import maVitrine from '$lib/assets/screenShots/maVitrine.png';
-	import monOffre from '$lib/assets/screenShots/monOffre.png';
-	import monInterface from '$lib/assets/screenShots/monInterface.png';
+	import maVitrine from '$lib/assets/your_vitrine.png';
+	import monOffre from '$lib/assets/your_offer.png';
+	import monInterface from '$lib/assets/screen_board.png';
+	import poiluPromos from '$lib/assets/poilu_promos.png';
 	
 	// Mock data for the visuals
 	const premiumData = {
@@ -25,7 +26,7 @@
 		category: "Immobilier",
 		city: "Francheville",
 		postalCode: "69340",
-		images: ["/Poilu-village.png"]
+		images: [poiluPromos]
 	};
 </script>
 
@@ -301,6 +302,7 @@
 		font-weight: 700;
 		font-size: 0.9rem;
 		transition: all 0.2s ease;
+		box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 	}
 
 	.btn-choice.secondary {
@@ -310,16 +312,20 @@
 
 	.btn-choice.secondary:hover {
 		background: #e9ecef;
+		box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+		transform: scale(1.02);
 	}
 
 	.btn-choice.primary {
 		background: var(--cta);
 		color: white;
+		box-shadow: 0 10px 25px rgba(217, 70, 122, 0.5);
 	}
 
 	.btn-choice.primary:hover {
 		background: var(--ctaHover);
 		transform: scale(1.02);
+		box-shadow: 0 15px 35px rgba(217, 70, 122, 0.6);
 	}
 
 	.pulse-button {
@@ -327,9 +333,9 @@
 	}
 
 	@keyframes pulse-small {
-		0% { box-shadow: 0 0 0 0 rgba(217, 70, 122, 0.4); }
-		70% { box-shadow: 0 0 0 10px rgba(217, 70, 122, 0); }
-		100% { box-shadow: 0 0 0 0 rgba(217, 70, 122, 0); }
+		0% { box-shadow: 0 10px 25px rgba(217, 70, 122, 0.5), 0 0 0 0 rgba(217, 70, 122, 0.6); }
+		70% { box-shadow: 0 10px 25px rgba(217, 70, 122, 0.5), 0 0 0 20px rgba(217, 70, 122, 0); }
+		100% { box-shadow: 0 10px 25px rgba(217, 70, 122, 0.5), 0 0 0 0 rgba(217, 70, 122, 0); }
 	}
 
 	/* --- Comparison Grid --- */

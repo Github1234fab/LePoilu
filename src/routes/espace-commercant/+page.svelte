@@ -231,7 +231,7 @@
 							</div>
 							<ul class="plan-features-list">
 								<li class="feature-highlight"><CheckCircleIcon class="icon-p" /> <strong>Gestion des OFFRES (Bons Plans)</strong></li>
-								<li><CheckCircleIcon class="icon-p" /> Jusqu'à 5 photos</li>
+								<li><CheckCircleIcon class="icon-p" /> Jusqu'à 7 photos</li>
 								<li><CheckCircleIcon class="icon-p" /> Statistiques détaillées</li>
 								<li><CheckCircleIcon class="icon-p" /> Kit vitrine offert</li>
 							</ul>
@@ -392,7 +392,7 @@
 									<h4>Mes photos</h4>
 									<p>
 										{#if isPremium}
-											{sponsor.images?.length || 0} / 5 photos ajoutées
+											{sponsor.images?.length || 0} / 7 photos ajoutées
 										{:else}
 											<span class="text-warning">Réservé aux comptes Premium</span>
 										{/if}

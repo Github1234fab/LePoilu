@@ -7,6 +7,7 @@
 	import { onAuthStateChanged } from 'firebase/auth';
 	import { getFavoriteSponsors } from '$lib/favorites';
 	import FavoriteHeart from '$lib/Components/FavoriteHeart.svelte';
+	import poiluPromos from '$lib/assets/poilu_promos.png';
 
 	import ChevronRightIcon from '$lib/Components/icons/ChevronRightIcon.svelte';
 	import StarIcon from '$lib/Components/icons/StarIcon.svelte';
@@ -98,7 +99,7 @@
 </script>
 
 <svelte:head>
-	<title>{sponsor ? sponsor.businessName : 'Chargement...'} - Le Poilu</title>
+	<title>{sponsor ? (sponsor.businessName || sponsor.ownerName || sponsor.name) : 'Chargement...'} - Le Poilu</title>
 </svelte:head>
 
 <div class="vitrine-container">
@@ -136,7 +137,7 @@
 			{:else}
 				<div class="hero-image-wrapper">
 					<img
-						src="/Poilu-village.png"
+						src={poiluPromos}
 						alt="Le Poilu"
 						class="hero-parallax"
 					/>
@@ -147,12 +148,12 @@
 			<!-- Floating Brand Card -->
 			<div class="brand-card-container">
 				<div class="brand-card" in:fade={{ delay: 200 }}>
-					<span class="brand-category">{sponsor.category || 'Commerce Local'}</span>
-					<h1 class="brand-name">{sponsor.businessName}</h1>
+					<span class="brand-category">{sponsor.category || sponsor.sector || 'Commerce Local'}</span>
+					<h1 class="brand-name">{sponsor.businessName || sponsor.ownerName || sponsor.name}</h1>
 					<div class="brand-meta">
 						<div class="meta-item">
 							<LocationIcon />
-							<span>{sponsor.city}</span>
+							<span>{sponsor.city || sponsor.postalCode || 'Ville inconnue'}</span>
 						</div>
 						{#if isPremium}
 							<div class="premium-shield" title="Membre vérifié">
@@ -265,7 +266,7 @@
 						>
 							<div class="access-details">
 								<p class="access-label">Adresse</p>
-								<p class="access-value">{sponsor.address}, {sponsor.postalCode} {sponsor.city}</p>
+								<p class="access-value">{sponsor.address || 'Adresse non renseignée'}, {sponsor.postalCode || ''} {sponsor.city || ''}</p>
 							</div>
 							<ChevronRightIcon class="row-arrow" />
 						</a>
@@ -285,7 +286,7 @@
 							</a>
 						{/if}
 
-						{#if isPremium && sponsor.email}
+						{#if sponsor.email}
 							<a href={`mailto:${sponsor.email}`} class="access-row">
 								<div class="access-details">
 									<p class="access-label">Email</p>
@@ -332,7 +333,7 @@
 		<!-- Sticky Conversion Bar -->
 		<div class="sticky-cta-bar">
 			<div class="cta-inner">
-				{#if isPremium && sponsor.phone}
+				{#if sponsor.phone}
 					<a href={`tel:${sponsor.phone}`} on:click={trackClick} class="btn-cta-primary">
 						<CallIcon />
 						<span>Appeler</span>
