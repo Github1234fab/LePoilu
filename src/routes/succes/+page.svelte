@@ -6,8 +6,8 @@
 	export let data;
 
 	let sessionId = $page.url.searchParams.get('session_id');
-	// Check data from layout or URL param
-	$: fromApp = data.from_app || $page.url.searchParams.get('from_app') === 'true';
+	// Check data from layout, cookie or URL param
+	$: fromApp = (data && data.from_app) || $page.url.searchParams.get('from_app') === 'true' || (typeof document !== 'undefined' && document.cookie.includes('from_app=true'));
 	$: type = $page.url.searchParams.get('type');
 </script>
 

@@ -6,20 +6,11 @@
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
 
-	export let data;
-
 	onMount(() => {
 		// Enregistrement du cookie s'il est présent dans l'URL
 		const fromAppParam = $page.url.searchParams.get('from_app');
 		if (fromAppParam === 'true') {
 			document.cookie = 'from_app=true; path=/; max-age=3600; SameSite=Lax; Secure';
-			if (data) data.from_app = true;
-		} else {
-			// Sinon, restauration depuis le cookie existant
-			const isCookieSet = document.cookie.split('; ').some(row => row.startsWith('from_app=true'));
-			if (isCookieSet && data) {
-				data.from_app = true;
-			}
 		}
 	});
 </script>

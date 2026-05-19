@@ -1,14 +1,3 @@
-import { prerendering } from '$app/environment';
-
-export async function load({ url }) {
-	if (prerendering) {
-		return {
-			from_app: false
-		};
-	}
-
-	const fromAppParam = url.searchParams.get('from_app');
-	return {
-		from_app: fromAppParam === 'true'
-	};
-}
+// Ce fichier a été vidé pour supprimer toute fonction layout load accédant à url.searchParams.
+// Cela empêchait le pré-rendu statique de SvelteKit de se compiler lors du build (prerender = true).
+// La détection de l'application est désormais 100% gérée côté client de manière robuste.

@@ -283,7 +283,8 @@
 			// 4. If Plan is FREE, we stop here (or redirect to success)
 			if (plan === 'free') {
 				// Free ads don't need payment
-				if ($page.data.from_app) {
+				const isFromApp = $page.url.searchParams.get('from_app') === 'true' || (typeof document !== 'undefined' && document.cookie.includes('from_app=true'));
+				if (isFromApp) {
 					window.location.href = '/succes?from_app=true&type=free';
 				} else {
 					alert('Évènement envoyé pour validation !');
@@ -328,7 +329,8 @@
 				// Only redirect if no error occurred (especially image upload)
 				if (!error) {
 					// Redirect to success
-					if ($page.data.from_app) {
+					const isFromApp = $page.url.searchParams.get('from_app') === 'true' || (typeof document !== 'undefined' && document.cookie.includes('from_app=true'));
+					if (isFromApp) {
 						window.location.href = '/succes?from_app=true&type=credit';
 					} else {
 						alert('Évènement publié avec succès ! Un crédit a été déduit.');
