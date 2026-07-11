@@ -10,7 +10,7 @@
 		pack10: {
 			id: 'pack10',
 			name: 'Pack 10 Annonces',
-			price: '19,90 €',
+			price: '19,99 €',
 			description: 'Idéal pour les organisateurs réguliers.',
 			features: [
 				"10 crédits d'annonces Premium",
@@ -19,10 +19,10 @@
 				'Économie de 50%'
 			]
 		},
-		unlimited: {
-			id: 'unlimited',
-			name: 'Pass Illimité 30 jours',
-			price: '39,90 €',
+		pro: {
+			id: 'pro',
+			name: 'Pro (mensuel)',
+			price: '29,99 €',
 			description: 'La solution ultime pour les professionnels.',
 			features: [
 				'Annonces illimitées pendant 30j',

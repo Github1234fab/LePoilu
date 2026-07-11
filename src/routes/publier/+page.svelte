@@ -253,7 +253,7 @@
 				contactPhone: '',
 				userId: user.uid,
 				status: 'pending',
-				paid: false,
+				paid: plan === 'free',
 				createdAt: serverTimestamp(),
 				tier: plan === 'free' ? 'free' : 'single',
 				lienBilletterie: ad.ticketingUrl,

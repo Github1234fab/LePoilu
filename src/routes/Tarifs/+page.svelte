@@ -15,7 +15,7 @@
 		},
 		{
 			name: "À l'unité (Premium)",
-			price: '4,99 €',
+			price: '2,99 €',
 			details: [
 				'1 annonce',
 				'Modération standard (< 24h)',
@@ -28,8 +28,8 @@
 			link: '/publier?plan=premium'
 		},
 		{
-			name: 'Pack 10 (2.49€/annonce)',
-			price: '24,99 €',
+			name: 'Pack 10 (1.99€/annonce)',
+			price: '19,99 €',
 			details: [
 				'10 annonces Premium',
 				'Sans limite de temps',
@@ -42,7 +42,7 @@
 		},
 		{
 			name: 'Pro (mensuel)',
-			price: '49,99 €',
+			price: '29,99 €',
 			details: [
 				'Annonces Premium illimitées',
 				'Publication en masse via fichier',

@@ -29,7 +29,7 @@ export async function POST({ request, url, cookies }) {
 
         if (type === 'ad') {
             // === ONE-OFF AD PAYMENT ===
-            const priceInCents = planId === 'premium' ? 499 : 2499; 
+            const priceInCents = planId === 'premium' ? 299 : 1999; 
             const productName = planId === 'premium' ? 'Évènement Premium' : 'Pack 10 Évènements';
 
             sessionConfig.line_items = [{
@@ -91,7 +91,7 @@ export async function POST({ request, url, cookies }) {
                 price_data: {
                     currency: 'eur',
                     product_data: { name: 'Pack 10 Évènements Premium' },
-                    unit_amount: 1990, // 19.90€
+                    unit_amount: 1999, // 19.99€
                 },
                 quantity: 1,
             }];
@@ -111,8 +111,8 @@ export async function POST({ request, url, cookies }) {
             sessionConfig.line_items = [{
                 price_data: {
                     currency: 'eur',
-                    product_data: { name: 'Pass Illimité 30 Jours' },
-                    unit_amount: 3990, // 39.90€
+                    product_data: { name: 'Pass Pro (mensuel)' },
+                    unit_amount: 2999, // 29.99€
                 },
                 quantity: 1,
             }];
