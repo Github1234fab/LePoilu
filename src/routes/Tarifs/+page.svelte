@@ -6,16 +6,19 @@
 
 	const pricing = [
 		{
-			name: 'Gratuit',
+			name: 'Gratuit (Standard)',
 			price: '0€',
 			details: ['1 annonce', 'Modération standard (< 24h)', 'Visible 30 jours', 'Logo du Poilu'],
 			icon: 'fa-solid  fa-hand-holding-dollar',
 			recommended: false,
-			link: '/publier?plan=free'
+			link: '#',
+			disabled: true
 		},
 		{
 			name: "À l'unité (Premium)",
-			price: '2,99 €',
+			price: '0€',
+			oldPrice: '2,99 €',
+			isFreePromo: true,
 			details: [
 				'1 annonce',
 				'Modération standard (< 24h)',
@@ -24,11 +27,12 @@
 				'Lien vers la billeterie'
 			],
 			icon: 'fa-solid fa-ticket',
-			recommended: false,
-			link: '/publier?plan=premium'
+			recommended: true, // Mark Premium as recommended now that standard is disabled
+			link: '/publier?plan=premium',
+			disabled: false
 		},
 		{
-			name: 'Pack 10 (1.99€/annonce)',
+			name: 'Pack 10 (Premium)',
 			price: '19,99 €',
 			details: [
 				'10 annonces Premium',
@@ -37,8 +41,9 @@
 				'Économisez 50%'
 			],
 			icon: 'fa-solid fa-layer-group',
-			recommended: true,
-			link: '/acheter-plan?plan=pack10'
+			recommended: false,
+			link: '#',
+			disabled: true
 		},
 		{
 			name: 'Pro (mensuel)',
@@ -52,7 +57,8 @@
 			],
 			icon: 'fa-solid fa-crown',
 			recommended: false,
-			link: '/acheter-plan?plan=pro'
+			link: '#',
+			disabled: true
 		}
 	];
 
@@ -136,14 +142,17 @@
 	<!-- PRICING SECTION -->
 	<section id="plans" class="pricing-section">
 		<div class="section-header">
+			<div class="promo-banner" style="background: linear-gradient(135deg, #FF9500 0%, #E67E00 100%); color: white; padding: 0.8rem 1.8rem; border-radius: 50px; display: inline-block; margin-bottom: 2rem; font-weight: 800; box-shadow: 0 10px 20px rgba(230, 126, 0, 0.2); letter-spacing: 0.5px;">
+				🎉 OFFRE DE LANCEMENT : TOUS LES PLANS SONT 100% GRATUITS !
+			</div>
 			<h2 class="title-vibrant">Choisis ta formule de visibilité</h2>
-			<p>Des tarifs simples, sans engagement, adaptés à tous les budgets.</p>
+			<p>Profitez de notre offre de lancement pour diffuser vos annonces premium gratuitement.</p>
 		</div>
 
 		<div class="pricing-grid">
 			{#each pricing as tier}
-				<article class="pricing-card" class:recommended={tier.recommended}>
-					{#if tier.recommended}
+				<article class="pricing-card" class:recommended={tier.recommended} class:disabled={tier.disabled}>
+					{#if tier.recommended && !tier.disabled}
 						<div class="badge-recommended">Le plus efficace</div>
 					{/if}
 					
@@ -154,13 +163,25 @@
 						<h3 class="pricing-name">{tier.name}</h3>
 					</div>
 
-					<div class="price-box">
-						<span class="currency">€</span>
-						<span class="amount">{tier.price.replace(' €', '').replace('€', '')}</span>
-						{#if tier.name.includes('mensuel')}
-							<span class="period">/mois</span>
-						{/if}
-					</div>
+					{#if tier.isFreePromo}
+						<div class="price-box" style="display: flex; flex-direction: column; align-items: center; justify-content: center; margin-bottom: 2rem;">
+							<span class="promo-gratuit" style="font-size: 2.8rem; font-weight: 900; color: #10b981; text-transform: uppercase; letter-spacing: -1px; line-height: 1;">Gratuit</span>
+							{#if tier.oldPrice}
+								<span class="old-price" style="text-decoration: line-through; opacity: 0.6; font-size: 1.2rem; color: #ef4444; font-weight: 600; margin-top: 0.25rem;">au lieu de {tier.oldPrice}</span>
+							{/if}
+						</div>
+					{:else}
+						<div class="price-box" style="display: flex; align-items: baseline; justify-content: center; gap: 0.5rem;">
+							{#if tier.oldPrice}
+								<span class="old-price" style="text-decoration: line-through; opacity: 0.5; font-size: 1.3rem; color: #ef4444; font-weight: 600;">{tier.oldPrice}</span>
+							{/if}
+							<span class="currency">€</span>
+							<span class="amount">{tier.price.replace(' €', '').replace('€', '')}</span>
+							{#if tier.name.includes('mensuel')}
+								<span class="period">/mois</span>
+							{/if}
+						</div>
+					{/if}
 
 					<ul class="pricing-details">
 						{#each tier.details as detail}
@@ -174,9 +195,19 @@
 					<a
 						class="btn-pricing"
 						href={tier.link}
-						on:click={(e) => handlePlanSelection(e, tier.link)}
+						on:click={(e) => {
+							if (tier.disabled) {
+								e.preventDefault();
+								return;
+							}
+							handlePlanSelection(e, tier.link);
+						}}
 					>
-						Choisir cette offre
+						{#if tier.disabled}
+							Bientôt disponible
+						{:else}
+							Choisir cette offre
+						{/if}
 					</a>
 				</article>
 			{/each}
@@ -501,6 +532,20 @@
 
 	.recommended .btn-pricing:hover {
 		background: #059669;
+	}
+
+	.pricing-card.disabled {
+		opacity: 0.6;
+		pointer-events: none;
+		border: 1px dashed #cbd5e1;
+		box-shadow: none;
+		background: #f1f5f9;
+	}
+
+	.pricing-card.disabled .btn-pricing {
+		background: #94a3b8 !important;
+		color: #ffffff !important;
+		cursor: not-allowed;
 	}
 
 	.pricing-footer {

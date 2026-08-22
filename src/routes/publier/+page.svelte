@@ -253,7 +253,7 @@
 				contactPhone: '',
 				userId: user.uid,
 				status: 'pending',
-				paid: plan === 'free',
+				paid: plan === 'free' || plan === 'premium',
 				createdAt: serverTimestamp(),
 				tier: plan === 'free' ? 'free' : 'single',
 				lienBilletterie: ad.ticketingUrl,
@@ -280,12 +280,12 @@
 				}
 			}
 
-			// 4. If Plan is FREE, we stop here (or redirect to success)
-			if (plan === 'free') {
-				// Free ads don't need payment
+			// 4. If Plan is FREE or PREMIUM (temporarily free), we stop here (or redirect to success)
+			if (plan === 'free' || plan === 'premium') {
+				// Free & Premium ads don't need payment
 				const isFromApp = $page.url.searchParams.get('from_app') === 'true' || (typeof document !== 'undefined' && document.cookie.includes('from_app=true'));
 				if (isFromApp) {
-					window.location.href = '/succes?from_app=true&type=free';
+					window.location.href = `/succes?from_app=true&type=${plan}`;
 				} else {
 					alert('Évènement envoyé pour validation !');
 					window.location.href = '/compte';
@@ -562,6 +562,8 @@
 					{:else}
 						{#if plan === 'free'}
 							Publier gratuitement
+						{:else if plan === 'premium'}
+							Publier gratuitement (Premium)
 						{:else}
 							Payer et Publier
 						{/if}

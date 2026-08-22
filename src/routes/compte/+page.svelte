@@ -38,12 +38,22 @@
 	// Form State
 	let email = '';
 	let password = '';
+	let showPassword = false;
 	let name = ''; // For registration
 	let isRegistering = false;
 	let isResettingPassword = false;
 	let errorMessage = '';
 	let successMessage = '';
 	let formLoading = false;
+
+	// Password validation reactive statements
+	$: passwordRequirements = {
+		length: password.length >= 8,
+		uppercase: /[A-Z]/.test(password),
+		number: /[0-9]/.test(password),
+		special: /[^A-Za-z0-9]/.test(password)
+	};
+	$: isPasswordValid = passwordRequirements.length && passwordRequirements.uppercase && passwordRequirements.number && passwordRequirements.special;
 
 	onMount(() => {
 		const unsubscribe = auth.onAuthStateChanged(async (u) => {
@@ -146,6 +156,9 @@
 				if (!name.trim()) {
 					throw new Error('Le nom est obligatoire.');
 				}
+				if (!isPasswordValid) {
+					throw new Error('Le mot de passe doit respecter toutes les consignes de sécurité (8 caractères, 1 majuscule, 1 chiffre, 1 caractère spécial).');
+				}
 				const userCredential = await createUserWithEmailAndPassword(auth, email, password);
 				const newUser = userCredential.user;
 
@@ -160,6 +173,9 @@
 					createdAt: new Date(),
 					role: 'user'
 				}, { merge: true });
+
+				// Show success alert
+				alert("Votre compte a été créé avec succès ! Vous allez être redirigé vers la publication de votre annonce.");
 			} else {
 				// LOGIN
 				await signInWithEmailAndPassword(auth, email, password);
@@ -295,16 +311,43 @@
 							<input type="email" placeholder="Email" bind:value={email} required />
 						</div>
 
-						<div class="input-group">
+						<div class="input-group" style="position: relative;">
 							<i class="fa-solid fa-lock input-icon"></i>
 							<input
-								type="password"
+								type={showPassword ? "text" : "password"}
 								placeholder="Mot de passe"
 								bind:value={password}
 								required
-								minlength="6"
+								style="padding-right: 3rem;"
 							/>
+							<button 
+								type="button" 
+								on:click={() => showPassword = !showPassword} 
+								style="position: absolute; right: 1rem; top: 50%; transform: translateY(-50%); background: none; border: none; color: #64748b; cursor: pointer; padding: 0.5rem; display: flex; align-items: center; justify-content: center;"
+							>
+								<i class="fa-solid {showPassword ? 'fa-eye-slash' : 'fa-eye'}"></i>
+							</button>
 						</div>
+
+						{#if isRegistering && password.length > 0}
+							<div class="password-requirements" style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 1rem; margin-top: -0.5rem; margin-bottom: 1.25rem; font-size: 0.85rem;" transition:slide>
+								<span style="font-weight: 700; color: #475569; display: block; margin-bottom: 0.5rem; text-align: left;">Le mot de passe doit contenir :</span>
+								<ul style="list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; text-align: left;">
+									<li style="display: flex; align-items: center; gap: 0.4rem; color: {passwordRequirements.length ? '#10b981' : '#64748b'}; font-weight: {passwordRequirements.length ? '600' : '400'}; transition: color 0.2s;">
+										<i class="fa-solid {passwordRequirements.length ? 'fa-circle-check' : 'fa-circle-dot'}"></i> Min. 8 caractères
+									</li>
+									<li style="display: flex; align-items: center; gap: 0.4rem; color: {passwordRequirements.uppercase ? '#10b981' : '#64748b'}; font-weight: {passwordRequirements.uppercase ? '600' : '400'}; transition: color 0.2s;">
+										<i class="fa-solid {passwordRequirements.uppercase ? 'fa-circle-check' : 'fa-circle-dot'}"></i> Une majuscule
+									</li>
+									<li style="display: flex; align-items: center; gap: 0.4rem; color: {passwordRequirements.number ? '#10b981' : '#64748b'}; font-weight: {passwordRequirements.number ? '600' : '400'}; transition: color 0.2s;">
+										<i class="fa-solid {passwordRequirements.number ? 'fa-circle-check' : 'fa-circle-dot'}"></i> Un chiffre
+									</li>
+									<li style="display: flex; align-items: center; gap: 0.4rem; color: {passwordRequirements.special ? '#10b981' : '#64748b'}; font-weight: {passwordRequirements.special ? '600' : '400'}; transition: color 0.2s;">
+										<i class="fa-solid {passwordRequirements.special ? 'fa-circle-check' : 'fa-circle-dot'}"></i> Un car. spécial
+									</li>
+								</ul>
+							</div>
+						{/if}
 
 						{#if !isRegistering}
 							<div class="forgot-password">
